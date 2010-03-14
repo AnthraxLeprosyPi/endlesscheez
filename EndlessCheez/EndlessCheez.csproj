@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F9938B9A-98AD-46FA-8EF2-B193998CAF8C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EndlessCheez</RootNamespace>
+    <AssemblyName>EndlessCheez</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="core, Version=1.0.4.17407, Culture=neutral, processorArchitecture=x86" />
+    <Reference Include="dialogs, Version=1.0.4.17412, Culture=neutral, processorArchitecture=x86" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="utils, Version=2.2.7.17403, Culture=neutral, processorArchitecture=x86" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EndlessCheez.Config.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EndlessCheez.Config.Designer.cs">
+      <DependentUpon>EndlessCheez.Config.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EndlessCheez.GUI.cs" />
+    <Compile Include="EndlessCheez.Plugin.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EndlessCheez.Config.resx">
+      <DependentUpon>EndlessCheez.Config.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="dll\core.dll" />
+    <Content Include="dll\dialogs.dll" />
+    <Content Include="dll\utils.dll" />
+    <Content Include="skin\EndlessCheez.xml" />
+    <Content Include="skin\Media\EndlessCheez\Background.png" />
+    <Content Include="skin\Media\EndlessCheez\Cats.jpg" />
+    <Content Include="skin\Media\EndlessCheez\Cats.png" />
+    <Content Include="skin\Media\EndlessCheez\Celebs.jpg" />
+    <Content Include="skin\Media\EndlessCheez\Celebs.png" />
+    <Content Include="skin\Media\EndlessCheez\Dogs.jpg" />
+    <Content Include="skin\Media\EndlessCheez\Dogs.png" />
+    <Content Include="skin\Media\EndlessCheez\EndlessCheez_logo.png" />
+    <Content Include="skin\Media\EndlessCheez\Engrish.jpg" />
+    <Content Include="skin\Media\EndlessCheez\Engrish.png" />
+    <Content Include="skin\Media\EndlessCheez\Graphs.jpg" />
+    <Content Include="skin\Media\EndlessCheez\Graphs.png" />
+    <Content Include="skin\Media\EndlessCheez\News.jpg" />
+    <Content Include="skin\Media\EndlessCheez\News.png" />
+    <Content Include="skin\Media\EndlessCheez\Sports.jpg" />
+    <Content Include="skin\Media\EndlessCheez\Sports.png" />
+    <Content Include="skin\Media\EndlessCheez\tll.jpg" />
+    <Content Include="skin\Media\EndlessCheez\tll.png" />
+    <EmbeddedResource Include="img\EndlessCheez_enabled.png" />
+    <EmbeddedResource Include="img\EndlessCheez_disabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="skin\Thumbs.db" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CheezburgerAPI\CheezburgerAPI.csproj">
+      <Project>{3D891031-7CD7-4054-8436-37045537AC94}</Project>
+      <Name>CheezburgerAPI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sites>
+  <Sites>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/1</SiteId>
+      <Name>I Can Has Cheezburger?</Name>
+      <Url>http://icanhascheezburger.com/</Url>
+      <Description>Lolcats n Funny Pictures </Description>
+      <ShortDescription>Lolcats</ShortDescription>
+      <SiteCategory>LOL</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/2</SiteId>
+      <Name>I Has A Hotdog</Name>
+      <Url>http://ihasahotdog.com/</Url>
+      <Description>Loldogs n Cute Puppies </Description>
+      <ShortDescription/>
+      <SiteCategory>LOL</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/37</SiteId>
+      <Name>Very Demotivational</Name>
+      <Url>http://verydemotivational.com/</Url>
+      <Description>(sorta NSFW) Work Harder, Not Smarter. </Description>
+      <ShortDescription/>
+      <SiteCategory>LOL</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/44</SiteId>
+      <Name>Acting Like Animals</Name>
+      <Url>http://actinglikeanimals.com/</Url>
+      <Description>Funny Animal Fails</Description>
+      <ShortDescription/>
+      <SiteCategory>LOL</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/35</SiteId>
+      <Name>Crazy Things Parents Say</Name>
+      <Url>http://crazythingsparentssay.com/</Url>
+      <Description>Your parents told you that?</Description>
+      <ShortDescription/>
+      <SiteCategory>LOL</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/23</SiteId>
+      <Name>My First Fail</Name>
+      <Url>http://myfirstfail.com/</Url>
+      <Description>Funny Babies!</Description>
+      <ShortDescription/>
+      <SiteCategory>LOL</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/11</SiteId>
+      <Name>Comixed</Name>
+      <Url>http://comixed.com/</Url>
+      <Description>(sorta NSFW) Vertical 4 Pane Comics  </Description>
+      <ShortDescription/>
+      <SiteCategory>LOL</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/45</SiteId>
+      <Name>Friends of Irony</Name>
+      <Url>http://friendsofirony.com/</Url>
+      <Description>Ironic Moments of Irony </Description>
+      <ShortDescription/>
+      <SiteCategory>LOL</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>true</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/7</SiteId>
+      <Name>FAILBlog</Name>
+      <Url>http://failblog.org/</Url>
+      <Description>Funny FAIL Pictures and Videos </Description>
+      <ShortDescription/>
+      <SiteCategory>FAIL</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/17</SiteId>
+      <Name>There I Fixed It</Name>
+      <Url>http://thereifixedit.com/</Url>
+      <Description>Funny Bad Repairs </Description>
+      <ShortDescription/>
+      <SiteCategory>FAIL</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/10</SiteId>
+      <Name>Engrish Funny</Name>
+      <Url>http://engrishfunny.com/</Url>
+      <Description>Funny Engrish pictures from around the world.</Description>
+      <ShortDescription/>
+      <SiteCategory>FAIL</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/49</SiteId>
+      <Name>Failbooking</Name>
+      <Url>http://failbooking.com/</Url>
+      <Description>Too Funny To Unfriend</Description>
+      <ShortDescription/>
+      <SiteCategory>FAIL</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>true</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/52</SiteId>
+      <Name>Monday Through Friday</Name>
+      <Url>http://mthruf.com/</Url>
+      <Description>Failing in the Workplace</Description>
+      <ShortDescription/>
+      <SiteCategory>FAIL</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>true</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/39</SiteId>
+      <Name>Learn From My Fail</Name>
+      <Url>http://learnfrommyfail.com/</Url>
+      <Description>Life's Little Lessons</Description>
+      <ShortDescription/>
+      <SiteCategory>FAIL</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/42</SiteId>
+      <Name>Poorly Dressed</Name>
+      <Url>http://poorlydressed.com/</Url>
+      <Description>Seriously Questionable Style Moments </Description>
+      <ShortDescription/>
+      <SiteCategory>FAIL</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>true</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/30</SiteId>
+      <Name>That Will Buff Out</Name>
+      <Url>http://thatwillbuffout.com/</Url>
+      <Description>Cars in Funny Situations</Description>
+      <ShortDescription/>
+      <SiteCategory>FAIL</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/8</SiteId>
+      <Name>ROFLrazzi</Name>
+      <Url>http://roflrazzi.com/</Url>
+      <Description>Lol Celebs and All That's Fab Funny in Showbiz </Description>
+      <ShortDescription/>
+      <SiteCategory>POP CULTURE</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/4</SiteId>
+      <Name>GraphJam</Name>
+      <Url>http://graphjam.com/</Url>
+      <Description>Music and Culture for People Who Love Charts</Description>
+      <ShortDescription/>
+      <SiteCategory>POP CULTURE</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/6</SiteId>
+      <Name>Up Next In Sports</Name>
+      <Url>http://upnextinsports.com/</Url>
+      <Description>Sports Commentary in Captions </Description>
+      <ShortDescription/>
+      <SiteCategory>POP CULTURE</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/3</SiteId>
+      <Name>Pundit Kitchen</Name>
+      <Url>http://punditkitchen.com/</Url>
+      <Description>Lol News and Lol Politics Fun </Description>
+      <ShortDescription/>
+      <SiteCategory>POP CULTURE</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/12</SiteId>
+      <Name>Picture Is Unrelated</Name>
+      <Url>http://pictureisunrelated.com/</Url>
+      <Description>(sorta NSFW) Funny WTF Pictures </Description>
+      <ShortDescription/>
+      <SiteCategory>WTF?</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/19</SiteId>
+      <Name>This Is Photobomb</Name>
+      <Url>http://thisisphotobomb.com/</Url>
+      <Description>(sorta NSFW) Surprise! Ruined Photos </Description>
+      <ShortDescription/>
+      <SiteCategory>WTF?</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/32</SiteId>
+      <Name>Hawtness</Name>
+      <Url>http://hawtness.com/</Url>
+      <Description>(NSFW) Lovely Ladies of WTF</Description>
+      <ShortDescription/>
+      <SiteCategory>WTF?</SiteCategory>
+      <IsNSFW>true</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/25</SiteId>
+      <Name>Autocomplete Me</Name>
+      <Url>http://autocompleteme.com/</Url>
+      <Description>Funny Search Suggestions</Description>
+      <ShortDescription/>
+      <SiteCategory>WTF?</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/36</SiteId>
+      <Name>Lovely Listing</Name>
+      <Url>http://lovelylisting.com/</Url>
+      <Description>Strange Findings in Real Estate Listings</Description>
+      <ShortDescription/>
+      <SiteCategory>WTF?</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/50</SiteId>
+      <Name>Things That Are Doing It</Name>
+      <Url>http://thingsthataredoingit.com/</Url>
+      <Description>(sorta NSFW) I See Naked People</Description>
+      <ShortDescription/>
+      <SiteCategory>WTF?</SiteCategory>
+      <IsNSFW>true</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/22</SiteId>
+      <Name>Ugliest Tattoos</Name>
+      <Url>http://ugliesttattoos.com/</Url>
+      <Description>(sorta NSFW) Regrettable Tattoos</Description>
+      <ShortDescription/>
+      <SiteCategory>WTF?</SiteCategory>
+      <IsNSFW>true</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/53</SiteId>
+      <Name>Hacked IRL</Name>
+      <Url>http://hackedirl.com/</Url>
+      <Description>Culture Jamming Wins</Description>
+      <ShortDescription/>
+      <SiteCategory>WTF?</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>true</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/31</SiteId>
+      <Name>Emails From Crazy People</Name>
+      <Url>http://emailsfromcrazypeople.com/</Url>
+      <Description>Messages from the Padded Inbox</Description>
+      <ShortDescription/>
+      <SiteCategory>WTF?</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/33</SiteId>
+      <Name>Oddly Specific</Name>
+      <Url>http://oddlyspecific.com/</Url>
+      <Description>Funny Signs</Description>
+      <ShortDescription/>
+      <SiteCategory>WTF?</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/54</SiteId>
+      <Name>Art of Trolling</Name>
+      <Url>http://artoftrolling.wordpress.com/</Url>
+      <Description>Trolls on Chatroulette and Yahoo! Answers</Description>
+      <ShortDescription/>
+      <SiteCategory>WTF?</SiteCategory>
+      <IsNSFW>true</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/26</SiteId>
+      <Name>Wedinator</Name>
+      <Url>http://wedinator.com/</Url>
+      <Description>Your special day... is hilarious. </Description>
+      <ShortDescription/>
+      <SiteCategory>FAIL</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/28</SiteId>
+      <Name>It Made My Day</Name>
+      <Url>http://itmademyday.com/</Url>
+      <Description>Little Moments of Win!</Description>
+      <ShortDescription/>
+      <SiteCategory>WIN</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/43</SiteId>
+      <Name>EpicWinFTW</Name>
+      <Url>http://epicwinftw.com/</Url>
+      <Description>Pure Win Photos</Description>
+      <ShortDescription/>
+      <SiteCategory>WIN</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/18</SiteId>
+      <Name>Once Upon A Win</Name>
+      <Url>http://onceuponawin.com/</Url>
+      <Description>Epic Wins from the Past </Description>
+      <ShortDescription/>
+      <SiteCategory>WIN</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/20</SiteId>
+      <Name>Probably Bad News</Name>
+      <Url>http://probablybadnews.com/</Url>
+      <Description>Hilarious Headlines and News Fails</Description>
+      <ShortDescription/>
+      <SiteCategory>FAIL</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/15</SiteId>
+      <Name>Babysaur</Name>
+      <Url>http://babysaur.com/</Url>
+      <Description>Cute Stuff For Kids  </Description>
+      <ShortDescription/>
+      <SiteCategory>CUTE</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/13</SiteId>
+      <Name>Daily Squee</Name>
+      <Url>http://dailysquee.com/</Url>
+      <Description>So cute your brain might explode. </Description>
+      <ShortDescription/>
+      <SiteCategory>CUTE</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/41</SiteId>
+      <Name>Epicute</Name>
+      <Url>http://epicute.com/</Url>
+      <Description>The Cute Food Blog</Description>
+      <ShortDescription/>
+      <SiteCategory>CUTE</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/51</SiteId>
+      <Name>Must Have Cute</Name>
+      <Url>http://musthavecute.com/</Url>
+      <Description>See. Want. Must Have!</Description>
+      <ShortDescription/>
+      <SiteCategory>CUTE</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>true</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/47</SiteId>
+      <Name>LOLMart</Name>
+      <Url>http://lolmart.com/</Url>
+      <Description>Official Cheezburger Store</Description>
+      <ShortDescription/>
+      <SiteCategory>STORES</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/48</SiteId>
+      <Name>LOLMart Shirts</Name>
+      <Url>http://lolmartshirts.com/</Url>
+      <Description>New T-Shirts Every Day</Description>
+      <ShortDescription/>
+      <SiteCategory>STORES</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/9</SiteId>
+      <Name>Totally Looks Like</Name>
+      <Url>http://totallylookslike.com/</Url>
+      <Description>Stuff That Looks Like Other Stuff</Description>
+      <ShortDescription/>
+      <SiteCategory>POP CULTURE</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+    <Site>
+      <SiteId>http://api.cheezburger.com/xml/site/38</SiteId>
+      <Name>Ridiculous Poses</Name>
+      <Url>http://ridiculousposes.com/</Url>
+      <Description>The Fine Art of Modeling</Description>
+      <ShortDescription/>
+      <SiteCategory>POP CULTURE</SiteCategory>
+      <IsNSFW>false</IsNSFW>
+      <IsNew>false</IsNew>
+      <IsFeatureSite>false</IsFeatureSite>
+    </Site>
+  </Sites>
+</Sites>
