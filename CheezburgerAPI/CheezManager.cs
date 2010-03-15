@@ -7,20 +7,11 @@ namespace CheezburgerAPI {
     public static class CheezManager {
 
         private static string _cheezRootFolder = Path.Combine(System.Environment.SpecialFolder.MyDocuments.ToString(), "EndlessCheez");
-        private static int _fetchCount;
-        private static List<CheezSite> _cheezSites;
+        private static int _fetchCount = 1;
+        private static List<CheezSite> _cheezSites = null;
 
         private static AutoResetEvent _cheezBusyEvent = new AutoResetEvent(true);
-        private static Thread _cheezCollector = new Thread(new ParameterizedThreadStart(CollectCheez));
-
-        private static object _locker = new object();
-
-        public static AutoResetEvent CheezBusyEvent {
-            get {
-                return CheezManager._cheezBusyEvent;
-            }
-        }
-
+       
         public enum CheezCollectionTypes {
             Local,
             Random,
@@ -42,23 +33,6 @@ namespace CheezburgerAPI {
         public delegate void CheezProgressHandler(int progressPercentage, string currentItem);
         public static event CheezProgressHandler EventCheezProgress;
 
-
-        public static CheezCollectorLatest CheezCollectorLatest {
-            get {
-                return CheezCollectorLatest.Instance;
-            }
-        }
-        public static CheezCollectorLocal CheezCollectorLocal {
-            get {
-                return CheezCollectorLocal.Instance;
-            }
-        }
-        public static CheezCollectorRandom CheezCollectorRandom {
-            get {
-                return CheezCollectorRandom.Instance;
-            }
-        }
-
         static CheezManager() {
             CheezCollectorLocal.Instance.CheezArrived += new CheezCollectorBase<CheezCollectorLocal>.CheezArrivedEventHandler(Local_CheezArrived);
             CheezCollectorLocal.Instance.CheezFailed += new CheezCollectorBase<CheezCollectorLocal>.CheezFailedEventHandler(Global_CheezFailed);
@@ -70,7 +44,6 @@ namespace CheezburgerAPI {
             CheezCollectorLatest.Instance.CheezFailed += new CheezCollectorBase<CheezCollectorLatest>.CheezFailedEventHandler(Global_CheezFailed);
             CheezCollectorLatest.Instance.CheezProgress += new CheezCollectorBase<CheezCollectorLatest>.CheezProgressHandler(Global_CheezProgress);
         }
-
 
         public static bool InitCheezManager(int fetchCount, string cheezRootFolder, bool createRootFolderStructure) {
             _fetchCount = fetchCount;
@@ -95,22 +68,22 @@ namespace CheezburgerAPI {
 
         private static void Global_CheezFailed(Fail fail) {
             EventCheezFailed(fail);
-            CheezBusyEvent.Set();
+            //_cheezBusyEvent.Set();
         }
 
         private static void Random_CheezArrived(List<CheezItem> cheezItems) {
             EventRandomCheezArrived(cheezItems);
-            CheezBusyEvent.Set();
+            _cheezBusyEvent.Set();
         }
 
         private static void Local_CheezArrived(List<CheezItem> cheezItems) {
             EventLocalCheezArrived(cheezItems);
-            CheezBusyEvent.Set();
+            _cheezBusyEvent.Set();
         }
 
         static void Latest_CheezArrived(List<CheezItem> cheezItems) {
             EventLatestCheezArrived(cheezItems);
-            CheezBusyEvent.Set();
+            _cheezBusyEvent.Set();
         }
 
         public static string CheezRootFolder {
@@ -180,80 +153,27 @@ namespace CheezburgerAPI {
             return allOk;
         }
 
-        private static void CollectCheez(object cheezCollectorParameters) {
-            lock(_locker) {
-                CheezCollectorParameters cheezParams = (CheezCollectorParameters)cheezCollectorParameters;
-                if(cheezParams.CheezSites == null) {
-                    _cheezBusyEvent.Reset();
-                    CheezCollectorLocal.Instance.CreateCheezCollection(null, _fetchCount);
-                    _cheezBusyEvent.WaitOne(60000, false);
-                } else {
-                    foreach(CheezSite currentSite in cheezParams.CheezSites) {
-                        _cheezBusyEvent.Reset();
-                        switch(cheezParams.CollectionType) {
-                            case CheezCollectionTypes.Local:
-                                CheezCollectorLocal.Instance.CreateCheezCollection(currentSite, _fetchCount);
-                                break;
-                            case CheezCollectionTypes.Latest:
-                                CheezCollectorLatest.Instance.CreateCheezCollection(currentSite, _fetchCount);
-                                break;
-                            case CheezCollectionTypes.Random:
-                                CheezCollectorRandom.Instance.CreateCheezCollection(currentSite, _fetchCount);
-                                break;
-                        }
-                        _cheezBusyEvent.WaitOne(60000, false);
-                    }
-                }
+        public static void CollectCheez(CheezCollectionTypes cheezType, CheezSite cheezSite) {
+            _cheezBusyEvent.Reset();
+            switch(cheezType) {
+                case CheezCollectionTypes.Local:
+                    CheezCollectorLocal.Instance.CreateCheezCollection(cheezSite, _fetchCount);
+                    break;
+                case CheezCollectionTypes.Latest:
+                    CheezCollectorLatest.Instance.CreateCheezCollection(cheezSite, _fetchCount);
+                    break;
+                case CheezCollectionTypes.Random:
+                    CheezCollectorRandom.Instance.CreateCheezCollection(cheezSite, _fetchCount);
+                    break;
             }
-        }
-
-        public static void CollectCheez() {
-            CollectorThreadStart(new CheezCollectorParameters(CheezCollectionTypes.Local, null));
-        }
-
-        public static void CollectCheez(CheezCollectionTypes collectionType, CheezSite cheezSite) {
-            CollectorThreadStart(new CheezCollectorParameters(collectionType, tmpList));
-        }
-
-        public static void CollectCheez(CheezCollectionTypes collectionType, List<CheezSite> cheezSites) {
-            CollectorThreadStart(new CheezCollectorParameters(collectionType, cheezSites));
-        }
-
-        private static void CollectorThreadStart(CheezCollectorParameters cheezParams) {
-            _cheezCollector.Start(cheezParams);
+            _cheezBusyEvent.WaitOne(60000, false);
         }
 
         public static void CancelCheezCollection() {
-            _cheezCollector.Abort();
-            CheezCollectorLocal.Instance.CancelCheezCollection();
-            CheezCollectorLatest.Instance.CancelCheezCollection();
-            CheezCollectorRandom.Instance.CancelCheezCollection();
-        }
-    }
-
-    public class CheezCollectorParameters {
-        private List<CheezSite> _cheezSites;
-        private CheezManager.CheezCollectionTypes _collectionType;
-
-        public CheezCollectorParameters(CheezburgerAPI.CheezManager.CheezCollectionTypes collectionType, List<CheezSite> cheezSites) {
-            this._cheezSites = cheezSites;
-            this._collectionType = collectionType;
-        }
-
-        public CheezCollectorParameters(CheezburgerAPI.CheezManager.CheezCollectionTypes collectionType) {
-            this._cheezSites = null;
-            this._collectionType = collectionType;
-        }
-
-        public List<CheezSite> CheezSites {
-            get {
-                return this._cheezSites;
-            }
-        }
-
-        public CheezManager.CheezCollectionTypes CollectionType {
-            get {
-                return this._collectionType;
+            if(IsBusy) {
+                CheezCollectorLocal.Instance.CancelCheezCollection();
+                CheezCollectorLatest.Instance.CancelCheezCollection();
+                CheezCollectorRandom.Instance.CancelCheezCollection();
             }
         }
     }

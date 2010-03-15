@@ -19,6 +19,13 @@ namespace EndlessCheezTest {
 
         public Form1() {
             InitializeComponent();
+            CheezManager.InitCheezManager(1, Path.Combine(Application.StartupPath, "EndlessCheez"), true);
+            _cheezSites = CheezManager.CheezSites;
+            CheezManager.EventCheezFailed += new CheezManager.CheezFailedEventHandler(CheezManager_EventCheezFailed);
+            CheezManager.EventLatestCheezArrived += new CheezManager.LatestCheezArrivedEventHandler(CheezManager_EventLatestCheezArrived);
+            CheezManager.EventLocalCheezArrived += new CheezManager.LocalCheezArrivedEventHandler(CheezManager_EventLocalCheezArrived);
+            CheezManager.EventRandomCheezArrived += new CheezManager.RandomCheezArrivedEventHandler(CheezManager_EventRandomCheezArrived);
+            CheezManager.EventCheezProgress += new CheezManager.CheezProgressHandler(CheezManager_CheezProgress);
         }
 
         void CheezManager_EventCheezFailed(Fail _fail) {
@@ -52,7 +59,7 @@ namespace EndlessCheezTest {
 
         public void GuiUpdateProgressbar(int value) {
             if (this.InvokeRequired) {
-                this.Invoke(new GuiUpdateProgressbarDelegate(GuiUpdateProgressbar), new object[] { value });
+                this.BeginInvoke(new GuiUpdateProgressbarDelegate(GuiUpdateProgressbar), new object[] { value });
             } else {
                 this.progressBar1.Value = value;
             }
@@ -73,17 +80,18 @@ namespace EndlessCheezTest {
             CheezManager.CancelCheezCollection();
         }
 
-        private void buttonStart_Click(object sender, EventArgs e) {
-            CheezManager.InitCheezManager(1, Path.Combine(Application.StartupPath, "EndlessCheez"), true);
-            _cheezSites = CheezManager.CheezSites;
-            CheezManager.EventCheezFailed += new CheezManager.CheezFailedEventHandler(CheezManager_EventCheezFailed);
-            CheezManager.EventLatestCheezArrived += new CheezManager.LatestCheezArrivedEventHandler(CheezManager_EventLatestCheezArrived);
-            CheezManager.EventLocalCheezArrived += new CheezManager.LocalCheezArrivedEventHandler(CheezManager_EventLocalCheezArrived);
-            CheezManager.EventRandomCheezArrived += new CheezManager.RandomCheezArrivedEventHandler(CheezManager_EventRandomCheezArrived);
-            CheezManager.EventCheezProgress += new CheezManager.CheezProgressHandler(CheezManager_CheezProgress);
+        private void buttonStart_Click(object sender, EventArgs e) {            
             GuiUpdateTextbox(_cheezSites.Count.ToString() + " sites");
-            CheezManager.CollectCheez(CheezManager.CheezCollectionTypes.Latest, _cheezSites);
-            CheezManager.CollectCheez();
+
+            Thread worker = new Thread(WorkerWork);
+            worker.Start();
         }
+
+        private void WorkerWork() {
+            
+            CheezManager.CollectCheez(CheezManager.CheezCollectionTypes.Latest, CheezManager.GetCheezSiteByID(1));
+            CheezManager.CollectCheez(CheezManager.CheezCollectionTypes.Local, null);
+        }
+
     }
 }
