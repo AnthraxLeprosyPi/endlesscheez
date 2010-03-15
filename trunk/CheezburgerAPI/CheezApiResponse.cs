@@ -276,7 +276,13 @@ public partial class Fail {
     private string failureDetailField;
     
     private string failureEventIdField;
-    
+
+    public Fail(string failureMessage, string failureDetail, string failureId) {
+        this.failureMessageField = failureMessage;
+        this.failureDetailField = failureDetail;
+        this.failureEventIdField = failureId;
+    }
+
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public string FailureMessage {

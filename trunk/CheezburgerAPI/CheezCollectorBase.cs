@@ -98,7 +98,7 @@ namespace CheezburgerAPI {
                     string tmpFileName = string.Empty;
                     tmpFileName = Path.Combine(Path.Combine(CheezManager.CheezRootFolder, _currentCheezSite.CheezSiteID), Path.GetFileName(currentCheez.ImageUrl));
                     if (!File.Exists(tmpFileName)) {
-                        myWebClient.DownloadFile(currentCheez.ImageUrl, tmpFileName);                        
+                            myWebClient.DownloadFile(currentCheez.ImageUrl, tmpFileName);                        
                     }
                     System.IO.File.WriteAllText(Path.ChangeExtension(tmpFileName, ".txt"), currentCheez.Title);
                     _listCheezItems.Add(new CheezItem(currentCheez.Title, tmpFileName, DateTime.Parse(currentCheez.TimeStamp), currentCheez));

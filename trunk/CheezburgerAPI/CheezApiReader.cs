@@ -36,7 +36,7 @@ namespace CheezburgerAPI {
                     return (CheezApiResponse)xSerializer.Deserialize(reader);
                 }
             } catch(Exception e) {
-                return null;
+                throw e;
             }
         }
 

@@ -25,7 +25,7 @@ namespace CheezburgerAPI {
                 } 
                 base.CreateCheezCollection(cheezSite, fetchCount);
             } else {
-                throw new ArgumentNullException("category", "CheezCollectorRandom doesn't permit null as category!");
+                ReportFail(new Fail("No CheezSite specified!","CheezCollectorRandom doesn't permit null as category!","10"));
             }
         }
 
