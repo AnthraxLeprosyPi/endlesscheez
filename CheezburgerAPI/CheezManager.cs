@@ -11,9 +11,14 @@ namespace CheezburgerAPI {
         private static List<CheezSite> _cheezSites;
 
         private static AutoResetEvent _cheezBusyEvent = new AutoResetEvent(true);
+        private static Thread _cheezCollector = new Thread(new ParameterizedThreadStart(CollectCheez));
+
+        private static object _locker = new object();
 
         public static AutoResetEvent CheezBusyEvent {
-            get { return CheezManager._cheezBusyEvent; }
+            get {
+                return CheezManager._cheezBusyEvent;
+            }
         }
 
         public enum CheezCollectionTypes {
@@ -71,13 +76,14 @@ namespace CheezburgerAPI {
             _fetchCount = fetchCount;
             _cheezRootFolder = cheezRootFolder;
             _cheezBusyEvent.Set();
-            if (!Directory.Exists(_cheezRootFolder)) {
+            if(!Directory.Exists(_cheezRootFolder)) {
                 try {
                     Directory.CreateDirectory(_cheezRootFolder);
-                } catch { }
+                } catch {
+                }
             }
             _cheezSites = CheezApiReader.ReadCheezSites();
-            if (createRootFolderStructure) {
+            if(createRootFolderStructure) {
                 CreateCheezFolderStructure(_cheezSites);
             }
             return CheckCheezConnection();
@@ -132,9 +138,9 @@ namespace CheezburgerAPI {
         }
 
         public static CheezSite GetCheezSiteByID(string siteID) {
-            if (_cheezSites != null) {
-                foreach (CheezSite currentSite in _cheezSites) {
-                    if (currentSite.SiteId.EndsWith("/" + siteID)) {
+            if(_cheezSites != null) {
+                foreach(CheezSite currentSite in _cheezSites) {
+                    if(currentSite.SiteId.EndsWith("/" + siteID)) {
                         return currentSite;
                     }
                 }
@@ -151,8 +157,8 @@ namespace CheezburgerAPI {
 
         private static bool CreateCheezFolderStructure(List<CheezSite> cheezSites) {
             try {
-                foreach (CheezSite cheezSite in cheezSites) {
-                    if (!Directory.Exists(Path.Combine(_cheezRootFolder, cheezSite.CheezSiteID))) {
+                foreach(CheezSite cheezSite in cheezSites) {
+                    if(!Directory.Exists(Path.Combine(_cheezRootFolder, cheezSite.CheezSiteID))) {
                         Directory.CreateDirectory(Path.Combine(_cheezRootFolder, cheezSite.CheezSiteID));
                     }
                 }
@@ -164,7 +170,7 @@ namespace CheezburgerAPI {
 
         public static bool DeleteAllTheCheez() {
             bool allOk = true;
-            foreach (string filePath in Directory.GetFiles(_cheezRootFolder, "*.*", SearchOption.AllDirectories)) {
+            foreach(string filePath in Directory.GetFiles(_cheezRootFolder, "*.*", SearchOption.AllDirectories)) {
                 try {
                     File.Delete(filePath);
                 } catch {
@@ -174,27 +180,81 @@ namespace CheezburgerAPI {
             return allOk;
         }
 
-        public static void CollectCheez(CheezCollectionTypes collectionType, CheezSite cheezSite) {
-            _cheezBusyEvent.Reset();
-            switch (collectionType) {
-                case CheezCollectionTypes.Local:
-                    CheezCollectorLocal.Instance.CreateCheezCollection(cheezSite, _fetchCount);
-                    break;
-                case CheezCollectionTypes.Latest:
-                    CheezCollectorLatest.Instance.CreateCheezCollection(cheezSite, _fetchCount);
-                    break;
-                case CheezCollectionTypes.Random:
-                    CheezCollectorRandom.Instance.CreateCheezCollection(cheezSite, _fetchCount);
-                    break;
+        private static void CollectCheez(object cheezCollectorParameters) {
+            lock(_locker) {
+                CheezCollectorParameters cheezParams = (CheezCollectorParameters)cheezCollectorParameters;
+                if(cheezParams.CheezSites == null) {
+                    _cheezBusyEvent.Reset();
+                    CheezCollectorLocal.Instance.CreateCheezCollection(null, _fetchCount);
+                    _cheezBusyEvent.WaitOne(60000, false);
+                } else {
+                    foreach(CheezSite currentSite in cheezParams.CheezSites) {
+                        _cheezBusyEvent.Reset();
+                        switch(cheezParams.CollectionType) {
+                            case CheezCollectionTypes.Local:
+                                CheezCollectorLocal.Instance.CreateCheezCollection(currentSite, _fetchCount);
+                                break;
+                            case CheezCollectionTypes.Latest:
+                                CheezCollectorLatest.Instance.CreateCheezCollection(currentSite, _fetchCount);
+                                break;
+                            case CheezCollectionTypes.Random:
+                                CheezCollectorRandom.Instance.CreateCheezCollection(currentSite, _fetchCount);
+                                break;
+                        }
+                        _cheezBusyEvent.WaitOne(60000, false);
+                    }
+                }
             }
-            _cheezBusyEvent.WaitOne(30000);
+        }
+
+        public static void CollectCheez() {
+            CollectorThreadStart(new CheezCollectorParameters(CheezCollectionTypes.Local, null));
+        }
+
+        public static void CollectCheez(CheezCollectionTypes collectionType, CheezSite cheezSite) {
+            CollectorThreadStart(new CheezCollectorParameters(collectionType, tmpList));
+        }
+
+        public static void CollectCheez(CheezCollectionTypes collectionType, List<CheezSite> cheezSites) {
+            CollectorThreadStart(new CheezCollectorParameters(collectionType, cheezSites));
+        }
+
+        private static void CollectorThreadStart(CheezCollectorParameters cheezParams) {
+            _cheezCollector.Start(cheezParams);
         }
 
         public static void CancelCheezCollection() {
+            _cheezCollector.Abort();
             CheezCollectorLocal.Instance.CancelCheezCollection();
             CheezCollectorLatest.Instance.CancelCheezCollection();
             CheezCollectorRandom.Instance.CancelCheezCollection();
+        }
+    }
 
+    public class CheezCollectorParameters {
+        private List<CheezSite> _cheezSites;
+        private CheezManager.CheezCollectionTypes _collectionType;
+
+        public CheezCollectorParameters(CheezburgerAPI.CheezManager.CheezCollectionTypes collectionType, List<CheezSite> cheezSites) {
+            this._cheezSites = cheezSites;
+            this._collectionType = collectionType;
+        }
+
+        public CheezCollectorParameters(CheezburgerAPI.CheezManager.CheezCollectionTypes collectionType) {
+            this._cheezSites = null;
+            this._collectionType = collectionType;
+        }
+
+        public List<CheezSite> CheezSites {
+            get {
+                return this._cheezSites;
+            }
+        }
+
+        public CheezManager.CheezCollectionTypes CollectionType {
+            get {
+                return this._collectionType;
+            }
         }
     }
 
