@@ -24,7 +24,8 @@ namespace CheezburgerAPI {
                     _listCheezItems.Add(new CheezItem(tmpTitle, filePath, File.GetCreationTime(filePath)));
                     base.backgroundCheezCollector.ReportProgress((int)((float)folderFiles.IndexOf(filePath) / (float)folderFiles.Count * 100),tmpTitle);
                 }
-            } catch {
+            } catch (Exception ee){
+                ReportFail(new Fail(ee));
             }             
         }
     }

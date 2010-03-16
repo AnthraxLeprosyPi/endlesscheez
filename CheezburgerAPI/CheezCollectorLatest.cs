@@ -7,31 +7,48 @@ using System.Xml;
 using System.Net;
 
 namespace CheezburgerAPI {
-    public class CheezCollectorLatest: CheezCollectorBase<CheezCollectorLatest> {
+    public class CheezCollectorLatest : CheezCollectorBase<CheezCollectorLatest> {
 
-        private int currentStartIndex = 1;
-        
-        public int CurrentStartIndex
-        {
-            get { return currentStartIndex; }
-            set { currentStartIndex = value; }
-        }
-       
-        public override void CreateCheezCollection(CheezSite cheezSite, int fetchCount) {
-            if(cheezSite != null) {
-                _cheezOnlineResponse = CheezApiReader.ReadLatestCheez(cheezSite, currentStartIndex, fetchCount);
-                if(_cheezOnlineResponse.Fail != null) {
-                    ReportFail(_cheezOnlineResponse.Fail);
-                } 
-                base.CreateCheezCollection(cheezSite, fetchCount);
-            } else {
-                ReportFail(new Fail("No CheezSite specified!","CheezCollectorRandom doesn't permit null as category!","10"));
+        private int _currentStartIndex = 1;
+        private CheezSite _currentCheezSite;
+        private int _fetchCount;
+        private object _locker = new object();
+
+        public int CurrentStartIndex {
+            get {
+                return _currentStartIndex;
+            }
+            set {
+                _currentStartIndex = value;
             }
         }
 
+        public CheezSite CurrentCheezSite {
+            get {
+                return _currentCheezSite;
+            }
+        }
+
+        public override void CreateCheezCollection(CheezSite cheezSite, int fetchCount) {
+            _fetchCount = fetchCount;
+            if(cheezSite != null) {
+                if(_currentCheezSite != cheezSite) {
+                    _currentStartIndex = 1;
+                    _currentCheezSite = cheezSite;
+                }
+                _cheezOnlineResponse = CheezApiReader.ReadLatestCheez(cheezSite, _currentStartIndex, fetchCount);
+                if(_cheezOnlineResponse.Fail != null) {
+                    ReportFail(_cheezOnlineResponse.Fail);
+                } else {
+                    base.CreateCheezCollection(cheezSite, fetchCount);
+                }
+            } else {
+                ReportFail(new Fail("No CheezSite specified!", "CheezCollectorLatest doesn't permit null as category!", "unknown"));
+            }
+        }
 
         protected override void NewCheezCollected(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e) {
-            currentStartIndex += _fetchCount;
+            _currentStartIndex += _fetchCount;
             base.NewCheezCollected(sender, e);
         }
     }

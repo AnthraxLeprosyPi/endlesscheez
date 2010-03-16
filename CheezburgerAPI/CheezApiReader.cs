@@ -12,7 +12,8 @@ namespace CheezburgerAPI {
 
     public enum CheezApiRequestType {
         Featured,
-        Random
+        Random,
+        Hai
     }
 
     static class CheezApiReader {
@@ -36,12 +37,12 @@ namespace CheezburgerAPI {
                     return (CheezApiResponse)xSerializer.Deserialize(reader);
                 }
             } catch(Exception e) {
-                throw e;
+                return new CheezApiResponse(new Fail(e));
             }
         }
 
-        public static Hai ReadHai() {
-            return (Hai)ReadCheezAPI(_cheezburgerHaiUri);
+        public static CheezAPI ReadHai() {
+            return new CheezAPI(CheezApiRequestType.Hai, ReadCheezAPI(_cheezburgerHaiUri));
         }
 
         private static CheezAPI ReadCheez(CheezApiRequestType reqestType, CheezSite cheezSite, int startIndex, int itemCount) {

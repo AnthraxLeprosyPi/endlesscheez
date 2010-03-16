@@ -26,8 +26,7 @@ namespace CheezburgerAPI {
         protected CheezSite _currentCheezSite;
         protected CheezAPI _cheezOnlineResponse;
         protected List<CheezItem> _listCheezItems;
-        protected int _fetchCount;
-
+        
         private static T _instance = null;
         public static T Instance {
             get {
@@ -63,7 +62,6 @@ namespace CheezburgerAPI {
 
         public virtual void CreateCheezCollection(CheezSite cheezSite, int fetchCount) {
             if(!backgroundCheezCollector.IsBusy) {
-                _fetchCount = fetchCount;
                 _currentCheezSite = cheezSite;
                 backgroundCheezCollector.RunWorkerAsync();
             }
@@ -102,10 +100,10 @@ namespace CheezburgerAPI {
                     }
                     System.IO.File.WriteAllText(Path.ChangeExtension(tmpFileName, ".txt"), currentCheez.Title);
                     _listCheezItems.Add(new CheezItem(currentCheez.Title, tmpFileName, DateTime.Parse(currentCheez.TimeStamp), currentCheez));
-                    backgroundCheezCollector.ReportProgress((int)((float)_cheezOnlineResponse.CheezAssets.IndexOf(currentCheez) / (float)_cheezOnlineResponse.CheezAssets.Count * 100), currentCheez.Title);
+                    backgroundCheezCollector.ReportProgress((int)((float)_cheezOnlineResponse.CheezAssets.IndexOf(currentCheez) / (float)_cheezOnlineResponse.CheezAssets.Count * 100), "["+ currentCheez.AssetId +"] " + currentCheez.Title);
                 }
             } catch (Exception ee) {
-                
+                ReportFail(new Fail(ee));
             }
         }
 
