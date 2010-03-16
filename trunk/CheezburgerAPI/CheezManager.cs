@@ -6,33 +6,23 @@ using System.Threading;
 namespace CheezburgerAPI {
     public static class CheezManager {
 
+        #region ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Member Fields ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         private static string _cheezRootFolder = Path.Combine(System.Environment.SpecialFolder.MyDocuments.ToString(), "EndlessCheez");
         private static int _fetchCount = 1;
-        private static List<CheezSite> _cheezSites = null;
-
+        private static List<CheezSite> _cheezSites = new List<CheezSite>();
+        private static List<CheezItem> _listLatestCheez = new List<CheezItem>();
+        private static List<CheezItem> _listRandomCheez = new List<CheezItem>();
+        private static List<CheezItem> _listLocalCheez = new List<CheezItem>();
         private static AutoResetEvent _cheezBusyEvent = new AutoResetEvent(true);
-       
-        public enum CheezCollectionTypes {
+        
+        private enum CheezCollectionTypes {
             Local,
             Random,
             Latest
         }
+        #endregion        
 
-        public delegate void LocalCheezArrivedEventHandler(List<CheezItem> cheezItems);
-        public static event LocalCheezArrivedEventHandler EventLocalCheezArrived;
-
-        public delegate void RandomCheezArrivedEventHandler(List<CheezItem> cheezItems);
-        public static event RandomCheezArrivedEventHandler EventRandomCheezArrived;
-
-        public delegate void LatestCheezArrivedEventHandler(List<CheezItem> cheezItems);
-        public static event LatestCheezArrivedEventHandler EventLatestCheezArrived;
-
-        public delegate void CheezFailedEventHandler(Fail _fail);
-        public static event CheezFailedEventHandler EventCheezFailed;
-
-        public delegate void CheezProgressHandler(int progressPercentage, string currentItem);
-        public static event CheezProgressHandler EventCheezProgress;
-
+        #region ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Constructor & Initialization ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         static CheezManager() {
             CheezCollectorLocal.Instance.CheezArrived += new CheezCollectorBase<CheezCollectorLocal>.CheezArrivedEventHandler(Local_CheezArrived);
             CheezCollectorLocal.Instance.CheezFailed += new CheezCollectorBase<CheezCollectorLocal>.CheezFailedEventHandler(Global_CheezFailed);
@@ -52,7 +42,8 @@ namespace CheezburgerAPI {
             if(!Directory.Exists(_cheezRootFolder)) {
                 try {
                     Directory.CreateDirectory(_cheezRootFolder);
-                } catch {
+                } catch(Exception e) {
+                    EventCheezFailed(new Fail(e));
                 }
             }
             _cheezSites = CheezApiReader.ReadCheezSites();
@@ -61,73 +52,34 @@ namespace CheezburgerAPI {
             }
             return CheckCheezConnection();
         }
-
-        private static void Global_CheezProgress(int progressPercentage, string currentItem) {
-            EventCheezProgress(progressPercentage, currentItem);
-        }
-
-        private static void Global_CheezFailed(Fail fail) {
-            EventCheezFailed(fail);
-            //_cheezBusyEvent.Set();
-        }
-
-        private static void Random_CheezArrived(List<CheezItem> cheezItems) {
-            EventRandomCheezArrived(cheezItems);
-            _cheezBusyEvent.Set();
-        }
-
-        private static void Local_CheezArrived(List<CheezItem> cheezItems) {
-            EventLocalCheezArrived(cheezItems);
-            _cheezBusyEvent.Set();
-        }
-
-        static void Latest_CheezArrived(List<CheezItem> cheezItems) {
-            EventLatestCheezArrived(cheezItems);
-            _cheezBusyEvent.Set();
-        }
-
-        public static string CheezRootFolder {
-            get {
-                return _cheezRootFolder;
-            }
-        }
-
-        public static bool IsBusy {
-            get {
-                return (CheezCollectorLocal.Instance.IsBusy || CheezCollectorRandom.Instance.IsBusy || CheezCollectorLatest.Instance.IsBusy);
-            }
-        }
-
-        public static int FetchCount {
-            get {
-                return _fetchCount;
-            }
-        }
-
-        public static List<CheezSite> CheezSites {
-            get {
-                return _cheezSites;
-            }
-        }
-
-        public static CheezSite GetCheezSiteByID(string siteID) {
-            if(_cheezSites != null) {
-                foreach(CheezSite currentSite in _cheezSites) {
-                    if(currentSite.SiteId.EndsWith("/" + siteID)) {
-                        return currentSite;
-                    }
-                }
-            }
-            return null;
-        }
-        public static CheezSite GetCheezSiteByID(int siteID) {
-            return GetCheezSiteByID(siteID.ToString());
-        }
-
+        #endregion
+        
+        #region ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Public Methods ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        /// <summary>
+        /// 
+        /// </summary>
         public static bool CheckCheezConnection() {
-            return (CheezApiReader.ReadHai() != null);
+            CheezAPI connectionCheck = CheezApiReader.ReadHai();
+            if(connectionCheck.Fail != null) {
+                EventCheezFailed(connectionCheck.Fail);
+            }
+            return connectionCheck.Hai != null;
         }
 
+        public static void CollectLatestCheez(CheezSite cheezSite) {
+            CollectCheez(CheezCollectionTypes.Latest, cheezSite);
+        }
+
+        public static void CollectRandomCheez(CheezSite cheezSite) {
+            CollectCheez(CheezCollectionTypes.Random, cheezSite);
+        }
+
+        public static void CollectLocalCheez(CheezSite cheezSite) {
+            CollectCheez(CheezCollectionTypes.Local, cheezSite);
+        }
+        #endregion
+
+        #region ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Private Methods ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         private static bool CreateCheezFolderStructure(List<CheezSite> cheezSites) {
             try {
                 foreach(CheezSite cheezSite in cheezSites) {
@@ -136,24 +88,13 @@ namespace CheezburgerAPI {
                     }
                 }
                 return true;
-            } catch {
-                return false;
+            } catch(Exception e) {
+                EventCheezFailed(new Fail(e));
             }
+            return false;
         }
 
-        public static bool DeleteAllTheCheez() {
-            bool allOk = true;
-            foreach(string filePath in Directory.GetFiles(_cheezRootFolder, "*.*", SearchOption.AllDirectories)) {
-                try {
-                    File.Delete(filePath);
-                } catch {
-                    allOk = false;
-                }
-            }
-            return allOk;
-        }
-
-        public static void CollectCheez(CheezCollectionTypes cheezType, CheezSite cheezSite) {
+        private static void CollectCheez(CheezCollectionTypes cheezType, CheezSite cheezSite) {
             _cheezBusyEvent.Reset();
             switch(cheezType) {
                 case CheezCollectionTypes.Local:
@@ -168,7 +109,7 @@ namespace CheezburgerAPI {
             }
             _cheezBusyEvent.WaitOne(60000, false);
         }
-
+        
         public static void CancelCheezCollection() {
             if(IsBusy) {
                 CheezCollectorLocal.Instance.CancelCheezCollection();
@@ -176,8 +117,129 @@ namespace CheezburgerAPI {
                 CheezCollectorRandom.Instance.CancelCheezCollection();
             }
         }
-    }
 
+        public static bool DeleteLocalCheez() {
+            bool allOk = true;
+            foreach(string filePath in Directory.GetFiles(_cheezRootFolder, "*.*", SearchOption.AllDirectories)) {
+                try {
+                    File.Delete(filePath);
+                } catch(Exception e) {
+                    EventCheezFailed(new Fail(e));
+                    allOk = false;
+                }
+            }
+            return allOk;
+        }
+        #endregion
+
+        #region ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Events & Delegates ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        public delegate void CheezArrivedLocalEventHandler(List<CheezItem> cheezItems);
+        public static event CheezArrivedLocalEventHandler EventLocalCheezArrived;
+
+        public delegate void CheezArrivedRandomEventHandler(List<CheezItem> cheezItems);
+        public static event CheezArrivedRandomEventHandler EventRandomCheezArrived;
+
+        public delegate void CheezArrivedLatestEventHandler(List<CheezItem> cheezItems);
+        public static event CheezArrivedLatestEventHandler EventLatestCheezArrived;
+
+        public delegate void CheezFailedEventHandler(Fail _fail);
+        public static event CheezFailedEventHandler EventCheezFailed;
+
+        public delegate void CheezProgressHandler(int progressPercentage, string currentItem);
+        public static event CheezProgressHandler EventCheezProgress;
+        #endregion
+
+        #region ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ EventHandlers ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        private static void Global_CheezProgress(int progressPercentage, string currentItem) {
+            EventCheezProgress(progressPercentage, currentItem);
+        }
+
+        private static void Global_CheezFailed(Fail fail) {
+            EventCheezFailed(fail);
+        }
+
+        private static void Latest_CheezArrived(List<CheezItem> cheezItems) {
+            _listLatestCheez.AddRange(cheezItems);
+            EventLatestCheezArrived(cheezItems);
+            _cheezBusyEvent.Set();
+        }
+
+        private static void Random_CheezArrived(List<CheezItem> cheezItems) {
+            _listRandomCheez.AddRange(cheezItems);
+            EventRandomCheezArrived(cheezItems);
+            _cheezBusyEvent.Set();
+        }
+
+        private static void Local_CheezArrived(List<CheezItem> cheezItems) {
+            _listLocalCheez.AddRange(cheezItems);
+            EventLocalCheezArrived(cheezItems);
+            _cheezBusyEvent.Set();
+        }
+        #endregion
+
+        #region ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Properties Gets/Sets ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        public static CheezSite GetCheezSiteByID(string siteID) {
+            if(_cheezSites != null) {
+                foreach(CheezSite currentSite in _cheezSites) {
+                    if(currentSite.SiteId.EndsWith("/" + siteID)) {
+                        return currentSite;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public static CheezSite GetCheezSiteByID(int siteID) {
+            return GetCheezSiteByID(siteID.ToString());
+        }
+
+        public static List<CheezSite> CheezSites {
+            get {
+                return _cheezSites;
+            }
+        }
+
+        public static List<CheezItem> ListLatestCheez{
+            get {
+                return _listLatestCheez;
+            }
+        }
+
+        public static List<CheezItem> ListRandomCheez {
+            get {
+                return _listRandomCheez;
+            }
+        }
+
+        public static List<CheezItem> ListLocalCheez {
+            get {
+                return _listLocalCheez;
+            }
+        }
+
+        public static string CheezRootFolder {
+            get {
+                return _cheezRootFolder;
+            }
+        }
+
+        public static bool IsBusy {
+            get {
+                return (CheezCollectorLocal.Instance.IsBusy || CheezCollectorRandom.Instance.IsBusy || CheezCollectorLatest.Instance.IsBusy);
+            }
+        }
+
+        public static int CheezFetchCount {
+            get {
+                return _fetchCount;
+            }
+            set {
+                _fetchCount = value;
+            }
+        }
+        #endregion
+    }
+    #region ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ BusinessObjects ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     public class CheezItem {
         private string _cheezImagePath;
         private string _cheezTitle;
@@ -222,4 +284,5 @@ namespace CheezburgerAPI {
             }
         }
     }
+    #endregion
 }
