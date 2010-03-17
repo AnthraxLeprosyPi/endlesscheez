@@ -6,18 +6,18 @@ using System.IO;
 using System.Net;
 
 namespace CheezburgerAPI {
-    public class CheezCollectorRandom: CheezCollectorBase<CheezCollectorRandom> {
+    internal class CheezCollectorRandom: CheezCollectorBase<CheezCollectorRandom> {
         
         public override void CreateCheezCollection(CheezSite cheezSite, int fetchCount) {
             if(cheezSite != null) {
                 _cheezOnlineResponse = CheezApiReader.ReadRandomCheez(cheezSite, fetchCount);
-                if(_cheezOnlineResponse.Fail != null) {
-                    ReportFail(_cheezOnlineResponse.Fail);
+                if(_cheezOnlineResponse.CheezFail != null) {
+                    ReportFail(_cheezOnlineResponse.CheezFail);
                 } else {
                     base.CreateCheezCollection(cheezSite, fetchCount);
                 }
             } else {
-                ReportFail(new Fail("No CheezSite specified!", "CheezCollectorRandom doesn't permit null as category!","unknown"));
+                ReportFail(new CheezFail("No CheezSite specified!", "CheezCollectorRandom doesn't permit null as category!","unknown"));
             }
         }        
     }

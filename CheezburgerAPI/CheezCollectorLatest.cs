@@ -7,10 +7,9 @@ using System.Xml;
 using System.Net;
 
 namespace CheezburgerAPI {
-    public class CheezCollectorLatest : CheezCollectorBase<CheezCollectorLatest> {
+    internal class CheezCollectorLatest : CheezCollectorBase<CheezCollectorLatest> {
 
         private int _currentStartIndex = 1;
-        private CheezSite _currentCheezSite;
         private int _fetchCount;
         private object _locker = new object();
 
@@ -37,13 +36,13 @@ namespace CheezburgerAPI {
                     _currentCheezSite = cheezSite;
                 }
                 _cheezOnlineResponse = CheezApiReader.ReadLatestCheez(cheezSite, _currentStartIndex, fetchCount);
-                if(_cheezOnlineResponse.Fail != null) {
-                    ReportFail(_cheezOnlineResponse.Fail);
+                if(_cheezOnlineResponse.CheezFail != null) {
+                    ReportFail(_cheezOnlineResponse.CheezFail);
                 } else {
                     base.CreateCheezCollection(cheezSite, fetchCount);
                 }
             } else {
-                ReportFail(new Fail("No CheezSite specified!", "CheezCollectorLatest doesn't permit null as category!", "unknown"));
+                ReportFail(new CheezFail("No CheezSite specified!", "CheezCollectorLatest doesn't permit null as category!", "unknown"));
             }
         }
 
