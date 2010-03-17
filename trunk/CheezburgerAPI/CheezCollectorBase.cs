@@ -9,7 +9,7 @@ using System.Threading;
 using System.Runtime.Serialization;
 
 namespace CheezburgerAPI {
-    public abstract class CheezCollectorBase<T> where T : CheezCollectorBase<T> {
+    internal abstract class CheezCollectorBase<T> where T : CheezCollectorBase<T> {
         private static object _lock = new object();
 
         protected BackgroundWorker backgroundCheezCollector;
@@ -17,7 +17,7 @@ namespace CheezburgerAPI {
         public delegate void CheezArrivedEventHandler(List<CheezItem> cheezItems);
         public event CheezArrivedEventHandler CheezArrived;
 
-        public delegate void CheezFailedEventHandler(Fail _fail);
+        public delegate void CheezFailedEventHandler(CheezFail _fail);
         public event CheezFailedEventHandler CheezFailed;
 
         public delegate void CheezProgressHandler(int progressPercentage, string currentItem);
@@ -80,7 +80,7 @@ namespace CheezburgerAPI {
             backgroundCheezCollector.RunWorkerCompleted += new RunWorkerCompletedEventHandler(NewCheezCollected);
         }
 
-        protected void ReportFail(Fail fail) {
+        protected void ReportFail(CheezFail fail) {
             CheezFailed(fail);
         }
 
@@ -103,7 +103,7 @@ namespace CheezburgerAPI {
                     backgroundCheezCollector.ReportProgress((int)((float)_cheezOnlineResponse.CheezAssets.IndexOf(currentCheez) / (float)_cheezOnlineResponse.CheezAssets.Count * 100), "["+ currentCheez.AssetId +"] " + currentCheez.Title);
                 }
             } catch (Exception ee) {
-                ReportFail(new Fail(ee));
+                ReportFail(new CheezFail(ee));
             }
         }
 

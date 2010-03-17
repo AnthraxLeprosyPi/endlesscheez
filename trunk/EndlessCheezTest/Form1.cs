@@ -11,47 +11,17 @@ using System.IO;
 using System.Threading;
 
 namespace EndlessCheezTest {
-    public partial class Form1 : Form {
+    public partial class Form1 : Form, ICheezConsumer {
         public Form1() {
             InitializeComponent();
-            CheezManager.EventCheezFailed += new CheezManager.CheezFailedEventHandler(CheezManager_EventCheezFailed);
-            CheezManager.EventLatestCheezArrived += new CheezManager.CheezArrivedLatestEventHandler(CheezManager_EventLatestCheezArrived);
-            CheezManager.EventLocalCheezArrived += new CheezManager.CheezArrivedLocalEventHandler(CheezManager_EventLocalCheezArrived);
-            CheezManager.EventRandomCheezArrived += new CheezManager.CheezArrivedRandomEventHandler(CheezManager_EventRandomCheezArrived);
-            CheezManager.EventCheezProgress += new CheezManager.CheezProgressHandler(CheezManager_CheezProgress);
-            bool success = CheezManager.InitCheezManager(1, Path.Combine(Application.StartupPath, "EndlessCheez"), true);
-            GuiUpdateTextbox(CheezManager.CheezSites.Count.ToString() + " sites");              
-        }
-
-        void CheezManager_EventCheezFailed(Fail _fail) {
-            GuiUpdateTextbox(_fail.ToString());
-        }
-
-        void CheezManager_EventLatestCheezArrived(List<CheezItem> cheezItems) {
-            GuiUpdateTextbox(cheezItems.Count.ToString() + " latest items collected!");
-        }
-
-        void CheezManager_EventRandomCheezArrived(List<CheezItem> cheezItems) {
-            throw new NotImplementedException();
-        }
-
-        void CheezManager_EventLocalCheezArrived(List<CheezItem> cheezItems) {
-            GuiUpdateTextbox(cheezItems.Count.ToString() + " local items collected!");
-        }
-
-        void CheezManager_CheezProgress(int progressPercentage, string currentItem) {
-            if (progressPercentage >= 0 && progressPercentage <= 100) {
-                GuiUpdateProgressbar(progressPercentage);
-                if (currentItem != String.Empty) {
-                    GuiUpdateTextbox(currentItem);
-                }
-            }
+            bool success = InitCheezManager(this, 1, Path.Combine(Application.StartupPath, "EndlessCheez"), true);
+            GuiUpdateTextbox(CheezManager.CheezSites.Count.ToString() + " sites");
         }
 
         public delegate void GuiUpdateProgressbarDelegate(int value);
 
         public void GuiUpdateProgressbar(int value) {
-            if (this.InvokeRequired) {
+            if(this.InvokeRequired) {
                 this.BeginInvoke(new GuiUpdateProgressbarDelegate(GuiUpdateProgressbar), new object[] { value });
             } else {
                 this.progressBar1.Value = value;
@@ -61,7 +31,7 @@ namespace EndlessCheezTest {
         public delegate void GuiUpdateTextBoxDelegate(string text);
 
         public void GuiUpdateTextbox(string text) {
-            if (this.InvokeRequired) {
+            if(this.InvokeRequired) {
                 this.BeginInvoke(new GuiUpdateTextBoxDelegate(GuiUpdateTextbox), new object[] { text });
             } else {
                 this.textBox1.AppendText(text);
@@ -73,26 +43,52 @@ namespace EndlessCheezTest {
             CheezManager.CancelCheezCollection();
         }
 
-        private void buttonStart_Click(object sender, EventArgs e) {            
+        private void buttonStart_Click(object sender, EventArgs e) {
             Thread worker = new Thread(WorkerWork);
             worker.Start();
 
         }
 
         private void WorkerWork() {
+            CheezManager.DeleteLocalCheez();
             CheezManager.CollectLocalCheez(CheezManager.GetCheezSiteByID(2));
             CheezManager.CollectLocalCheez(null);
             CheezManager.CollectLatestCheez(CheezManager.GetCheezSiteByID(1));
             CheezManager.CollectLatestCheez(CheezManager.GetCheezSiteByID(1));
-            CheezManager.CollectLatestCheez(CheezManager.GetCheezSiteByID(1));
-            CheezManager.CollectLatestCheez(CheezManager.GetCheezSiteByID(1));
-            CheezManager.CollectLatestCheez(CheezManager.GetCheezSiteByID(1));
-            CheezManager.CollectLatestCheez(CheezManager.GetCheezSiteByID(1));
-            CheezManager.CollectLatestCheez(CheezManager.GetCheezSiteByID(2));
-            CheezManager.CollectLatestCheez(CheezManager.GetCheezSiteByID(1));
-            CheezManager.CollectLatestCheez(CheezManager.GetCheezSiteByID(1));
-            CheezManager.CollectLatestCheez(CheezManager.GetCheezSiteByID(2));            
+
         }
 
+        #region ICheezConsumer Member
+
+        public bool InitCheezManager(ICheezConsumer consumer, int fetchCount, string cheezRootFolder, bool createRootFolderStructure) {
+            return CheezManager.InitCheezManager(consumer, fetchCount, cheezRootFolder, createRootFolderStructure);
+        }
+        
+        public void CheezOperationFailed(CheezFail fail) {
+            GuiUpdateTextbox(fail.ToString());
+        }
+
+        public void CheezOperationProgress(int progressPercentage, string currentItem) {
+            if(progressPercentage >= 0 && progressPercentage <= 100) {
+                GuiUpdateProgressbar(progressPercentage);
+                if(currentItem != String.Empty) {
+                    GuiUpdateTextbox(currentItem);
+                }
+            }
+        }
+
+        public void LatestCheezArrived(List<CheezItem> cheezItems) {
+            GuiUpdateTextbox(cheezItems.Count.ToString() + " latest items collected!");
+        }
+
+        public void RandomCheezArrived(List<CheezItem> cheezItems) {
+            throw new NotImplementedException();
+        }
+
+        public void LocalCheezArrived(List<CheezItem> cheezItems) {
+            GuiUpdateTextbox(cheezItems.Count.ToString() + " local items collected!");
+        }
+        
+        #endregion
     }
 }

@@ -39,7 +39,7 @@
 
 //        }
 
-//        private void CheezManager_CheezFailed(Fail _fail) {
+//        private void CheezManager_CheezFailed(CheezFail _fail) {
 //            ShowNotifyDialog(30, _fail.FailureMessage + " (" + _fail.FailureDetail + ")");
 //        }
 

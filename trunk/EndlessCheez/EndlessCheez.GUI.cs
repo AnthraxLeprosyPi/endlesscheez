@@ -7,9 +7,6 @@
 //using System.IO;
 //using CheezburgerAPI;
 
-
-
-
 //namespace EndlessCheez {
 //    public partial class EndlessCheezPlugin : GUIWindow {
 //        private static List<CheezItem> allCheezItems = new List<CheezItem>();

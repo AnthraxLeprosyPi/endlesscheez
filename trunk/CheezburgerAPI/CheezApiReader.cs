@@ -10,13 +10,13 @@ using System.Xml;
 
 namespace CheezburgerAPI {
 
-    public enum CheezApiRequestType {
+    internal enum CheezApiRequestType {
         Featured,
         Random,
         Hai
     }
 
-    static class CheezApiReader {
+    internal static class CheezApiReader {
 
         private const String _cheezburgerHaiUri = @"http://api.cheezburger.com/xml/hai";
         private const String _cheezburgerSitesUri = @"http://api.cheezburger.com/xml/site";
@@ -37,7 +37,7 @@ namespace CheezburgerAPI {
                     return (CheezApiResponse)xSerializer.Deserialize(reader);
                 }
             } catch(Exception e) {
-                return new CheezApiResponse(new Fail(e));
+                return new CheezApiResponse(new CheezFail(e));
             }
         }
 
@@ -97,7 +97,7 @@ namespace CheezburgerAPI {
         }
     }
 
-    public class CheezAPI {
+    internal class CheezAPI {
         private CheezApiRequestType _requestType;
         private CheezApiResponse _cheezApiResponse;
 
@@ -118,15 +118,15 @@ namespace CheezburgerAPI {
             }
         }
 
-        public Fail Fail {
+        public CheezFail CheezFail {
             get {
-                return (Fail)_cheezApiResponse;
+                return (CheezFail)_cheezApiResponse;
             }
         }
 
-        public Hai Hai {
+        public CheezHai CheezHai {
             get {
-                return (Hai)_cheezApiResponse;
+                return (CheezHai)_cheezApiResponse;
             }
         }
     }

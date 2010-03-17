@@ -214,17 +214,17 @@ public partial class CheezApiResponse {
         }
     }
 
-    public CheezApiResponse(Fail fail) {
+    public CheezApiResponse(CheezFail fail) {
         this._responseFail = fail;
     }
     public CheezApiResponse() {
     }
 
-    static public implicit operator Hai(CheezApiResponse cheezApiResponse) {
+    static public implicit operator CheezHai(CheezApiResponse cheezApiResponse) {
         return (cheezApiResponse != null) ? cheezApiResponse.Hai : null;
     }
 
-    static public implicit operator Fail(CheezApiResponse cheezApiResponse) {
+    static public implicit operator CheezFail(CheezApiResponse cheezApiResponse) {
         return (cheezApiResponse != null) ? cheezApiResponse.Fail : null;
     }
 
@@ -245,26 +245,26 @@ public partial class CheezApiResponse {
             }
         }
     }
-    private Fail _responseFail;
+    private CheezFail _responseFail;
 
-    [System.Xml.Serialization.XmlElementAttribute("Fail", typeof(Fail), Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    public Fail Fail {
+    [System.Xml.Serialization.XmlElementAttribute("Fail", typeof(CheezFail), Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public CheezFail Fail {
         get {
             return this._responseFail;
         }
         set {
-            this._responseFail = (Fail)value;
+            this._responseFail = (CheezFail)value;
         }
     }
-    private Hai _responseHai;
+    private CheezHai _responseHai;
 
-    [System.Xml.Serialization.XmlElementAttribute("Hai", typeof(Hai), Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
-    public Hai Hai {
+    [System.Xml.Serialization.XmlElementAttribute("Hai", typeof(CheezHai), Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public CheezHai Hai {
         get {
             return this._responseHai;
         }
         set {
-            this._responseHai = (Hai)value;
+            this._responseHai = (CheezHai)value;
         }
     }
 
@@ -276,7 +276,7 @@ public partial class CheezApiResponse {
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-public partial class Fail {
+public partial class CheezFail {
     
     private string failureMessageField;
     
@@ -286,19 +286,19 @@ public partial class Fail {
 
     
 
-    public Fail(string failureMessage, string failureDetail, string failureId) {
+    public CheezFail(string failureMessage, string failureDetail, string failureId) {
         this.failureMessageField = failureMessage;
         this.failureDetailField = failureDetail;
         this.failureEventIdField = failureId;
     }
 
-    public Fail(Exception e) {
+    public CheezFail(Exception e) {
         this.failureMessageField = e.Message;
         this.failureDetailField = e.StackTrace;
         this.failureEventIdField = e.Source;
     }
 
-    public Fail() {
+    public CheezFail() {
     }
 
     /// <remarks/>
@@ -345,7 +345,7 @@ public partial class Fail {
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-public partial class Hai {
+public partial class CheezHai {
     
     private string greetingField;
     

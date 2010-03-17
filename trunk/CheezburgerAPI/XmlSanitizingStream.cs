@@ -5,7 +5,7 @@ using System.Text;
 /// <summary>
 /// A StreamReader that excludes XML-illegal characters while reading.
 /// </summary>
-public class XmlSanitizingStream : StreamReader
+internal class XmlSanitizingStream : StreamReader
 {
 	/// <summary>
 	/// The charactet that denotes the end of a file has been reached.

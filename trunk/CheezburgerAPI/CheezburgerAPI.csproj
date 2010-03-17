@@ -59,6 +59,7 @@
     <Compile Include="CheezCollectorLatest.cs" />
     <Compile Include="CheezCollectorLocal.cs" />
     <Compile Include="CheezCollectorRandom.cs" />
+    <Compile Include="ICheezConsumer.cs" />
     <Compile Include="CheezManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">

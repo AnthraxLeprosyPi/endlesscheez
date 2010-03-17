@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 
 namespace CheezburgerAPI {
-    public class CheezCollectorLocal: CheezCollectorBase <CheezCollectorLocal> {
+    internal class CheezCollectorLocal: CheezCollectorBase <CheezCollectorLocal> {
         protected override void CollectCheez(object sender, System.ComponentModel.DoWorkEventArgs e) {
             _listCheezItems = new List<CheezItem>();
             string searchPatch = CheezManager.CheezRootFolder;
@@ -25,7 +25,7 @@ namespace CheezburgerAPI {
                     base.backgroundCheezCollector.ReportProgress((int)((float)folderFiles.IndexOf(filePath) / (float)folderFiles.Count * 100),tmpTitle);
                 }
             } catch (Exception ee){
-                ReportFail(new Fail(ee));
+                ReportFail(new CheezFail(ee));
             }             
         }
     }
