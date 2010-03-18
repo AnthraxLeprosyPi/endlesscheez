@@ -335,7 +335,7 @@ public partial class CheezFail {
     }
 
     public override string ToString() {
-        return failureMessageField + " - " + failureDetailField + " - " + failureEventIdField;
+        return String.Format("[{0}]: {1} ({2})", failureEventIdField, failureMessageField, failureDetailField);
     }
 }
 

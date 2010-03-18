@@ -11,11 +11,18 @@ using System.IO;
 using System.Threading;
 
 namespace EndlessCheezTest {
-    public partial class Form1 : Form, ICheezConsumer {
+    public partial class Form1 : Form, ICheezConsumer, ICheezCollector {
+
+        Thread worker;
         public Form1() {
             InitializeComponent();
-            bool success = InitCheezManager(this, 1, Path.Combine(Application.StartupPath, "EndlessCheez"), true);
+            bool success = InitCheezManager(this, 3, Path.Combine(Application.StartupPath, "EndlessCheez"), true);
             GuiUpdateTextbox(CheezManager.CheezSites.Count.ToString() + " sites");
+            FormClosing += new FormClosingEventHandler(Form1_FormClosing);
+        }
+
+        void Form1_FormClosing(object sender, FormClosingEventArgs e) {
+            CancelCheezCollection();
         }
 
         public delegate void GuiUpdateProgressbarDelegate(int value);
@@ -40,22 +47,24 @@ namespace EndlessCheezTest {
         }
 
         private void button1_Click(object sender, EventArgs e) {
-            CheezManager.CancelCheezCollection();
+            CancelCheezCollection();
         }
 
         private void buttonStart_Click(object sender, EventArgs e) {
-            Thread worker = new Thread(WorkerWork);
+            worker = new Thread(WorkerWork);
             worker.Start();
-
         }
 
         private void WorkerWork() {
+            foreach(CheezSite site in CheezManager.CheezSites) {
+                GuiUpdateTextbox(site.ToString());
+
+            }
             CheezManager.DeleteLocalCheez();
             CheezManager.CollectLocalCheez(CheezManager.GetCheezSiteByID(2));
             CheezManager.CollectLocalCheez(null);
             CheezManager.CollectLatestCheez(CheezManager.GetCheezSiteByID(1));
-            CheezManager.CollectLatestCheez(CheezManager.GetCheezSiteByID(1));
-
+           CollectLatestCheez(CheezManager.GetCheezSiteByID(1));
         }
 
         #region ICheezConsumer Member
@@ -63,12 +72,12 @@ namespace EndlessCheezTest {
         public bool InitCheezManager(ICheezConsumer consumer, int fetchCount, string cheezRootFolder, bool createRootFolderStructure) {
             return CheezManager.InitCheezManager(consumer, fetchCount, cheezRootFolder, createRootFolderStructure);
         }
-        
-        public void CheezOperationFailed(CheezFail fail) {
+
+        public void OnCheezOperationFailed(CheezFail fail) {
             GuiUpdateTextbox(fail.ToString());
         }
 
-        public void CheezOperationProgress(int progressPercentage, string currentItem) {
+        public void OnCheezOperationProgress(int progressPercentage, string currentItem) {
             if(progressPercentage >= 0 && progressPercentage <= 100) {
                 GuiUpdateProgressbar(progressPercentage);
                 if(currentItem != String.Empty) {
@@ -77,18 +86,52 @@ namespace EndlessCheezTest {
             }
         }
 
-        public void LatestCheezArrived(List<CheezItem> cheezItems) {
+        public void OnLatestCheezArrived(List<CheezItem> cheezItems) {
             GuiUpdateTextbox(cheezItems.Count.ToString() + " latest items collected!");
         }
 
-        public void RandomCheezArrived(List<CheezItem> cheezItems) {
+        public void OnRandomCheezArrived(List<CheezItem> cheezItems) {
             throw new NotImplementedException();
         }
 
-        public void LocalCheezArrived(List<CheezItem> cheezItems) {
+        public void OnLocalCheezArrived(List<CheezItem> cheezItems) {
             GuiUpdateTextbox(cheezItems.Count.ToString() + " local items collected!");
         }
-        
+
         #endregion
+
+        #region ICheezCollector Member
+
+        public bool CheckCheezConnection() {
+            return CheezManager.CheckCheezConnection();
+        }
+
+        public void CollectLatestCheez(CheezSite cheezSite) {
+            CheezManager.CollectLatestCheez(cheezSite);
+        }
+
+        public void CollectRandomCheez(CheezSite cheezSite) {
+            CheezManager.CollectRandomCheez(cheezSite);
+        }
+
+        public void CollectLocalCheez(CheezSite cheezSite) {
+            CheezManager.CollectLocalCheez(cheezSite);
+        }
+
+        public bool DeleteLocalCheez() {
+            return CheezManager.DeleteLocalCheez();
+        }
+
+        public void CancelCheezCollection() {
+            if(worker != null && worker.IsAlive) {
+                worker.Abort();
+            }
+            CheezManager.CancelCheezCollection();
+        }
+
+        #endregion
+
+
+
     }
 }

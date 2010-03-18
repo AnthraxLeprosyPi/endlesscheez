@@ -10,17 +10,16 @@ using System.Runtime.Serialization;
 
 namespace CheezburgerAPI {
     public interface ICheezConsumer {
-
         bool InitCheezManager(ICheezConsumer consumer, int fetchCount, string cheezRootFolder, bool createRootFolderStructure);
 
-        void CheezOperationFailed(CheezFail fail);
+        void OnCheezOperationFailed(CheezFail fail);
 
-        void CheezOperationProgress(int progressPercentage, string currentItem);
+        void OnCheezOperationProgress(int progressPercentage, string currentItem);
 
-        void LatestCheezArrived(List<CheezItem> cheezItems);
+        void OnLatestCheezArrived(List<CheezItem> cheezItems);
 
-        void RandomCheezArrived(List<CheezItem> cheezItems);
+        void OnRandomCheezArrived(List<CheezItem> cheezItems);
 
-        void LocalCheezArrived(List<CheezItem> cheezItems);
+        void OnLocalCheezArrived(List<CheezItem> cheezItems);       
     }
 }
