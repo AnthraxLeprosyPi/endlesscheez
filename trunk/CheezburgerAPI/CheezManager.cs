@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading;
 
 namespace CheezburgerAPI {
-    public static class CheezManager {
+    public static class CheezManager{
 
         #region ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Member Fields ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         private static string _cheezRootFolder = Path.Combine(System.Environment.SpecialFolder.MyDocuments.ToString(), "EndlessCheez");
@@ -39,22 +39,28 @@ namespace CheezburgerAPI {
         }
 
         public static bool InitCheezManager(ICheezConsumer consumer, int fetchCount, string cheezRootFolder, bool createRootFolderStructure) {
-            _consumer = consumer;
-            try {
-                _fetchCount = fetchCount;
-                _cheezRootFolder = cheezRootFolder;
-                _cheezBusyEvent.Set();
-                if(!Directory.Exists(_cheezRootFolder)) {
-                    Directory.CreateDirectory(_cheezRootFolder);
+            if(!_managerInitiated || consumer != _consumer || fetchCount != _fetchCount || cheezRootFolder != _cheezRootFolder) {
+                _consumer = consumer;
+                try {
+                    _fetchCount = fetchCount;
+                    _cheezRootFolder = cheezRootFolder;
+                    _cheezBusyEvent.Set();
+                    if(!Directory.Exists(_cheezRootFolder)) {
+                        Directory.CreateDirectory(_cheezRootFolder);
+                    }
+                    if(createRootFolderStructure) {
+                        CreateCheezFolderStructure(_cheezSites);
+                    }
+                    _managerInitiated = true;//CheckCheezConnection();
+                } catch(Exception e) {
+                    Global_CheezFailed(new CheezFail(e));
                 }
-                if(createRootFolderStructure) {
-                    CreateCheezFolderStructure(_cheezSites);
-                }
-                _managerInitiated = true;//CheckCheezConnection();
-            } catch(Exception e) {
-                Global_CheezFailed(new CheezFail(e));
             }
             return _managerInitiated;
+        }
+
+        public static bool InitCheezManager(int fetchCount, string cheezRootFolder, bool createRootFolderStructure) {
+            return InitCheezManager(null, fetchCount, cheezRootFolder, createRootFolderStructure);
         }
 
         #endregion
@@ -170,14 +176,18 @@ namespace CheezburgerAPI {
             if(EventCheezProgress != null) {
                 EventCheezProgress(progressPercentage, currentItem);
             }
-            _consumer.CheezOperationProgress(progressPercentage, currentItem);
+            if(_consumer != null) {
+                _consumer.OnCheezOperationProgress(progressPercentage, currentItem);
+            }
         }
 
         private static void Global_CheezFailed(CheezFail fail) {
             if(EventCheezFailed != null) {
                 EventCheezFailed(fail);
             }
-            _consumer.CheezOperationFailed(fail);
+            if(_consumer != null) {
+                _consumer.OnCheezOperationFailed(fail);
+            }
         }
 
         private static void Latest_CheezArrived(List<CheezItem> cheezItems) {
@@ -186,7 +196,7 @@ namespace CheezburgerAPI {
                 if(EventLatestCheezArrived != null) {
                     EventLatestCheezArrived(cheezItems);
                 }
-                _consumer.LatestCheezArrived(cheezItems);
+                _consumer.OnLatestCheezArrived(cheezItems);
             }
             _cheezBusyEvent.Set();
         }
@@ -197,7 +207,9 @@ namespace CheezburgerAPI {
                 if(EventRandomCheezArrived != null) {
                     EventRandomCheezArrived(cheezItems);
                 }
-                _consumer.RandomCheezArrived(cheezItems);
+                if(_consumer != null) {
+                    _consumer.OnRandomCheezArrived(cheezItems);
+                }
             }
             _cheezBusyEvent.Set();
         }
@@ -208,7 +220,9 @@ namespace CheezburgerAPI {
                 if(EventLocalCheezArrived != null) {
                     EventLocalCheezArrived(cheezItems);
                 }
-                _consumer.LocalCheezArrived(cheezItems);
+                if(_consumer != null) {
+                    _consumer.OnLocalCheezArrived(cheezItems);
+                }
             }
             _cheezBusyEvent.Set();
         }

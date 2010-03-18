@@ -23,14 +23,14 @@ using System;
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-[System.Xml.Serialization.XmlRootAttribute(Namespace="",ElementName="Sites" , IsNullable=false)]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+[System.Xml.Serialization.XmlRootAttribute(Namespace = "", ElementName = "Sites", IsNullable = false)]
 public partial class CheezSites {
-    
+
     private SitesSites[] itemsField;
-    
+
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("Sites", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    [System.Xml.Serialization.XmlElementAttribute("Sites", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public SitesSites[] Items {
         get {
             return this.itemsField;
@@ -38,7 +38,7 @@ public partial class CheezSites {
         set {
             this.itemsField = value;
         }
-    }   
+    }
 }
 
 /// <remarks/>
@@ -46,13 +46,13 @@ public partial class CheezSites {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 public partial class SitesSites {
-    
+
     private CheezSite[] siteField;
-    
+
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("Site", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    [System.Xml.Serialization.XmlElementAttribute("Site", Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public CheezSite[] Site {
         get {
             return this.siteField;
@@ -68,29 +68,29 @@ public partial class SitesSites {
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-public partial class CheezSite {
-    
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class CheezSite : IComparable {
+
     private string siteIdField;
-    
+
     private string nameField;
-    
+
     private string urlField;
-    
+
     private string descriptionField;
-    
+
     private string shortDescriptionField;
-    
+
     private string siteCategoryField;
-    
+
     private string isNSFWField;
-    
+
     private string isNewField;
-    
+
     private string isFeatureSiteField;
 
     public string CheezSiteID {
-        get{
+        get {
             string[] tmp = SiteId.Split(new Char[] { '/' });
             try {
                 return tmp.Last();
@@ -98,11 +98,9 @@ public partial class CheezSite {
                 return string.Empty;
             }
         }
-       
-
     }
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public string SiteId {
         get {
             return this.siteIdField;
@@ -111,9 +109,9 @@ public partial class CheezSite {
             this.siteIdField = value;
         }
     }
-    
+
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public string Name {
         get {
             return this.nameField;
@@ -122,9 +120,9 @@ public partial class CheezSite {
             this.nameField = value;
         }
     }
-    
+
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public string Url {
         get {
             return this.urlField;
@@ -133,9 +131,9 @@ public partial class CheezSite {
             this.urlField = value;
         }
     }
-    
+
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public string Description {
         get {
             return this.descriptionField;
@@ -144,9 +142,9 @@ public partial class CheezSite {
             this.descriptionField = value;
         }
     }
-    
+
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public string ShortDescription {
         get {
             return this.shortDescriptionField;
@@ -155,9 +153,9 @@ public partial class CheezSite {
             this.shortDescriptionField = value;
         }
     }
-    
+
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public string SiteCategory {
         get {
             return this.siteCategoryField;
@@ -166,9 +164,9 @@ public partial class CheezSite {
             this.siteCategoryField = value;
         }
     }
-    
+
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public string IsNSFW {
         get {
             return this.isNSFWField;
@@ -177,9 +175,9 @@ public partial class CheezSite {
             this.isNSFWField = value;
         }
     }
-    
+
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public string IsNew {
         get {
             return this.isNewField;
@@ -188,9 +186,9 @@ public partial class CheezSite {
             this.isNewField = value;
         }
     }
-    
+
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public string IsFeatureSite {
         get {
             return this.isFeatureSiteField;
@@ -199,4 +197,16 @@ public partial class CheezSite {
             this.isFeatureSiteField = value;
         }
     }
+
+    public override string ToString() {
+        return String.Format("[{0}]: {1} ({2})", CheezSiteID, nameField, descriptionField);
+    }
+
+    #region IComparable Member
+
+    public int CompareTo(object obj) {
+        return (int.Parse(this.CheezSiteID).CompareTo( int.Parse(((CheezSite)obj).CheezSiteID)));
+    }
+
+    #endregion
 }

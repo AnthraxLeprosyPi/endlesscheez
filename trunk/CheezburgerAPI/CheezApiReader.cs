@@ -90,7 +90,9 @@ namespace CheezburgerAPI {
                     System.Xml.Serialization.XmlSerializer xSerializer = new System.Xml.Serialization.XmlSerializer(typeof(CheezSites));
                     cheezSites = (CheezSites)xSerializer.Deserialize(reader);
                 }
-                return cheezSites.Items[0].Site.ToList();
+                List<CheezSite> tmpList = cheezSites.Items[0].Site.ToList();
+                tmpList.Sort();
+                return tmpList;
             } catch(Exception e) {
                 return null;
             }
