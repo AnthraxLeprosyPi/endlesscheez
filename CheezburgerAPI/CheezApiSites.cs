@@ -89,6 +89,21 @@ public partial class CheezSite : IComparable {
 
     private string isFeatureSiteField;
 
+    private int selectedCheezItemID;
+
+    public int SelectedCheezItemID {
+        get {
+            try {
+                return this.selectedCheezItemID;
+            } catch {
+                return 0;
+            }
+        }
+        set {
+            this.selectedCheezItemID = value;
+        }
+    }
+
     public string CheezSiteID {
         get {
             string[] tmp = SiteId.Split(new Char[] { '/' });
@@ -97,6 +112,11 @@ public partial class CheezSite : IComparable {
             } catch {
                 return string.Empty;
             }
+        }
+    }
+    public int CheezSiteIntID {
+        get {
+            return int.Parse(CheezSiteID);
         }
     }
     /// <remarks/>
@@ -205,8 +225,10 @@ public partial class CheezSite : IComparable {
     #region IComparable Member
 
     public int CompareTo(object obj) {
-        return (int.Parse(this.CheezSiteID).CompareTo( int.Parse(((CheezSite)obj).CheezSiteID)));
+        if(obj is CheezSite) {
+            return (int.Parse(this.CheezSiteID).CompareTo(int.Parse(((CheezSite)obj).CheezSiteID)));
+        } else
+            throw new ArgumentException(obj.ToString() + " is not a CheezSite - therefore nothing can be compared!");
     }
-
     #endregion
 }

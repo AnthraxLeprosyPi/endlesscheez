@@ -17,7 +17,7 @@ namespace CheezburgerAPI {
         private static AutoResetEvent _cheezBusyEvent = new AutoResetEvent(true);
         private static ICheezConsumer _consumer;
 
-        private enum CheezCollectionTypes {
+        public enum CheezCollectionTypes {
             Local,
             Random,
             Latest
@@ -302,18 +302,21 @@ namespace CheezburgerAPI {
         private string _cheezTitle;
         private DateTime _cheezCreationTime;
         private CheezAsset _cheezAsset;
+        private CheezSite _cheezSite;
 
-        public CheezItem(string cheezTitle, string cheezImagePath, DateTime cheezCreationTime) {
+        public CheezItem(string cheezTitle, string cheezImagePath, DateTime cheezCreationTime, CheezSite cheezSourceSite) {
             this._cheezTitle = cheezTitle;
             this._cheezImagePath = cheezImagePath;
             this._cheezCreationTime = cheezCreationTime;
+            this._cheezSite = cheezSourceSite;
             this._cheezAsset = null;
         }
 
-        public CheezItem(string cheezTitle, string cheezImagePath, DateTime cheezCreationTime, CheezAsset cheezAsset) {
+        public CheezItem(string cheezTitle, string cheezImagePath, DateTime cheezCreationTime, CheezAsset cheezAsset, CheezSite cheezSourceSite) {
             this._cheezTitle = cheezTitle;
             this._cheezImagePath = cheezImagePath;
             this._cheezCreationTime = cheezCreationTime;
+            this._cheezSite = cheezSourceSite;
             this._cheezAsset = cheezAsset;
         }
 

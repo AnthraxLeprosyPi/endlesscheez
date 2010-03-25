@@ -21,7 +21,7 @@ namespace CheezburgerAPI {
                     } else {
                         tmpTitle = Path.GetFileNameWithoutExtension(filePath);
                     }
-                    _listCheezItems.Add(new CheezItem(tmpTitle, filePath, File.GetCreationTime(filePath)));
+                    _listCheezItems.Add(new CheezItem(tmpTitle, filePath, File.GetCreationTime(filePath), _currentCheezSite));
                     base.backgroundCheezCollector.ReportProgress((int)((float)folderFiles.IndexOf(filePath) / (float)folderFiles.Count * 100),tmpTitle);
                 }
             } catch (Exception ee){
