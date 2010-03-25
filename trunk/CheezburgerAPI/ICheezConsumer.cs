@@ -10,8 +10,7 @@ using System.Runtime.Serialization;
 
 namespace CheezburgerAPI {
     public interface ICheezConsumer {
-        bool InitCheezManager(ICheezConsumer consumer, int fetchCount, string cheezRootFolder, bool createRootFolderStructure);
-
+        
         void OnCheezOperationFailed(CheezFail fail);
 
         void OnCheezOperationProgress(int progressPercentage, string currentItem);

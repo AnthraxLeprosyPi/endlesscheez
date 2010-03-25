@@ -56,8 +56,8 @@
     <Compile Include="EndlessCheez.Config.Designer.cs">
       <DependentUpon>EndlessCheez.Config.cs</DependentUpon>
     </Compile>
-    <Compile Include="EndlessCheez.GUI.cs" />
-    <Compile Include="EndlessCheez.Plugin.cs" />
+    <Compile Include="EndlessCheezPlugin.Gui.cs" />
+    <Compile Include="EndlessCheezPlugin.Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
