@@ -15,53 +15,48 @@ namespace EndlessCheez {
 
     [PluginIcons("EndlessCheez.img.EndlessCheez_enabled.png", "EndlessCheez.img.EndlessCheez_disabled.png")]
     public partial class EndlessCheezPlugin : ISetupForm, IShowPlugin, ICheezCollector {
+        
+        #region Enumerations
+
+        internal enum PluginStates {
+            DisplayCheezSites,
+            DisplayLocalOnly,
+            DisplayCurrentCheezSite,
+            BrowseLatest,
+            BrowseRandom,
+            BrowseLocal
+        }
+        
+        #endregion
+
+        #region Private Members
 
         private static string _cheezRootFolder = String.Empty;
         private static int _fetchCount = 3;
+        private static PluginStates _defaultStartupState = PluginStates.DisplayCheezSites;
+
+        #endregion
+
+        #region Plugin Constructor / Initialization
 
         public EndlessCheezPlugin() {
             using(MediaPortal.Profile.Settings xmlReader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml"))) {
                 _cheezRootFolder = xmlReader.GetValueAsString("EndlessCheez", "#EndlessCheez.CheezRootFolder", Config.GetFolder(Config.Dir.Thumbs) + @"\EndlessCheez\");
                 _fetchCount = xmlReader.GetValueAsInt("EndlessCheez", "#EndlessCheez.FetchCount", 3);
+                _defaultStartupState = (PluginStates)Enum.Parse(typeof(PluginStates) ,xmlReader.GetValueAsString("EndlessCheez", "#EndlessCheez.DefaultStartup","DisplayLocalOnly"));
             }
             InitCheezManager(_fetchCount, _cheezRootFolder, true);
         }
 
-        public static void ShowNotifyDialog(int timeOut, string notifyMessage) {
-            try {
-                GUIDialogNotify dialogMailNotify = (GUIDialogNotify)GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_DIALOG_NOTIFY);
-                dialogMailNotify.TimeOut = timeOut;
-                dialogMailNotify.SetImage(GUIGraphicsContext.Skin + @"\Media\EndlessCheez_logo.png");
-                dialogMailNotify.SetHeading("EndlessCheez");
-                dialogMailNotify.SetText(notifyMessage);
-                dialogMailNotify.DoModal(GUIWindowManager.ActiveWindow);
-            } catch(Exception ex) {
-                Log.Error(ex);
-            }
-        }
-
-
         private void InitCheezManager(int fetchCount, string cheezRootFolder, bool createRootFolderStructure) {
-            CheezManager.InitCheezManager(fetchCount, cheezRootFolder, createRootFolderStructure);
-        }
+            if(!CheezManager.InitCheezManager(fetchCount, cheezRootFolder, createRootFolderStructure)) {
+                ShowNotifyDialog(30, "Unable to initialize CheezManager - check internet connection!");
+                _defaultStartupState = PluginStates.BrowseLocal;
+            }
+        }        
 
-        void CheezManager_EventCheezProgress(int progressPercentage) {
-
-        }
-
-        private void CheezManager_CheezFailed(CheezFail _fail) {
-            ShowNotifyDialog(30, _fail.FailureMessage + " (" + _fail.FailureDetail + ")");
-        }
-
-        private void CheezManager_LocalCheezArrived(List<CheezItem> cheezItems) {
-            FacadeAddItems(cheezItems);
-        }
-
-        private void CheezManager_RandomCheezArrived(List<CheezItem> cheezItems) {
-            FacadeAddItems(cheezItems);
-        }
-
-
+        #endregion
+                
         #region ISetupForm Members
 
         // Returns the name of the plugin which is shown in the plugin menu
@@ -140,32 +135,46 @@ namespace EndlessCheez {
             }
         }
 
+        // With GetID it will be an window-plugin / otherwise a process-plugin
+        // Enter the id number here again
+        public override int GetID {
+            get {
+                return EndlessCheezPlugin.GetWID;
+            }
+            set {
+            }
+        }
+
         #endregion
 
         #region ICheezCollector Member
 
         public bool DeleteLocalCheez() {
-            throw new NotImplementedException();
+            return CheezManager.DeleteLocalCheez();
         }
 
         public bool CheckCheezConnection() {
-            throw new NotImplementedException();
+            return CheezManager.CheckCheezConnection();
         }
 
         public void CollectLatestCheez(CheezSite cheezSite) {
-            throw new NotImplementedException();
+            ShowProgressInfo();
+            CheezManager.CollectLatestCheez(cheezSite);
         }
 
         public void CollectRandomCheez(CheezSite cheezSite) {
-            throw new NotImplementedException();
+            ShowProgressInfo();
+            CheezManager.CollectRandomCheez(cheezSite);
         }
 
         public void CollectLocalCheez(CheezSite cheezSite) {
-            throw new NotImplementedException();
+            ShowProgressInfo();
+            CheezManager.CollectRandomCheez(cheezSite);
         }
 
         public void CancelCheezCollection() {
-            throw new NotImplementedException();
+            HideProgressInfo();
+            CheezManager.CancelCheezCollection();
         }
 
         #endregion

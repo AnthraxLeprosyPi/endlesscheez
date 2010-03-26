@@ -16,7 +16,7 @@
       <buttonY>0</buttonY>
       <buttonwidth>60</buttonwidth>
       <buttonheight>576</buttonheight>
-      <onexit>400</onexit>
+      <onexit>2</onexit>
       <defaultcontrol>500</defaultcontrol>
       <textureFocus>Action_focus.png</textureFocus>
       <textureNoFocus>Action_nofocus.png</textureNoFocus>
@@ -41,55 +41,74 @@
         <animation effect="Slide" end="-300,0" reversible="FALSE" time="450">Hidden</animation>
         <control>
           <id>500</id>
-          <description>Overview</description>
+          <description>BrowseLatestCheez</description>
           <type>button</type>
           <onup>504</onup>
           <ondown>501</ondown>
-          <label>Overview</label>
+          <label>Browse Latest Online Cheez..</label>
         </control>
         <control>
           <id>501</id>
-          <description>Sms button</description>
+          <description>BrowseRandomCheez</description>
           <type>button</type>
           <onup>500</onup>
           <ondown>502</ondown>
-          <label>Sms Keyboard</label>
+          <label>Browse Random Online Cheez..</label>
         </control>
         <control>
           <id>502</id>
-          <description>Playlist button</description>
+          <description>BrowseLocalCheez</description>
           <type>button</type>
           <onup>501</onup>
           <ondown>503</ondown>
-          <label>Playlist/UpDownList</label>
+          <label>Browse locally available Cheez..</label>
         </control>
         <control>
           <id>503</id>
-          <description>Facade button</description>
+          <description>ShowSlideShowCurrent</description>
           <type>button</type>
           <onup>502</onup>
           <ondown>504</ondown>
-          <label>Facade</label>
+          <label>Start Slideshow (current items)</label>
         </control>
         <control>
           <id>504</id>
-          <description>Buttons button</description>
+          <description>ShowSlideShowAllLocal</description>
           <type>button</type>
           <onup>503</onup>
           <ondown>500</ondown>
-          <label>Buttons</label>
+          <label>Start Slideshow (all local items)</label>
         </control>
       </control>
     </control>
     <control>
-      <id>1</id>
+      <id>600</id>
       <description>BackGround</description>
       <type>image</type>
       <posX>0</posX>
       <posY>0</posY>
       <width>720</width>
       <height>576</height>
-      <texture>background.png</texture>
+      <texture>Background.png</texture>
+    </control>
+    <control>
+      <id>403</id>
+      <description>text label</description>
+      <type>label</type>
+      <posX>498</posX>
+      <posY>7</posY>
+      <font>font16</font>
+      <textcolor>ffffffff</textcolor>
+      <align>RIGHT</align>
+      <label>GUIProgressControl (progress)</label>
+    </control>
+    <control>
+      <id>402</id>
+      <type>progress</type>
+      <visible>no</visible>
+      <posX>308</posX>
+      <posY>48</posY>
+      <width>278</width>
     </control>
     <control>
       <description>composite control consisting of a list control and a thumbnail panel</description>
@@ -168,63 +187,6 @@
         <thumbAnimation>focus</thumbAnimation>
         <thumbAnimation>unfocus</thumbAnimation>
       </control>
-    </control>
-    <control>
-      <id>401</id>
-      <posX>100</posX>
-      <posY>30</posY>
-      <description>GUISelectButtonControl (selectbutton)</description>
-      <type>selectbutton</type>
-      <onleft>500</onleft>
-      <onright>400</onright>
-      <onup>403</onup>
-      <ondown>400</ondown>
-      <colordiffuse>ffffffff</colordiffuse>
-      <width>300</width>
-      <height>32</height>
-      <font>font13</font>
-      <textureFocus>menu_list_focus.png</textureFocus>
-      <textcolor>ffffffff</textcolor>
-      <disabledcolor>60ffffff</disabledcolor>
-      <textureNoFocus>menu_list_nofocus.png</textureNoFocus>
-      <label>457</label>
-      <align>CENTER</align>
-      <textXOff>10</textXOff>
-      <textYOff>5</textYOff>
-      <animation effect="Zoom" end="105,105" start="100,100" time="100">Focus</animation>
-      <animation effect="Zoom" end="100,100" start="105,105" time="300">UnFocus</animation>
-      <textXOff2>10</textXOff2>
-      <textYOff2>5</textYOff2>
-      <texturebg>menu_list_nofocus.png</texturebg>
-      <textureLeft>arrow_round_left_nofocus.png</textureLeft>
-      <textureLeftFocus>arrow_round_left_focus.png</textureLeftFocus>
-      <textureRight>arrow_round_right_nofocus.png</textureRight>
-      <textureRightFocus>arrow_round_right_focus.png</textureRightFocus>
-    </control>
-    <control>
-      <type>label</type>
-      <id>402</id>
-      <label>Type</label>
-      <posX>450</posX>
-      <posY>30</posY>
-    </control>
-    <control>
-      <type>button</type>
-      <id>403</id>
-      <onup>400</onup>
-      <onright>404</onright>
-      <posX>100</posX>
-      <posY>525</posY>
-      <label>Add Item</label>
-    </control>
-    <control>
-      <type>button</type>
-      <id>404</id>
-      <onup>400</onup>
-      <onleft>403</onleft>
-      <posX>300</posX>
-      <posY>525</posY>
-      <label>Clear Itemlist</label>
     </control>
   </controls>
 </window>
