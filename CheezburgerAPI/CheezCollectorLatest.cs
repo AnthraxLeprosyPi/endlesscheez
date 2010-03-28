@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Xml;
 using System.Net;
+using System.Windows.Forms;
 
 namespace CheezburgerAPI {
     internal class CheezCollectorLatest : CheezCollectorBase<CheezCollectorLatest> {
