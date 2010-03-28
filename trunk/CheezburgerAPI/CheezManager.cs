@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace CheezburgerAPI {
     public static class CheezManager{
@@ -85,8 +86,8 @@ namespace CheezburgerAPI {
             CollectCheez(CheezCollectionTypes.Random, cheezSite);
         }
 
-        public static void CollectLocalCheez(CheezSite cheezSite) {
-            CollectCheez(CheezCollectionTypes.Local, cheezSite);
+        public static void CollectLocalCheez(CheezSite cheezSite) {            
+            CollectCheez(CheezCollectionTypes.Local, cheezSite);           
         }
 
 

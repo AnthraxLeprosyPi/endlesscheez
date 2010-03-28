@@ -10,12 +10,13 @@ using MediaPortal.Util;
 using MediaPortal.Dialogs;
 using MediaPortal.Configuration;
 using CheezburgerAPI;
+using System.Threading;
 
 namespace EndlessCheez {
 
     [PluginIcons("EndlessCheez.img.EndlessCheez_enabled.png", "EndlessCheez.img.EndlessCheez_disabled.png")]
     public partial class EndlessCheezPlugin : ISetupForm, IShowPlugin, ICheezCollector {
-        
+
         #region Enumerations
 
         internal enum PluginStates {
@@ -26,7 +27,7 @@ namespace EndlessCheez {
             BrowseRandom,
             BrowseLocal
         }
-        
+
         #endregion
 
         #region Private Members
@@ -40,23 +41,22 @@ namespace EndlessCheez {
         #region Plugin Constructor / Initialization
 
         public EndlessCheezPlugin() {
-            using(MediaPortal.Profile.Settings xmlReader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml"))) {
+            using (MediaPortal.Profile.Settings xmlReader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml"))) {
                 _cheezRootFolder = xmlReader.GetValueAsString("EndlessCheez", "#EndlessCheez.CheezRootFolder", Config.GetFolder(Config.Dir.Thumbs) + @"\EndlessCheez\");
-                _fetchCount = xmlReader.GetValueAsInt("EndlessCheez", "#EndlessCheez.FetchCount", 3);
-                _defaultStartupState = (PluginStates)Enum.Parse(typeof(PluginStates) ,xmlReader.GetValueAsString("EndlessCheez", "#EndlessCheez.DefaultStartup","DisplayLocalOnly"));
+                _fetchCount = xmlReader.GetValueAsInt("EndlessCheez", "#EndlessCheez.FetchCount", 15);
+                _defaultStartupState = (PluginStates)Enum.Parse(typeof(PluginStates), xmlReader.GetValueAsString("EndlessCheez", "#EndlessCheez.DefaultStartup", "DisplayCheezSites"));
             }
-            InitCheezManager(_fetchCount, _cheezRootFolder, true);
         }
 
         private void InitCheezManager(int fetchCount, string cheezRootFolder, bool createRootFolderStructure) {
-            if(!CheezManager.InitCheezManager(fetchCount, cheezRootFolder, createRootFolderStructure)) {
+            if (!CheezManager.InitCheezManager(this, fetchCount, cheezRootFolder, createRootFolderStructure)) {
                 ShowNotifyDialog(30, "Unable to initialize CheezManager - check internet connection!");
-                _defaultStartupState = PluginStates.BrowseLocal;
+                _defaultStartupState = PluginStates.DisplayLocalOnly;
             }
-        }        
+        }
 
         #endregion
-                
+
         #region ISetupForm Members
 
         // Returns the name of the plugin which is shown in the plugin menu
@@ -128,7 +128,7 @@ namespace EndlessCheez {
         public bool ShowDefaultHome() {
             return true;
         }
-                
+
         public static int GetWID {
             get {
                 return 300382;
@@ -159,17 +159,28 @@ namespace EndlessCheez {
 
         public void CollectLatestCheez(CheezSite cheezSite) {
             ShowProgressInfo();
-            CheezManager.CollectLatestCheez(cheezSite);
+            Thread collectLatestCheez = new Thread(delegate() {
+                CheezManager.CollectLatestCheez(cheezSite);
+            });
+            collectLatestCheez.Start();
+
+
         }
 
         public void CollectRandomCheez(CheezSite cheezSite) {
             ShowProgressInfo();
-            CheezManager.CollectRandomCheez(cheezSite);
+            Thread collectRandomCheez = new Thread(delegate() {
+                CheezManager.CollectRandomCheez(cheezSite);
+            });
+            collectRandomCheez.Start();
         }
 
         public void CollectLocalCheez(CheezSite cheezSite) {
             ShowProgressInfo();
-            CheezManager.CollectRandomCheez(cheezSite);
+            Thread collectLocalCheez = new Thread(delegate() {
+                CheezManager.CollectLocalCheez(cheezSite);
+            });
+            collectLocalCheez.Start();
         }
 
         public void CancelCheezCollection() {
