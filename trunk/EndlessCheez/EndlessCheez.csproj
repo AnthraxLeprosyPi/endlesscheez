@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="core, Version=1.0.4.17407, Culture=neutral, processorArchitecture=x86" />
-    <Reference Include="dialogs, Version=1.0.4.17412, Culture=neutral, processorArchitecture=x86" />
+    <Reference Include="core, Version=1.0.5.32056, Culture=neutral, processorArchitecture=x86" />
+    <Reference Include="dialogs, Version=1.0.5.32061, Culture=neutral, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -47,8 +47,8 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="utils, Version=2.2.7.17403, Culture=neutral, processorArchitecture=x86" />
-    <Reference Include="WindowPlugins, Version=1.0.4.17421, Culture=neutral, processorArchitecture=x86" />
+    <Reference Include="utils, Version=2.2.7.32052, Culture=neutral, processorArchitecture=x86" />
+    <Reference Include="WindowPlugins, Version=1.0.5.32072, Culture=neutral, processorArchitecture=x86" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EndlessCheez.Config.cs">

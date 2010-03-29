@@ -32,7 +32,7 @@ namespace CheezburgerAPI {
         public override void CreateCheezCollection(CheezSite cheezSite, int fetchCount) {
             _fetchCount = fetchCount;
             if(cheezSite != null) {
-                if(_currentCheezSite != cheezSite) {
+                if(!cheezSite.Equals(_currentCheezSite )) {
                     _currentStartIndex = 1;
                     _currentCheezSite = cheezSite;
                 }

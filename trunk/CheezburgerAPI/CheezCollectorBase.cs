@@ -100,7 +100,7 @@ namespace CheezburgerAPI {
                     }
                     System.IO.File.WriteAllText(Path.ChangeExtension(tmpFileName, ".txt"), currentCheez.Title);
                     _listCheezItems.Add(new CheezItem(currentCheez.Title, tmpFileName, DateTime.Parse(currentCheez.TimeStamp), currentCheez, _currentCheezSite));
-                    backgroundCheezCollector.ReportProgress((int)((float)_cheezOnlineResponse.CheezAssets.IndexOf(currentCheez) / (float)_cheezOnlineResponse.CheezAssets.Count * 100), "["+ currentCheez.AssetId +"] " + currentCheez.Title);
+                    backgroundCheezCollector.ReportProgress((int)((float)_cheezOnlineResponse.CheezAssets.IndexOf(currentCheez) / (float)_cheezOnlineResponse.CheezAssets.Count * 100), currentCheez.Title);
                 }
             } catch (Exception ee) {
                 ReportFail(new CheezFail(ee));

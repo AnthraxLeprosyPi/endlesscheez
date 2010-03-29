@@ -43,7 +43,7 @@ namespace EndlessCheez {
         public EndlessCheezPlugin() {
             using (MediaPortal.Profile.Settings xmlReader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml"))) {
                 _cheezRootFolder = xmlReader.GetValueAsString("EndlessCheez", "#EndlessCheez.CheezRootFolder", Config.GetFolder(Config.Dir.Thumbs) + @"\EndlessCheez\");
-                _fetchCount = xmlReader.GetValueAsInt("EndlessCheez", "#EndlessCheez.FetchCount", 15);
+                _fetchCount = xmlReader.GetValueAsInt("EndlessCheez", "#EndlessCheez.FetchCount", 10);
                 _defaultStartupState = (PluginStates)Enum.Parse(typeof(PluginStates), xmlReader.GetValueAsString("EndlessCheez", "#EndlessCheez.DefaultStartup", "DisplayCheezSites"));
             }
         }
@@ -53,6 +53,10 @@ namespace EndlessCheez {
                 ShowNotifyDialog(30, "Unable to initialize CheezManager - check internet connection!");
                 _defaultStartupState = PluginStates.DisplayLocalOnly;
             }
+        }
+
+        ~EndlessCheezPlugin() {
+            this.CancelCheezCollection();
         }
 
         #endregion
@@ -126,7 +130,7 @@ namespace EndlessCheez {
         #region IShowPlugin Member
 
         public bool ShowDefaultHome() {
-            return true;
+            return false;
         }
 
         public static int GetWID {
