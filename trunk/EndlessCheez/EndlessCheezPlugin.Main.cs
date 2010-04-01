@@ -45,7 +45,7 @@ namespace EndlessCheez {
                 _cheezRootFolder = xmlReader.GetValueAsString("EndlessCheez", "#EndlessCheez.CheezRootFolder", Config.GetFolder(Config.Dir.Thumbs) + @"\EndlessCheez\");
                 _fetchCount = xmlReader.GetValueAsInt("EndlessCheez", "#EndlessCheez.FetchCount", 10);
                 _defaultStartupState = (PluginStates)Enum.Parse(typeof(PluginStates), xmlReader.GetValueAsString("EndlessCheez", "#EndlessCheez.DefaultStartup", "DisplayCheezSites"));
-            }
+            }            
         }
 
         private void InitCheezManager(int fetchCount, string cheezRootFolder, bool createRootFolderStructure) {
