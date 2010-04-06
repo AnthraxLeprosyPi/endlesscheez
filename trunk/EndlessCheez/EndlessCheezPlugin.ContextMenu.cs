@@ -28,7 +28,8 @@ namespace EndlessCheez {
             BtnShowSlideShowCurrent,
             BtnShowSlideShowAllLocal,
             BtnCancelAllDownloads,
-            BtnDeleteLocalCheez
+            BtnDeleteLocalCheez,
+            NothingSelected
         }
 
         private static List<ContextMenuItem> CreateContextmenuItems() {
@@ -103,8 +104,18 @@ namespace EndlessCheez {
             return tmpList;
         }
 
-        private static List<GUIListItem> GetCurrentContextMenu(PluginStates pluginState) {
-            return (List<GUIListItem>)ContextMenuItems.Where(item => item.GetVisibility(pluginState));
+        private static ContextMenuButtons GetCurrentContextMenu(PluginStates pluginState) {
+            IDialogbox contextMenu = (IDialogbox)GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_DIALOG_MENU);
+            if(contextMenu == null) {
+                return ContextMenuButtons.NothingSelected;
+            }
+            contextMenu.Reset();
+            contextMenu.SetHeading("EndlessCheez Menu");
+            foreach(GUIListItem menuItem in (List<GUIListItem>)ContextMenuItems.Where(item => item.GetVisibility(pluginState))) {
+                contextMenu.Add(menuItem);
+            }
+            contextMenu.DoModal(GUIWindowManager.ActiveWindow);
+            return (ContextMenuButtons)contextMenu.SelectedId;
         }
 
 

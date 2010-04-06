@@ -37,32 +37,7 @@ namespace EndlessCheez {
         [SkinControlAttribute(403)]
         protected GUILabelControl lblProgressLabel = null;
 
-        #region TODO: delete
-        [SkinControlAttribute(499)]
-        protected GUIButtonControl btnCheezSitesOverview = null;
-
-        [SkinControlAttribute(500)]
-        protected GUIButtonControl btnBrowseLatest = null;
-
-        [SkinControlAttribute(501)]
-        protected GUIButtonControl btnBrowseRandom = null;
-
-        [SkinControlAttribute(502)]
-        protected GUIButtonControl btnBrowseLocal = null;
-
-        [SkinControlAttribute(503)]
-        protected GUIButtonControl btnSlideShowCurrent = null;
-
-        [SkinControlAttribute(504)]
-        protected GUIButtonControl btnSlideShowAllLocal = null;
-
-        [SkinControlAttribute(505)]
-        protected GUIButtonControl btnCancelAllDownloads = null;
-
-        [SkinControlAttribute(506)]
-        protected GUIButtonControl btnDeleteLocalCheez = null;
-        #endregion
-        #endregion
+       #endregion
 
         #region GUIWindow Base Class Overrides
 
@@ -76,8 +51,6 @@ namespace EndlessCheez {
 
         protected override void OnPageLoad() {
             InitCheezManager(_fetchCount, _cheezRootFolder, true);
-            btnSlideShowAllLocal.IsVisible = btnDeleteLocalCheez.IsVisible = btnBrowseLocal.IsVisible = (CheezManager.LocalCheezCount > 0);
-            btnBrowseLatest.IsVisible = btnBrowseRandom.IsVisible = btnCheezSitesOverview.IsVisible = false;
             if(ctrlBackgroundImage != null) {
                 ctrlBackgroundImage.ImagePath = GUIGraphicsContext.Skin + @"\Media\EndlessCheez\Background.png";
             }
@@ -102,48 +75,12 @@ namespace EndlessCheez {
                 } else if(_currentState == PluginStates.BrowseLatest || _currentState == PluginStates.BrowseLocal || _currentState == PluginStates.BrowseRandom) {
                     OnSlideShowCurrent(ctrlFacade.SelectedListItem.IconImageBig);
                 }
-            }
-            #region TODO: delete
-            //if(control == btnCheezSitesOverview) {
-            //    DisplayCheezSitesOverview();
-            //}
-            //if(control == btnCancelAllDownloads) {
-            //    CancelCheezCollection();
-            //}
-            //if(control == btnBrowseLatest) {
-            //    BrowseLatestCheez();
-            //}
-            //if(control == btnBrowseRandom) {
-            //    BrowseRandomCheez();
-            //}
-            //if(control == btnBrowseLocal) {
-            //    BrowseLocalCheez(_currentCheezSite);
-            //}
-            //if(control == btnSlideShowCurrent) {
-            //    OnSlideShowCurrent();
-            //}
-            //if(control == btnSlideShowAllLocal) {
-            //    OnSlideShowAllLocal();
-            //}
-            //if(control == btnDeleteLocalCheez) {
-            //    OnDeleteLocalCheez();
-            //}
-            #endregion
+            }            
             base.OnClicked(controlId, control, actionType);
         }
 
-        protected override void OnShowContextMenu() {
-            IDialogbox contextMenu = (IDialogbox)GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_DIALOG_MENU);
-            if(contextMenu == null) {
-                return;
-            }
-            contextMenu.Reset();
-            contextMenu.SetHeading("EndlessCheez Menu");
-            foreach(GUIListItem menuItem in GetCurrentContextMenu(_currentState)) {
-                contextMenu.Add(menuItem);
-            }
-            contextMenu.DoModal(GUIWindowManager.ActiveWindow);            
-            switch((ContextMenuButtons)contextMenu.SelectedId) {
+        protected override void OnShowContextMenu() {            
+            switch(GetCurrentContextMenu(_currentState)) {
                 case ContextMenuButtons.BtnCheezSitesOverview:
                     DisplayCheezSitesOverview();
                     break;
@@ -171,6 +108,7 @@ namespace EndlessCheez {
                 case ContextMenuButtons.BtnDeleteLocalCheez:
                     DeleteLocalCheez();
                     break;
+                case ContextMenuButtons.NothingSelected:
                 default:
                     throw new ArgumentOutOfRangeException();
                     return;                   
@@ -280,8 +218,6 @@ namespace EndlessCheez {
             _currentState = PluginStates.DisplayCheezSites;
             _currentCheezSite = null;
             _currentCheezItems.Clear();
-            btnBrowseLatest.IsVisible = btnBrowseRandom.IsVisible = btnCheezSitesOverview.IsVisible = false;
-            btnBrowseLocal.IsVisible = (CheezManager.LocalCheezCount > 0);
             GUIControl.ClearControl(GetID, ctrlFacade.GetID);
             ctrlFacade.View = GUIFacadeControl.ViewMode.List;
             foreach(CheezSite cheezSite in CheezManager.CheezSites) {
@@ -290,8 +226,6 @@ namespace EndlessCheez {
         }
 
         private void DisplayCurrentCheezSite(CheezSite selectedCheezSite) {
-            btnBrowseLatest.IsVisible = btnBrowseRandom.IsVisible = btnCheezSitesOverview.IsVisible = true;
-            btnBrowseLocal.IsVisible = (CheezManager.LocalCheezCount > 0);
             _currentState = PluginStates.DisplayCurrentCheezSite;
             _currentCheezSite = selectedCheezSite;
             _currentCheezItems.Clear();
@@ -335,10 +269,10 @@ namespace EndlessCheez {
         }
 
         private void ProcessAndDisplayNewCheez(List<CheezItem> cheezItems) {
+            HideProgressInfo();            
             lock(_currentCheezItems) {
                 HideProgressInfo();
                 _currentCheezItems.AddRange(cheezItems);
-                btnDeleteLocalCheez.IsVisible = (CheezManager.LocalCheezCount > 0);
                 if(_currentState == PluginStates.BrowseLatest || _currentState == PluginStates.BrowseLocal || _currentState == PluginStates.BrowseRandom || _currentState == PluginStates.DisplayCurrentCheezSite) {
                     foreach(CheezItem cheezItem in cheezItems) {
                         ctrlFacade.Add(CreateGuiListItem(cheezItem));
@@ -353,6 +287,7 @@ namespace EndlessCheez {
                 case PluginStates.BrowseLatest:
                 case PluginStates.BrowseLocal:
                 case PluginStates.BrowseRandom:
+                    HideProgressInfo();
                     break;
                 case PluginStates.DisplayCheezSites:
                     break;
@@ -450,55 +385,6 @@ namespace EndlessCheez {
             }
         }
 
-        private void ShowItemFullSize(GUIListItem item) {
-            if(ctrlFullSizeImage != null) {
-                ctrlFullSizeImage.ImagePath = item.IconImageBig;
-                ctrlFullSizeImage.DoUpdate();
-            }
-        }
-
-        private void ShowFiltersMenu() {
-            //IDialogbox dlg = (IDialogbox)GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_DIALOG_MENU);
-            //if(dlg == null)
-            //    return;
-
-            //dlg.Reset();
-            //dlg.SetHeading(Translation.FanArtFilter);
-
-            //GUIListItem pItem = new GUIListItem(Translation.FanArtFilterAll);
-            //dlg.Add(pItem);
-            //pItem.ItemId = (int)menuFilterAction.all;
-
-            //pItem = new GUIListItem("1280x720");
-            //dlg.Add(pItem);
-            //pItem.ItemId = (int)menuFilterAction.hd;
-
-            //pItem = new GUIListItem("1920x1080");
-            //dlg.Add(pItem);
-            //pItem.ItemId = (int)menuFilterAction.fullhd;
-
-            //dlg.DoModal(GUIWindowManager.ActiveWindow);
-            //if(dlg.SelectedId >= 0) {
-            //    switch(dlg.SelectedId) {
-            //        case (int)menuFilterAction.all:
-            //            DBOption.SetOptions(DBOption.cFanartThumbnailResolutionFilter, "0");
-            //            break;
-            //        case (int)menuFilterAction.hd:
-            //            DBOption.SetOptions(DBOption.cFanartThumbnailResolutionFilter, "1");
-            //            break;
-            //        case (int)menuFilterAction.fullhd:
-            //            DBOption.SetOptions(DBOption.cFanartThumbnailResolutionFilter, "2");
-            //            break;
-            //    }
-            //    m_Facade.Clear();
-            //    DBFanart.ClearAll();
-            //    ClearProperties();
-
-            //    UpdateFilterProperty(false);
-            //    loadingWorker.RunWorkerAsync(SeriesID);
-            //}
-        }
-
         private void ShowProgressInfo() {
             GUIWaitCursor.Show();
             GUIPropertyManager.SetProperty("#EndlessCheez.CurrentItem", " ");
@@ -538,18 +424,15 @@ namespace EndlessCheez {
         }
 
 
-        public void OnLatestCheezArrived(List<CheezItem> cheezItems) {
-            HideProgressInfo();
+        public void OnLatestCheezArrived(List<CheezItem> cheezItems) {            
             ProcessAndDisplayNewCheez(cheezItems);
         }
 
         public void OnRandomCheezArrived(List<CheezItem> cheezItems) {
-            HideProgressInfo();
             ProcessAndDisplayNewCheez(cheezItems);
         }
 
         public void OnLocalCheezArrived(List<CheezItem> cheezItems) {
-            HideProgressInfo();
             ProcessAndDisplayNewCheez(cheezItems);
         }
 
