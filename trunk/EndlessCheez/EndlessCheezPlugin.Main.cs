@@ -25,16 +25,16 @@ namespace EndlessCheez {
             DisplayCurrentCheezSite,
             BrowseLatest,
             BrowseRandom,
-            BrowseLocal
+            BrowseLocal,           
         }
 
         #endregion
 
         #region Private Members
 
-        private static string _cheezRootFolder = String.Empty;
-        private static int _fetchCount = 3;
-        private static PluginStates _defaultStartupState = PluginStates.DisplayCheezSites;
+        private static string _cheezRootFolder;
+        private static int _fetchCount;
+        private static PluginStates _defaultStartupState;
 
         #endregion
 
@@ -167,8 +167,6 @@ namespace EndlessCheez {
                 CheezManager.CollectLatestCheez(cheezSite);
             });
             collectLatestCheez.Start();
-
-
         }
 
         public void CollectRandomCheez(CheezSite cheezSite) {

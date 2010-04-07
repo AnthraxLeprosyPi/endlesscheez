@@ -25,6 +25,8 @@ namespace EndlessCheez {
             BtnBrowseRandomCheez,
             BtnBrowseLocalCheez,
             BtnBrowseMore,
+            BtnSortAsc,
+            BtnSortDesc,
             BtnShowSlideShowCurrent,
             BtnShowSlideShowAllLocal,
             BtnCancelAllDownloads,
@@ -37,7 +39,6 @@ namespace EndlessCheez {
             tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnCheezSitesOverview,
                                             "Cheezsites Overview",
                                             new List<PluginStates>(new PluginStates[] { 
-                                                    PluginStates.DisplayCheezSites,
                                                     PluginStates.DisplayCurrentCheezSite,
                                                     PluginStates.BrowseLatest, 
                                                     PluginStates.BrowseLocal, 
@@ -84,7 +85,7 @@ namespace EndlessCheez {
                                                     PluginStates.BrowseLocal, 
                                                     PluginStates.BrowseRandom, 
                                                     PluginStates.DisplayLocalOnly
-                                           })));
+                                           }), CheezItemsAvailable()));
 
             tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnShowSlideShowAllLocal,
                                            "Start Slideshow (all local items)",
@@ -97,10 +98,16 @@ namespace EndlessCheez {
                                            })));
             tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnCancelAllDownloads,
                                            "Cancel Cheez Download(s)!",
-                                           null));
+                                           null, CheezManager.IsBusy));
             tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnDeleteLocalCheez,
                                           "Delete all local Cheez!",
                                           null));
+            tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnSortAsc,
+                                         "Sort by Cheez creation date/time (Asc)",
+                                         null, CheezItemsAvailable()));
+            tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnSortDesc,
+                                         "Sort by Cheez creation date/time (Desc)",
+                                         null, CheezItemsAvailable()));
             return tmpList;
         }
 
@@ -120,18 +127,24 @@ namespace EndlessCheez {
 
 
 
-        private class ContextMenuItem : GUIListItem {
+        private class ContextMenuItem : GUIListItem{
             private List<PluginStates> _pluginStateVisibility;
-
+            private bool _advancedVisibility = true;
+            
             public ContextMenuItem(ContextMenuButtons itemId, string itemLabel, List<PluginStates> visibleStates)
                 : base(itemLabel) {
                 base.ItemId = (int)itemId;
                 this._pluginStateVisibility = visibleStates;
             }
 
+            public ContextMenuItem(ContextMenuButtons itemId, string itemLabel, List<PluginStates> visibleStates, bool advancedVisibility) : this(itemId,itemLabel,visibleStates){
+                this._advancedVisibility = advancedVisibility;
+            }
+
             public bool GetVisibility(PluginStates pluginState) {
-                return (this._pluginStateVisibility != null) ? this._pluginStateVisibility.Contains(pluginState) : true;
+                return (this._pluginStateVisibility != null) ? this._pluginStateVisibility.Contains(pluginState) || this._advancedVisibility : this._advancedVisibility;
             }
         }
+       
     }
 }

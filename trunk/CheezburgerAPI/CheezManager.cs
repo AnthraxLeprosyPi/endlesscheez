@@ -337,9 +337,9 @@ namespace CheezburgerAPI {
             }
         }
 
-        public string CheezCreationDate {
+        public DateTime CheezCreationDateTime {
             get {
-                return _cheezCreationTime.ToShortDateString();
+                return _cheezCreationTime;
             }
         }
 
