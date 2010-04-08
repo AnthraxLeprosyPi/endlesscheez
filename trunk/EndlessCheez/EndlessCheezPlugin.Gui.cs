@@ -9,6 +9,8 @@ using CheezburgerAPI;
 using System.Threading;
 using MediaPortal.GUI.Pictures;
 using System.Collections;
+using MediaPortal.Player;
+using System.Linq;
 
 namespace EndlessCheez {
     public partial class EndlessCheezPlugin : GUIWindow, ICheezConsumer {
@@ -75,7 +77,12 @@ namespace EndlessCheez {
                 if(_currentState == PluginStates.DisplayCheezSites) {
                     DisplayCurrentCheezSite(CheezManager.GetCheezSiteByID(ctrlFacade.SelectedListItem.ItemId));
                 } else if(_currentState == PluginStates.BrowseLatest || _currentState == PluginStates.BrowseLocal || _currentState == PluginStates.BrowseRandom) {
-                    OnSlideShowCurrent(ctrlFacade.SelectedListItem.IconImageBig);
+                    if(ctrlFacade.SelectedListItem.IsRemote) {
+                        MediaPortal.Player.g_Player.PlayVideoStream(ctrlFacade.SelectedListItem.DVDLabel, ctrlFacade.SelectedListItem.ToString());
+                    } else {
+                        OnSlideShowCurrent(ctrlFacade.SelectedListItem.IconImageBig);
+                    }
+
                 }
             }
             base.OnClicked(controlId, control, actionType);
@@ -317,6 +324,14 @@ namespace EndlessCheez {
             }
         }
 
+        //private CheezItem GetCheezItemFromFacade(string itemPermanentLink) {
+        //    try {
+        //        return _currentCheezItems.First(item => item.CheezAsset.Permalink == itemPermanentLink); 
+        //    } catch {
+        //        throw new IndexOutOfRangeException();
+        //    }
+        //}
+
         #endregion
 
         #region GUI Helper Methods
@@ -338,8 +353,10 @@ namespace EndlessCheez {
             GUIListItem tmp = new GUIListItem(item.CheezTitle);
             tmp.Label2 = "[" + item.CheezCreationDateTime.ToShortDateString() + "]";
             tmp.Path = item.CheezImagePath;
+            tmp.DVDLabel = item.CheezAsset.ContentUrl;
             tmp.FileInfo.CreationTime = item.CheezCreationDateTime;
             tmp.IsFolder = false;
+            tmp.IsRemote = item.CheezAsset.AssetType.Contains("video");
             if(File.Exists(item.CheezImagePath)) {
                 tmp.IconImage = item.CheezImagePath;
                 tmp.IconImageBig = item.CheezImagePath;
