@@ -36,6 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Common.Utils, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86" />
+    <Reference Include="core, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86" />
+    <Reference Include="dialogs, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -50,31 +53,36 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="utils, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86" />
+    <Reference Include="WindowPlugins, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EndlessCheezPlugin.ICheezCollector.cs" />
-    <Compile Include="EndlessCheezPlugin.ICheezConsumer.cs" />
-    <Compile Include="EndlessCheez.Config.cs" />
-    <Compile Include="EndlessCheez.Config.Designer.cs">
-      <DependentUpon>EndlessCheez.Config.cs</DependentUpon>
+    <Compile Include="Plugin\ConfigurationForm.cs">
+      <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EndlessCheezPlugin.ContextMenu.cs" />
-    <Compile Include="EndlessCheezPlugin.Gui.cs" />
-    <Compile Include="EndlessCheezPlugin.Main.cs" />
+    <Compile Include="Plugin\ConfigurationForm.Designer.cs">
+      <DependentUpon>ConfigurationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Plugin\ContextMenu.cs" />
+    <Compile Include="Plugin\Main.ICheezConsumer.cs" />
+    <Compile Include="Plugin\Main.ICheezCollector.cs" />
+    <Compile Include="Plugin\Main.Window.cs" />
+    <Compile Include="Plugin\Configuration.cs" />
+    <Compile Include="Plugin\Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="EndlessCheez.Config.resx">
-      <DependentUpon>EndlessCheez.Config.cs</DependentUpon>
+    <EmbeddedResource Include="Plugin\ConfigurationForm.resx">
+      <DependentUpon>ConfigurationForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="dll\Common.Utils.dll" />
-    <Content Include="dll\core.dll" />
-    <Content Include="dll\dialogs.dll" />
-    <Content Include="dll\utils.dll" />
-    <Content Include="dll\WindowPlugins.dll" />
+    <Content Include="Resources\dll\Common.Utils.dll" />
+    <Content Include="Resources\dll\core.dll" />
+    <Content Include="Resources\dll\dialogs.dll" />
+    <Content Include="Resources\dll\utils.dll" />
+    <Content Include="Resources\dll\WindowPlugins.dll" />
     <Content Include="Skin\EndlessCheez.xml" />
     <Content Include="Skin\Media\EndlessCheez\1.png" />
     <Content Include="Skin\Media\EndlessCheez\10.png" />
@@ -98,9 +106,7 @@
       <Name>CheezburgerAPI</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Plugin\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

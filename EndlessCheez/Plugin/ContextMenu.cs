@@ -13,9 +13,9 @@ using CheezburgerAPI;
 using System.Threading;
 using System.Collections;
 
-namespace EndlessCheez {
+namespace EndlessCheez.Plugin {
 
-    public partial class EndlessCheezPlugin {
+    public static class ContextMenu {
 
         private static readonly List<ContextMenuItem> ContextMenuItems = CreateContextmenuItems();
 
@@ -38,63 +38,63 @@ namespace EndlessCheez {
             List<ContextMenuItem> tmpList = new List<ContextMenuItem>();
             tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnCheezSitesOverview,
                                             "Cheezsites Overview",
-                                            new List<PluginStates>(new PluginStates[] { 
-                                                    PluginStates.DisplayCurrentCheezSite,
-                                                    PluginStates.BrowseLatest, 
-                                                    PluginStates.BrowseLocal, 
-                                                    PluginStates.BrowseRandom, 
-                                                    PluginStates.DisplayLocalOnly
+                                            new List<Main.PluginStates>(new Main.PluginStates[] { 
+                                                    Main.PluginStates.DisplayCurrentCheezSite,
+                                                    Main.PluginStates.BrowseLatest, 
+                                                    Main.PluginStates.BrowseLocal, 
+                                                    Main.PluginStates.BrowseRandom, 
+                                                    Main.PluginStates.DisplayLocalOnly
                                             })));
 
             tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnBrowseLatestCheez,
                                             "Browse Latest Online Cheez..",
-                                            new List<PluginStates>(new PluginStates[] { 
-                                                    PluginStates.DisplayCurrentCheezSite,                                                                                 
-                                                    PluginStates.BrowseLocal, 
-                                                    PluginStates.BrowseRandom
+                                            new List<Main.PluginStates>(new Main.PluginStates[] { 
+                                                    Main.PluginStates.DisplayCurrentCheezSite,                                                                                 
+                                                    Main.PluginStates.BrowseLocal, 
+                                                    Main.PluginStates.BrowseRandom
                                             })));
 
             tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnBrowseRandomCheez,
                                             "Browse Random Online Cheez..",
-                                            new List<PluginStates>(new PluginStates[] { 
-                                                    PluginStates.DisplayCurrentCheezSite,
-                                                    PluginStates.BrowseLatest, 
-                                                    PluginStates.BrowseLocal
+                                            new List<Main.PluginStates>(new Main.PluginStates[] { 
+                                                    Main.PluginStates.DisplayCurrentCheezSite,
+                                                    Main.PluginStates.BrowseLatest, 
+                                                    Main.PluginStates.BrowseLocal
                                             })));
 
             tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnBrowseLocalCheez,
                                             "Browse locally available Cheez..",
-                                            new List<PluginStates>(new PluginStates[] { 
-                                                    PluginStates.DisplayCurrentCheezSite,
-                                                    PluginStates.BrowseLatest,                                                                                 
-                                                    PluginStates.BrowseRandom
+                                            new List<Main.PluginStates>(new Main.PluginStates[] { 
+                                                    Main.PluginStates.DisplayCurrentCheezSite,
+                                                    Main.PluginStates.BrowseLatest,                                                                                 
+                                                    Main.PluginStates.BrowseRandom
                                             })));
 
             tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnBrowseMore,
                                             "Gimme more of this Cheez..",
-                                            new List<PluginStates>(new PluginStates[] { 
-                                                    PluginStates.BrowseLatest, 
-                                                    PluginStates.BrowseRandom
+                                            new List<Main.PluginStates>(new Main.PluginStates[] { 
+                                                    Main.PluginStates.BrowseLatest, 
+                                                    Main.PluginStates.BrowseRandom
                                             })));
 
             tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnShowSlideShowCurrent,
                                            "Start Slideshow (current items)",
-                                           new List<PluginStates>(new PluginStates[] { 
-                                                    PluginStates.DisplayCurrentCheezSite,
-                                                    PluginStates.BrowseLatest, 
-                                                    PluginStates.BrowseLocal, 
-                                                    PluginStates.BrowseRandom, 
-                                                    PluginStates.DisplayLocalOnly
-                                           }), CheezItemsAvailable()));
+                                           new List<Main.PluginStates>(new Main.PluginStates[] { 
+                                                    Main.PluginStates.DisplayCurrentCheezSite,
+                                                    Main.PluginStates.BrowseLatest, 
+                                                    Main.PluginStates.BrowseLocal, 
+                                                    Main.PluginStates.BrowseRandom, 
+                                                    Main.PluginStates.DisplayLocalOnly
+                                           }), Main.CheezItemsAvailable()));
 
             tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnShowSlideShowAllLocal,
                                            "Start Slideshow (all local items)",
-                                           new List<PluginStates>(new PluginStates[] { 
-                                                    PluginStates.DisplayCurrentCheezSite,
-                                                    PluginStates.BrowseLatest, 
-                                                    PluginStates.BrowseLocal, 
-                                                    PluginStates.BrowseRandom, 
-                                                    PluginStates.DisplayLocalOnly
+                                           new List<Main.PluginStates>(new Main.PluginStates[] { 
+                                                    Main.PluginStates.DisplayCurrentCheezSite,
+                                                    Main.PluginStates.BrowseLatest, 
+                                                    Main.PluginStates.BrowseLocal, 
+                                                    Main.PluginStates.BrowseRandom, 
+                                                    Main.PluginStates.DisplayLocalOnly
                                            })));
             tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnCancelAllDownloads,
                                            "Cancel Cheez Download(s)!",
@@ -104,14 +104,14 @@ namespace EndlessCheez {
                                           null));
             tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnSortAsc,
                                          "Sort by Cheez creation date/time (Asc)",
-                                         null, CheezItemsAvailable()));
+                                         null, Main.CheezItemsAvailable()));
             tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnSortDesc,
                                          "Sort by Cheez creation date/time (Desc)",
-                                         null, CheezItemsAvailable()));
+                                         null, Main.CheezItemsAvailable()));
             return tmpList;
         }
 
-        private static ContextMenuButtons GetCurrentContextMenu(PluginStates pluginState) {
+        private static ContextMenuButtons GetCurrentContextMenu(Main.PluginStates pluginState) {
             IDialogbox contextMenu = (IDialogbox)GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_DIALOG_MENU);
             if(contextMenu == null) {
                 return ContextMenuButtons.NothingSelected;
@@ -128,20 +128,20 @@ namespace EndlessCheez {
 
 
         private class ContextMenuItem : GUIListItem{
-            private List<PluginStates> _pluginStateVisibility;
+            private List<Main.PluginStates> _pluginStateVisibility;
             private bool _advancedVisibility = true;
             
-            public ContextMenuItem(ContextMenuButtons itemId, string itemLabel, List<PluginStates> visibleStates)
+            public ContextMenuItem(ContextMenuButtons itemId, string itemLabel, List<Main.PluginStates> visibleStates)
                 : base(itemLabel) {
                 base.ItemId = (int)itemId;
                 this._pluginStateVisibility = visibleStates;
             }
 
-            public ContextMenuItem(ContextMenuButtons itemId, string itemLabel, List<PluginStates> visibleStates, bool advancedVisibility) : this(itemId,itemLabel,visibleStates){
+            public ContextMenuItem(ContextMenuButtons itemId, string itemLabel, List<Main.PluginStates> visibleStates, bool advancedVisibility) : this(itemId,itemLabel,visibleStates){
                 this._advancedVisibility = advancedVisibility;
             }
 
-            public bool GetVisibility(PluginStates pluginState) {
+            public bool GetVisibility(Main.PluginStates pluginState) {
                 return (this._pluginStateVisibility != null) ? this._pluginStateVisibility.Contains(pluginState) || this._advancedVisibility : this._advancedVisibility;
             }
         }
