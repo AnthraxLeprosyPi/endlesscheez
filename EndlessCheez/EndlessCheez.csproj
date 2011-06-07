@@ -57,6 +57,8 @@
     <Reference Include="WindowPlugins, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Plugin\CheezDownloader.cs" />
+    <Compile Include="Plugin\CheezListItem.cs" />
     <Compile Include="Plugin\ConfigurationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -117,7 +119,7 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>REM xcopy "$(TargetPath)" "..\..\..\MpiRelease" /Y
-xcopy "$(TargetPath)" "C:\Programme\Team MediaPortal\MediaPortal\plugins\Windows" /Y
-"C:\Programme\Team MediaPortal\MediaPortal\MediaPortal.exe"</PostBuildEvent>
+xcopy "$(TargetPath)" "C:\Program Files (x86)\Team MediaPortal\MediaPortal\plugins\Windows" /Y
+</PostBuildEvent>
   </PropertyGroup>
 </Project>

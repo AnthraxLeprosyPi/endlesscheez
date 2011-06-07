@@ -64,7 +64,7 @@ namespace EndlessCheez.Plugin {
             if (ctrlBackgroundImage != null) {
                 ctrlBackgroundImage.ImagePath = GUIGraphicsContext.Skin + @"\Media\EndlessCheez\Background.png";
             }
-            if (ctrlFacade != null) {
+            if (facadeLayout != null) {
                 DisplayCheezSitesOverview();
             }
             base.OnPageLoad();
@@ -349,7 +349,7 @@ namespace EndlessCheez.Plugin {
         }
 
         private GUIListItem CreateGuiListItem(CheezItem item) {
-            GUIListItem tmp = new GUIListItem(item.CheezTitle);
+            GUIListItem tmp = new GUIListItem(item.CheezTitle);            
             tmp.Label2 = "[" + item.CheezCreationDateTime.ToShortDateString() + "]";
             tmp.Path = item.CheezImagePath;
             tmp.DVDLabel = item.CheezAsset.ContentUrl;
@@ -360,8 +360,9 @@ namespace EndlessCheez.Plugin {
                 tmp.IconImage = item.CheezImagePath;
                 tmp.IconImageBig = item.CheezImagePath;
                 tmp.ThumbnailImage = item.CheezImagePath;
-            }
+            }            
             tmp.OnItemSelected += new GUIListItem.ItemSelectedHandler(OnItemSelected);
+            
             return tmp;
         }
 

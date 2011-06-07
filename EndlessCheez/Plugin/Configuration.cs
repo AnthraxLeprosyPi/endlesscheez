@@ -16,15 +16,7 @@ namespace EndlessCheez.Plugin {
 
     [PluginIcons("EndlessCheez.Resources.img.EndlessCheez_enabled.png", "EndlessCheez.Resources.img.EndlessCheez_disabled.png")]
     public class Configuration : ISetupForm {
-              
-
-        #region Private Members
-
-        private static string _cheezRootFolder;
-        private static int _fetchCount;
-
-        #endregion
-
+                         
         #region Plugin Constructor / Initialization
 
         public Configuration() {
