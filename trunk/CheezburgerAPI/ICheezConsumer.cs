@@ -15,10 +15,10 @@ namespace CheezburgerAPI {
 
         void OnCheezOperationProgress(int progressPercentage, string currentItem);
 
-        void OnLatestCheezArrived(List<CheezItem> cheezItems);
+        void OnLatestCheezFetched(List<CheezItem> cheezItems);
 
-        void OnRandomCheezArrived(List<CheezItem> cheezItems);
+        void OnRandomCheezFetched(List<CheezItem> cheezItems);
 
-        void OnLocalCheezArrived(List<CheezItem> cheezItems);       
+        void OnLocalCheezFetched(List<CheezItem> cheezItems);       
     }
 }

@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual C# Express 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndlessCheezTest", "EndlessCheezTest\EndlessCheezTest.csproj", "{27111BF4-CF2F-4022-BFD7-68B065A96075}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3D891031-7CD7-4054-8436-37045537AC94} = {3D891031-7CD7-4054-8436-37045537AC94}

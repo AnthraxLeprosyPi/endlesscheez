@@ -27,13 +27,13 @@ namespace CheezburgerAPI {
 
         #region ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Constructor & Initialization ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         static CheezManager() {
-            CheezCollectorLocal.Instance.CheezArrived += new CheezCollectorBase<CheezCollectorLocal>.CheezArrivedEventHandler(Local_CheezArrived);
+            CheezCollectorLocal.Instance.CheezFetched += new CheezCollectorBase<CheezCollectorLocal>.CheezFetchedEventHandler(Local_CheezFetched);
             CheezCollectorLocal.Instance.CheezFailed += new CheezCollectorBase<CheezCollectorLocal>.CheezFailedEventHandler(Global_CheezFailed);
             CheezCollectorLocal.Instance.CheezProgress += new CheezCollectorBase<CheezCollectorLocal>.CheezProgressHandler(Global_CheezProgress);
-            CheezCollectorRandom.Instance.CheezArrived += new CheezCollectorBase<CheezCollectorRandom>.CheezArrivedEventHandler(Random_CheezArrived);
+            CheezCollectorRandom.Instance.CheezFetched += new CheezCollectorBase<CheezCollectorRandom>.CheezFetchedEventHandler(Random_CheezFetched);
             CheezCollectorRandom.Instance.CheezFailed += new CheezCollectorBase<CheezCollectorRandom>.CheezFailedEventHandler(Global_CheezFailed);
             CheezCollectorRandom.Instance.CheezProgress += new CheezCollectorBase<CheezCollectorRandom>.CheezProgressHandler(Global_CheezProgress);
-            CheezCollectorLatest.Instance.CheezArrived += new CheezCollectorBase<CheezCollectorLatest>.CheezArrivedEventHandler(Latest_CheezArrived);
+            CheezCollectorLatest.Instance.CheezFetched += new CheezCollectorBase<CheezCollectorLatest>.CheezFetchedEventHandler(Latest_CheezFetched);
             CheezCollectorLatest.Instance.CheezFailed += new CheezCollectorBase<CheezCollectorLatest>.CheezFailedEventHandler(Global_CheezFailed);
             CheezCollectorLatest.Instance.CheezProgress += new CheezCollectorBase<CheezCollectorLatest>.CheezProgressHandler(Global_CheezProgress);
             _cheezSites = CheezApiReader.ReadCheezSites();
@@ -154,14 +154,14 @@ namespace CheezburgerAPI {
         #endregion
 
         #region ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Events & Delegates ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        public delegate void CheezArrivedLocalEventHandler(List<CheezItem> cheezItems);
-        public static event CheezArrivedLocalEventHandler EventLocalCheezArrived;
+        public delegate void CheezFetchedLocalEventHandler(List<CheezItem> cheezItems);
+        public static event CheezFetchedLocalEventHandler EventLocalCheezFetched;
 
-        public delegate void CheezArrivedRandomEventHandler(List<CheezItem> cheezItems);
-        public static event CheezArrivedRandomEventHandler EventRandomCheezArrived;
+        public delegate void CheezFetchedRandomEventHandler(List<CheezItem> cheezItems);
+        public static event CheezFetchedRandomEventHandler EventRandomCheezFetched;
 
-        public delegate void CheezArrivedLatestEventHandler(List<CheezItem> cheezItems);
-        public static event CheezArrivedLatestEventHandler EventLatestCheezArrived;
+        public delegate void CheezFetchedLatestEventHandler(List<CheezItem> cheezItems);
+        public static event CheezFetchedLatestEventHandler EventLatestCheezFetched;
 
         public delegate void CheezFailedEventHandler(CheezFail _fail);
         public static event CheezFailedEventHandler EventCheezFailed;
@@ -189,27 +189,27 @@ namespace CheezburgerAPI {
             }
         }
 
-        private static void Latest_CheezArrived(List<CheezItem> cheezItems) {
+        private static void Latest_CheezFetched(List<CheezItem> cheezItems) {
             if(cheezItems.Count > 0) {
                 _listLatestCheez.AddRange(cheezItems);
-                if(EventLatestCheezArrived != null) {
-                    EventLatestCheezArrived(cheezItems);
+                if(EventLatestCheezFetched != null) {
+                    EventLatestCheezFetched(cheezItems);
                 }
-                _consumer.OnLatestCheezArrived(cheezItems);
+                _consumer.OnLatestCheezFetched(cheezItems);
             } else {
                 Global_CheezFailed(new CheezFail("No Cheez available!", "please try again...", "CheezManager"));
             }
             _cheezBusyEvent.Set();
         }
 
-        private static void Random_CheezArrived(List<CheezItem> cheezItems) {
+        private static void Random_CheezFetched(List<CheezItem> cheezItems) {
             if(cheezItems.Count > 0) {
                 _listRandomCheez.AddRange(cheezItems);
-                if(EventRandomCheezArrived != null) {
-                    EventRandomCheezArrived(cheezItems);
+                if(EventRandomCheezFetched != null) {
+                    EventRandomCheezFetched(cheezItems);
                 }
                 if(_consumer != null) {
-                    _consumer.OnRandomCheezArrived(cheezItems);
+                    _consumer.OnRandomCheezFetched(cheezItems);
                 }
             } else {
                 Global_CheezFailed(new CheezFail("No Cheez available!", "please try again...", "CheezManager"));
@@ -217,14 +217,14 @@ namespace CheezburgerAPI {
             _cheezBusyEvent.Set();
         }
 
-        private static void Local_CheezArrived(List<CheezItem> cheezItems) {
+        private static void Local_CheezFetched(List<CheezItem> cheezItems) {
             if(cheezItems.Count > 0) {
                 _listLocalCheez.AddRange(cheezItems);
-                if(EventLocalCheezArrived != null) {
-                    EventLocalCheezArrived(cheezItems);
+                if(EventLocalCheezFetched != null) {
+                    EventLocalCheezFetched(cheezItems);
                 }
                 if(_consumer != null) {
-                    _consumer.OnLocalCheezArrived(cheezItems);
+                    _consumer.OnLocalCheezFetched(cheezItems);
                 }
             } else {
                 Global_CheezFailed(new CheezFail("No Cheez available!", "please try again...", "CheezManager"));

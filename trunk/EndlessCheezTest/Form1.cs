@@ -86,15 +86,15 @@ namespace EndlessCheezTest {
             }
         }
 
-        public void OnLatestCheezArrived(List<CheezItem> cheezItems) {
+        public void OnLatestCheezFetched(List<CheezItem> cheezItems) {
             GuiUpdateTextbox(cheezItems.Count.ToString() + " latest items collected!");
         }
 
-        public void OnRandomCheezArrived(List<CheezItem> cheezItems) {
+        public void OnRandomCheezFetched(List<CheezItem> cheezItems) {
             throw new NotImplementedException();
         }
 
-        public void OnLocalCheezArrived(List<CheezItem> cheezItems) {
+        public void OnLocalCheezFetched(List<CheezItem> cheezItems) {
             GuiUpdateTextbox(cheezItems.Count.ToString() + " local items collected!");
         }
 
