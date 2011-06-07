@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Windows.Forms;
-using MediaPortal.GUI.Library;
-using MediaPortal.GUI;
-using MediaPortal.Dialogs;
 using System.Collections.Generic;
 using System.IO;
-using CheezburgerAPI;
 using System.Threading;
+using CheezburgerAPI;
+using MediaPortal.Dialogs;
+using MediaPortal.GUI.Library;
 using MediaPortal.GUI.Pictures;
-using System.Collections;
-using MediaPortal.Player;
-using System.Linq;
+using WindowPlugins;
 
-namespace EndlessCheez {
-    public partial class EndlessCheezPlugin : ICheezCollector {
+namespace EndlessCheez.Plugin {
+    public partial class Main : ICheezCollector {       
 
-    #region ICheezCollector Member
+        #region ICheezCollector Member
 
         public bool DeleteLocalCheez() {
             return CheezManager.DeleteLocalCheez();
@@ -56,4 +52,25 @@ namespace EndlessCheez {
 
         #endregion
 
+        /// <summary>Implements ascending sort algorithm</summary>
+        class CheezComparerDateAsc : IComparer<GUIListItem> {
+            #region IComparer<GUIListItem> Member
+
+            public int Compare(GUIListItem x, GUIListItem y) {
+                return DateTime.Compare(x.FileInfo.CreationTime, y.FileInfo.CreationTime);
+            }
+
+            #endregion
+        }
+
+        class CheezComparerDateDesc : IComparer<GUIListItem> {
+            #region IComparer<GUIListItem> Member
+
+            public int Compare(GUIListItem x, GUIListItem y) {
+                return DateTime.Compare(y.FileInfo.CreationTime, x.FileInfo.CreationTime);
+            }
+
+            #endregion
+        }
+    }
 }

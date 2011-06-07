@@ -12,51 +12,27 @@ using MediaPortal.Configuration;
 using CheezburgerAPI;
 using System.Threading;
 
-namespace EndlessCheez {
+namespace EndlessCheez.Plugin {
 
-    [PluginIcons("EndlessCheez.img.EndlessCheez_enabled.png", "EndlessCheez.img.EndlessCheez_disabled.png")]
-    public partial class EndlessCheezPlugin : ISetupForm, IShowPlugin {
-
-        #region Enumerations
-
-        internal enum PluginStates {
-            DisplayCheezSites,
-            DisplayLocalOnly,
-            DisplayCurrentCheezSite,
-            BrowseLatest,
-            BrowseRandom,
-            BrowseLocal,           
-        }
-
-        #endregion
+    [PluginIcons("EndlessCheez.Resources.img.EndlessCheez_enabled.png", "EndlessCheez.Resources.img.EndlessCheez_disabled.png")]
+    public class Configuration : ISetupForm {
+              
 
         #region Private Members
 
         private static string _cheezRootFolder;
         private static int _fetchCount;
-        private static PluginStates _defaultStartupState;
 
         #endregion
 
         #region Plugin Constructor / Initialization
 
-        public EndlessCheezPlugin() {
-            using (MediaPortal.Profile.Settings xmlReader = new MediaPortal.Profile.Settings(Config.GetFile(Config.Dir.Config, "MediaPortal.xml"))) {
-                _cheezRootFolder = xmlReader.GetValueAsString("EndlessCheez", "#EndlessCheez.CheezRootFolder", Config.GetFolder(Config.Dir.Thumbs) + @"\EndlessCheez\");
-                _fetchCount = xmlReader.GetValueAsInt("EndlessCheez", "#EndlessCheez.FetchCount", 10);
-                _defaultStartupState = (PluginStates)Enum.Parse(typeof(PluginStates), xmlReader.GetValueAsString("EndlessCheez", "#EndlessCheez.DefaultStartup", "DisplayCheezSites"));
-            }            
-        }
+        public Configuration() {
+            Log.Debug(Settings.PLUGIN_NAME + " started!");        
+        }               
 
-        private void InitCheezManager(int fetchCount, string cheezRootFolder, bool createRootFolderStructure) {
-            if (!CheezManager.InitCheezManager(this, fetchCount, cheezRootFolder, createRootFolderStructure)) {
-                ShowNotifyDialog(30, "Unable to initialize CheezManager - check internet connection!");
-                _defaultStartupState = PluginStates.DisplayLocalOnly;
-            }
-        }
-
-        ~EndlessCheezPlugin() {
-            this.CancelCheezCollection();
+        ~Configuration() {
+           
         }
 
         #endregion
@@ -65,22 +41,22 @@ namespace EndlessCheez {
 
         // Returns the name of the plugin which is shown in the plugin menu
         public string PluginName() {
-            return "EndlessCheez";
+            return Settings.PLUGIN_NAME;
         }
 
         // Returns the description of the plugin is shown in the plugin menu
         public string Description() {
-            return "TODO";
+            return Settings.PLUGIN_DESCRIPTION;
         }
 
         // Returns the author of the plugin which is shown in the plugin menu
         public string Author() {
-            return "Anthrax";
+            return Settings.PLUGIN_AUTHOR;
         }
 
         // show the setup dialog
         public void ShowPlugin() {
-            new EndlessCheezConfig().ShowDialog();
+            new ConfigurationForm().ShowDialog();
         }
 
         // Indicates whether plugin can be enabled/disabled
@@ -92,7 +68,7 @@ namespace EndlessCheez {
         public int GetWindowId() {
             // WindowID of windowplugin belonging to this setup
             // enter your own unique code
-            return GetWID;
+            return Settings.PLUGIN_WINDOW_ID;
         }
 
         // Indicates if plugin is enabled by default;
@@ -125,31 +101,7 @@ namespace EndlessCheez {
         }
 
 
-        #endregion
-
-        #region IShowPlugin Member
-
-        public bool ShowDefaultHome() {
-            return false;
-        }
-
-        public static int GetWID {
-            get {
-                return 300382;
-            }
-        }
-
-        // With GetID it will be an window-plugin / otherwise a process-plugin
-        // Enter the id number here again
-        public override int GetID {
-            get {
-                return EndlessCheezPlugin.GetWID;
-            }
-            set {
-            }
-        }
-
-        #endregion
+        #endregion      
        
     }
 }
