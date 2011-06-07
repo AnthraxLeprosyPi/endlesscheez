@@ -15,7 +15,7 @@ using System.Threading;
 namespace EndlessCheez {
 
     [PluginIcons("EndlessCheez.img.EndlessCheez_enabled.png", "EndlessCheez.img.EndlessCheez_disabled.png")]
-    public partial class EndlessCheezPlugin : ISetupForm, IShowPlugin, ICheezCollector {
+    public partial class EndlessCheezPlugin : ISetupForm, IShowPlugin {
 
         #region Enumerations
 
@@ -150,47 +150,7 @@ namespace EndlessCheez {
         }
 
         #endregion
-
-        #region ICheezCollector Member
-
-        public bool DeleteLocalCheez() {
-            return CheezManager.DeleteLocalCheez();
-        }
-
-        public bool CheckCheezConnection() {
-            return CheezManager.CheckCheezConnection();
-        }
-
-        public void CollectLatestCheez(CheezSite cheezSite) {
-            ShowProgressInfo();
-            Thread collectLatestCheez = new Thread(delegate() {
-                CheezManager.CollectLatestCheez(cheezSite);
-            });
-            collectLatestCheez.Start();
-        }
-
-        public void CollectRandomCheez(CheezSite cheezSite) {
-            ShowProgressInfo();
-            Thread collectRandomCheez = new Thread(delegate() {
-                CheezManager.CollectRandomCheez(cheezSite);
-            });
-            collectRandomCheez.Start();
-        }
-
-        public void CollectLocalCheez(CheezSite cheezSite) {
-            ShowProgressInfo();
-            Thread collectLocalCheez = new Thread(delegate() {
-                CheezManager.CollectLocalCheez(cheezSite);
-            });
-            collectLocalCheez.Start();
-        }
-
-        public void CancelCheezCollection() {
-            HideProgressInfo();
-            CheezManager.CancelCheezCollection();
-        }
-
-        #endregion
+       
     }
 }
 

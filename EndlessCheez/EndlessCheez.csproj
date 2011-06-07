@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -12,6 +12,11 @@
     <AssemblyName>EndlessCheez</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,8 +36,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="core, Version=1.0.5.32056, Culture=neutral, processorArchitecture=x86" />
-    <Reference Include="dialogs, Version=1.0.5.32061, Culture=neutral, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -47,13 +50,11 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="utils, Version=2.2.7.32052, Culture=neutral, processorArchitecture=x86" />
-    <Reference Include="WindowPlugins, Version=1.0.5.32072, Culture=neutral, processorArchitecture=x86" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EndlessCheez.Config.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="EndlessCheezPlugin.ICheezCollector.cs" />
+    <Compile Include="EndlessCheezPlugin.ICheezConsumer.cs" />
+    <Compile Include="EndlessCheez.Config.cs" />
     <Compile Include="EndlessCheez.Config.Designer.cs">
       <DependentUpon>EndlessCheez.Config.cs</DependentUpon>
     </Compile>
@@ -69,32 +70,36 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="dll\Common.Utils.dll" />
     <Content Include="dll\core.dll" />
     <Content Include="dll\dialogs.dll" />
     <Content Include="dll\utils.dll" />
     <Content Include="dll\WindowPlugins.dll" />
-    <Content Include="skin\EndlessCheez.xml" />
-    <Content Include="skin\Media\EndlessCheez\1.png" />
-    <Content Include="skin\Media\EndlessCheez\10.png" />
-    <Content Include="skin\Media\EndlessCheez\2.png" />
-    <Content Include="skin\Media\EndlessCheez\3.png" />
-    <Content Include="skin\Media\EndlessCheez\4.png" />
-    <Content Include="skin\Media\EndlessCheez\6.png" />
-    <Content Include="skin\Media\EndlessCheez\8.png" />
-    <Content Include="skin\Media\EndlessCheez\9.png" />
-    <Content Include="skin\Media\EndlessCheez\Background.png" />
-    <Content Include="skin\Media\EndlessCheez\EndlessCheez_logo.png" />
-    <EmbeddedResource Include="img\EndlessCheez_enabled.png" />
-    <EmbeddedResource Include="img\EndlessCheez_disabled.png" />
+    <Content Include="Skin\EndlessCheez.xml" />
+    <Content Include="Skin\Media\EndlessCheez\1.png" />
+    <Content Include="Skin\Media\EndlessCheez\10.png" />
+    <Content Include="Skin\Media\EndlessCheez\2.png" />
+    <Content Include="Skin\Media\EndlessCheez\3.png" />
+    <Content Include="Skin\Media\EndlessCheez\4.png" />
+    <Content Include="Skin\Media\EndlessCheez\6.png" />
+    <Content Include="Skin\Media\EndlessCheez\8.png" />
+    <Content Include="Skin\Media\EndlessCheez\9.png" />
+    <Content Include="Skin\Media\EndlessCheez\Background.png" />
+    <Content Include="Skin\Media\EndlessCheez\EndlessCheez_logo.png" />
+    <EmbeddedResource Include="Resources\img\EndlessCheez_enabled.png" />
+    <EmbeddedResource Include="Resources\img\EndlessCheez_disabled.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="skin\Thumbs.db" />
+    <None Include="Skin\Thumbs.db" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CheezburgerAPI\CheezburgerAPI.csproj">
       <Project>{3D891031-7CD7-4054-8436-37045537AC94}</Project>
       <Name>CheezburgerAPI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Plugin\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
