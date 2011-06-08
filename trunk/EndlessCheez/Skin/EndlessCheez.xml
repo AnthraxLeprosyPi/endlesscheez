@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <window>
+ <import>common.window.xml</import>
+
   <id>300382</id>
-  <defaultcontrol>400</defaultcontrol>
+  <defaultcontrol>50</defaultcontrol>
   <allowoverlay>yes</allowoverlay>
   <disabletopbar>yes</disabletopbar>
   <controls>
@@ -113,9 +115,9 @@
     <control>
       <description>composite control consisting of a list control and a thumbnail panel</description>
       <type>facadeview</type>
-      <id>400</id>
+      <id>50</id>
       <control>
-        <id>400</id>
+        <id>50</id>
         <description>listcontrol</description>
         <type>listcontrol</type>
         <ondown>403</ondown>
@@ -127,7 +129,7 @@
         <scrollOffset>2</scrollOffset>
       </control>
       <control>
-        <id>400</id>
+        <id>50</id>
         <description>Thumbnail Panel</description>
         <type>thumbnailpanel</type>
         <onup>401</onup>
@@ -154,7 +156,7 @@
         <renderUnfocusText>yes</renderUnfocusText>
       </control>
       <control>
-        <id>400</id>
+        <id>50</id>
         <description>Filmstrip view</description>
         <type>filmstrip</type>
         <onup>401</onup>

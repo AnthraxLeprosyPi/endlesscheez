@@ -25,6 +25,7 @@ namespace EndlessCheez.Plugin {
             base.Label3 = cheezItem.CheezAsset.FullText; 
             base.Path = cheezItem.CheezAsset.AssetId;
             base.DVDLabel = cheezItem.CheezAsset.ContentUrl;
+            base.FileInfo = new FileInformation();
             base.FileInfo.CreationTime = cheezItem.CheezCreationDateTime;
             base.IsFolder = false;
             base.IsRemote = cheezItem.CheezAsset.AssetType.Contains("video");            

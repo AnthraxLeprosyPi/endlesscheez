@@ -20,6 +20,7 @@ namespace EndlessCheez.Plugin {
         private static readonly List<ContextMenuItem> ContextMenuItems = CreateContextmenuItems();
 
         internal enum ContextMenuButtons {
+            BtnSwitchLayout,
             BtnCheezSitesOverview,
             BtnBrowseLatestCheez,
             BtnBrowseRandomCheez,
@@ -36,6 +37,9 @@ namespace EndlessCheez.Plugin {
 
         private static List<ContextMenuItem> CreateContextmenuItems() {
             List<ContextMenuItem> tmpList = new List<ContextMenuItem>();
+            tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnSwitchLayout,
+                                                        "Switch Layout"));
+
             tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnCheezSitesOverview,
                                             "show Cheezsites Overview"));
 

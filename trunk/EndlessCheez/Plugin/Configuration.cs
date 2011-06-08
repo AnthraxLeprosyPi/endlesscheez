@@ -21,12 +21,11 @@ namespace EndlessCheez.Plugin {
 
         public Configuration() {
             Log.Debug(Settings.PLUGIN_NAME + " started!");        
-        }               
-
-        ~Configuration() {
-           
         }
 
+        ~Configuration() {
+
+        }
         #endregion
 
         #region ISetupForm Members
@@ -93,8 +92,9 @@ namespace EndlessCheez.Plugin {
         }
 
 
-        #endregion      
-       
+        #endregion           
+
+    
     }
 }
 
