@@ -31,19 +31,22 @@ namespace CheezburgerAPI {
 
         public override void CreateCheezCollection(CheezSite cheezSite, int fetchCount) {
             _fetchCount = fetchCount;
-            if(cheezSite != null) {
-                if(!cheezSite.Equals(_currentCheezSite )) {
+            try{
+                if(cheezSite != null && !cheezSite.Equals(_currentCheezSite)) {
                     _currentStartIndex = 1;
                     _currentCheezSite = cheezSite;
                 }
-                _cheezOnlineResponse = CheezApiReader.ReadLatestCheez(cheezSite, _currentStartIndex, fetchCount);
+                if (CurrentCheezSite == null) {
+                    throw new ArgumentNullException();
+                }
+                _cheezOnlineResponse = CheezApiReader.ReadLatestCheez(CurrentCheezSite, _currentStartIndex, fetchCount);
                 if(_cheezOnlineResponse.CheezFail != null) {
                     ReportFail(_cheezOnlineResponse.CheezFail);
                 } else {
-                    base.CreateCheezCollection(cheezSite, fetchCount);
+                    base.CreateCheezCollection(CurrentCheezSite, fetchCount);
                 }
-            } else {
-                ReportFail(new CheezFail("No CheezSite specified!", "CheezCollectorLatest doesn't permit null as category!", "unknown"));
+            }catch (Exception e){
+                ReportFail(new CheezFail("No CheezSite specified!", "CheezCollectorLatest doesn't permit null as category!", e.ToString()));
             }
         }
 

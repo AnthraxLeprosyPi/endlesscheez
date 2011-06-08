@@ -8,7 +8,7 @@ namespace CheezburgerAPI {
     public static class CheezManager {
 
         #region ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Member Fields ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        private static string _cheezRootFolder = Path.Combine(System.Environment.SpecialFolder.MyDocuments.ToString(), "EndlessCheez");
+        private static string _cheezRootFolder;
         private static int _fetchCount = 1;
         private static bool _managerInitiated = false;
         private static List<CheezSite> _cheezSites = new List<CheezSite>();
@@ -35,8 +35,7 @@ namespace CheezburgerAPI {
             CheezCollectorRandom.Instance.CheezProgress += new CheezCollectorBase<CheezCollectorRandom>.CheezProgressHandler(Global_CheezProgress);
             CheezCollectorLatest.Instance.CheezFetched += new CheezCollectorBase<CheezCollectorLatest>.CheezFetchedEventHandler(Latest_CheezFetched);
             CheezCollectorLatest.Instance.CheezFailed += new CheezCollectorBase<CheezCollectorLatest>.CheezFailedEventHandler(Global_CheezFailed);
-            CheezCollectorLatest.Instance.CheezProgress += new CheezCollectorBase<CheezCollectorLatest>.CheezProgressHandler(Global_CheezProgress);
-            _cheezSites = CheezApiReader.ReadCheezSites();
+            CheezCollectorLatest.Instance.CheezProgress += new CheezCollectorBase<CheezCollectorLatest>.CheezProgressHandler(Global_CheezProgress);            
         }
 
         public static bool InitCheezManager(ICheezConsumer consumer, int fetchCount, string cheezRootFolder, bool createRootFolderStructure) {
@@ -57,6 +56,7 @@ namespace CheezburgerAPI {
                     Global_CheezFailed(new CheezFail(e));
                 }
             }
+            _cheezSites = CheezApiReader.ReadCheezSites();
             return _managerInitiated;
         }
 
@@ -245,6 +245,13 @@ namespace CheezburgerAPI {
             return null;
         }
 
+        public static CheezSite GetCheezSiteByPath(string sitePath) {
+            if (_cheezSites != null) {
+                return _cheezSites.Find(x => x.SiteId.Equals(sitePath));
+            }
+            return null;
+        }
+
         public static CheezSite GetCheezSiteByID(int siteID) {
             return GetCheezSiteByID(siteID.ToString());
         }
@@ -305,7 +312,7 @@ namespace CheezburgerAPI {
                 _fetchCount = value;
             }
         }
-        #endregion
+        #endregion        
     }
     #region ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ BusinessObjects ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     public struct CheezItem {
