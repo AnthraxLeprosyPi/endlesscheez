@@ -28,15 +28,15 @@ namespace CheezburgerAPI {
                 WebClient client = new WebClient();
                 Stream webStream = client.OpenRead(streamUri);
                 string webResponseString = string.Empty;
-                using(StreamReader reader = new StreamReader(webStream)) {
+                using (StreamReader reader = new StreamReader(webStream)) {
                     webResponseString = reader.ReadToEnd().Replace("<?xml version=\"1.0\"?>\r\n", "<?xml version=\"1.0\"?>\r\n<CheezApiResponse>\r\n");
                     webResponseString += "</CheezApiResponse>\r\n";
                 }
-                using(XmlSanitizingStream reader = new XmlSanitizingStream(new MemoryStream(UTF8Encoding.Default.GetBytes(webResponseString)))) {
+                using (XmlSanitizingStream reader = new XmlSanitizingStream(new MemoryStream(UTF8Encoding.Default.GetBytes(webResponseString)))) {
                     System.Xml.Serialization.XmlSerializer xSerializer = new System.Xml.Serialization.XmlSerializer(typeof(CheezApiResponse));
                     return (CheezApiResponse)xSerializer.Deserialize(reader);
                 }
-            } catch(Exception e) {
+            } catch (Exception e) {
                 return new CheezApiResponse(new CheezFail(e));
             }
         }
@@ -46,24 +46,30 @@ namespace CheezburgerAPI {
         }
 
         private static CheezAPI ReadCheez(CheezApiRequestType reqestType, CheezSite cheezSite, int startIndex, int itemCount) {
-            string requestUri = cheezSite.SiteId.ToString();
-            requestUri += "/" + reqestType.ToString();            
-            if(startIndex < 1) {
+            if (startIndex < 1) {
                 startIndex = 1;
             }
-            requestUri += ("/" + startIndex.ToString());
-            
             //Cheezburger API permits retrieval of maximum 100 lols           
-            if(itemCount > 0) {
-                if(itemCount > 100) {
+            if (itemCount > 0) {
+                if (itemCount > 100) {
                     itemCount = 100;
-                } else if(itemCount < 1) {
+                } else if (itemCount < 1) {
                     itemCount = 1;
                 }
-                requestUri += "/" + itemCount.ToString();
             }
-            CheezApiResponse cheezApiResponse = ReadCheezAPI(requestUri);
-
+            Uri requestUri = new Uri(cheezSite.SiteId);
+            switch (reqestType) {
+                case CheezApiRequestType.Featured:
+                    requestUri = new Uri(requestUri, String.Format("/featured/{0}/{1}", startIndex, itemCount));
+                    break;
+                case CheezApiRequestType.Random:
+                    requestUri = new Uri(requestUri, String.Format("/featured/random/{0}", itemCount));
+                    break;
+                case CheezApiRequestType.Hai:                   
+                default:
+                    break;
+            }           
+            CheezApiResponse cheezApiResponse = ReadCheezAPI(requestUri.AbsoluteUri);
             return new CheezAPI(reqestType, cheezApiResponse);
         }
 
@@ -86,15 +92,28 @@ namespace CheezburgerAPI {
                 }
                 string webResponseString = string.Empty;
                 CheezSites cheezSites;
-                using(XmlSanitizingStream reader = new XmlSanitizingStream(sitesStream)) {
+                using (XmlSanitizingStream reader = new XmlSanitizingStream(sitesStream)) {
                     System.Xml.Serialization.XmlSerializer xSerializer = new System.Xml.Serialization.XmlSerializer(typeof(CheezSites));
                     cheezSites = (CheezSites)xSerializer.Deserialize(reader);
                 }
                 List<CheezSite> tmpList = cheezSites.Items[0].Site.ToList();
                 tmpList.Sort();
+                string tmpPath = Path.Combine(CheezManager.CheezRootFolder, "Logos");
+                if (!Directory.Exists(tmpPath)) {
+                    Directory.CreateDirectory(tmpPath);
+                }
+                foreach (CheezSite site in tmpList) {
+                    site.SquareLogoPath = Path.Combine(tmpPath, Path.GetFileName(site.SquareLogoUrl));
+                    if (!File.Exists(site.SquareLogoPath)) {
+                        try {
+                            client.DownloadFile(site.SquareLogoUrl, site.SquareLogoPath);
+                        } catch {
+                        }
+                    }
+                }
                 return tmpList;
-            } catch(Exception e) {
-                return null;
+            } catch (Exception e) {
+                throw e;
             }
         }
     }

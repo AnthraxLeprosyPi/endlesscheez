@@ -13,7 +13,7 @@ namespace CheezburgerAPI {
         private static object _lock = new object();
 
         protected BackgroundWorker backgroundCheezCollector;
-        
+
         public delegate void CheezFetchedEventHandler(List<CheezItem> cheezItems);
         public event CheezFetchedEventHandler CheezFetched;
 
@@ -22,19 +22,19 @@ namespace CheezburgerAPI {
 
         public delegate void CheezProgressHandler(int progressPercentage, string currentItem);
         public event CheezProgressHandler CheezProgress;
-        
+
         protected CheezSite _currentCheezSite;
         protected CheezAPI _cheezOnlineResponse;
         protected List<CheezItem> _listCheezItems;
-        
+
         private static T _instance = null;
         public static T Instance {
             get {
-                if(_instance == null) {
-                    lock(_lock) {
-                        if(_instance == null) {
+                if (_instance == null) {
+                    lock (_lock) {
+                        if (_instance == null) {
                             object obj = FormatterServices.GetUninitializedObject(typeof(T));
-                            if(obj != null) {
+                            if (obj != null) {
                                 _instance = obj as T;
                                 _instance.Init();
                             }
@@ -61,7 +61,7 @@ namespace CheezburgerAPI {
         }
 
         public virtual void CreateCheezCollection(CheezSite cheezSite, int fetchCount) {
-            if(!backgroundCheezCollector.IsBusy) {
+            if (!backgroundCheezCollector.IsBusy) {
                 _currentCheezSite = cheezSite;
                 backgroundCheezCollector.RunWorkerAsync();
             }
@@ -84,10 +84,10 @@ namespace CheezburgerAPI {
             CheezFailed(fail);
         }
 
-        protected virtual void CollectCheez(object sender, DoWorkEventArgs e){
-             _listCheezItems = new List<CheezItem>();
+        protected virtual void CollectCheez(object sender, DoWorkEventArgs e) {
+            _listCheezItems = new List<CheezItem>();
             try {
-                foreach(CheezAsset currentCheez in _cheezOnlineResponse.CheezAssets) {
+                foreach (CheezAsset currentCheez in _cheezOnlineResponse.CheezAssets) {
                     if ((backgroundCheezCollector.CancellationPending == true)) {
                         e.Cancel = true;
                         break;
@@ -96,7 +96,7 @@ namespace CheezburgerAPI {
                     string tmpFileName = string.Empty;
                     tmpFileName = Path.Combine(Path.Combine(CheezManager.CheezRootFolder, _currentCheezSite.CheezSiteID), Path.GetFileName(currentCheez.ImageUrl));
                     if (!File.Exists(tmpFileName)) {
-                            myWebClient.DownloadFile(currentCheez.ImageUrl, tmpFileName);                        
+                        myWebClient.DownloadFile(currentCheez.ImageUrl, tmpFileName);
                     }
                     System.IO.File.WriteAllText(Path.ChangeExtension(tmpFileName, ".txt"), currentCheez.Title);
                     _listCheezItems.Add(new CheezItem(currentCheez.Title, tmpFileName, DateTime.Parse(currentCheez.TimeStamp), currentCheez, _currentCheezSite));
@@ -113,7 +113,7 @@ namespace CheezburgerAPI {
         }
 
         private void CollectCheezProgress(object sender, ProgressChangedEventArgs e) {
-            CheezProgress(e.ProgressPercentage,((string)e.UserState != null) ? (string)e.UserState : String.Empty);
+            CheezProgress(e.ProgressPercentage, ((string)e.UserState != null) ? (string)e.UserState : String.Empty);
         }
     }
 }

@@ -5,21 +5,44 @@ using System.Text;
 using MediaPortal.GUI.Library;
 using MediaPortal.Util;
 using MediaPortal.Threading;
+using CheezburgerAPI;
 
 
 namespace EndlessCheez.Plugin {
-    class CheezListItem : GUIListItem{
+    internal class CheezListItem : GUIListItem{
 
-        CheezListItem(CheezSite cheezSite) : base(cheezSite.Name, cheezSite.Description, cheezSite.SiteId, true, null)  {
+        internal CheezListItem(CheezSite cheezSite)
+            : base(cheezSite.Name, cheezSite.Description, cheezSite.SiteId, true, null) {
+            Utils.SetDefaultIcons(this);            
             base.RetrieveArt = false;
-            base.OnRetrieveArt += new RetrieveCoverArtHandler(CheezListItem_OnRetrieveArt);           
+            base.Label3 = cheezSite.ShortDescription;
+            SetIcons(cheezSite.SquareLogoPath);
         }
 
-        //event which gets fired if the list,thumbnail, filmstrip or coverflow view needs the
-        //coverart for the specified item
-        void CheezListItem_OnRetrieveArt(GUIListItem item) {
-            
-           
-        } 
+        internal CheezListItem(CheezItem cheezItem): base(cheezItem.CheezTitle) {
+            Utils.SetDefaultIcons(this); 
+            base.Label2 = String.Format("[{0}]", cheezItem.CheezCreationDateTime.ToShortDateString());
+            base.Label3 = cheezItem.CheezAsset.FullText; 
+            base.Path = cheezItem.CheezAsset.AssetId;
+            base.DVDLabel = cheezItem.CheezAsset.ContentUrl;
+            base.FileInfo.CreationTime = cheezItem.CheezCreationDateTime;
+            base.IsFolder = false;
+            base.IsRemote = cheezItem.CheezAsset.AssetType.Contains("video");            
+            base.RetrieveArt = false;
+            SetIcons(cheezItem.CheezImagePath);
+        }
+
+        private void SetIcons(string localImagePath) {
+            IconImage = localImagePath;
+            IconImageBig = localImagePath;
+            ThumbnailImage = localImagePath;
+            RetrieveArt = true;
+            RefreshCoverArt();
+        }
     }
+
+    internal class BackListItem : GUIListItem {
+        public BackListItem() : base("..") { }
+    }
+
 }
