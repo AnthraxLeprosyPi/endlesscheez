@@ -14,7 +14,7 @@ namespace CheezburgerAPI {
 
         protected BackgroundWorker backgroundCheezCollector;
 
-        public delegate void CheezFetchedEventHandler(List<CheezItem> cheezItems);
+        public delegate void CheezFetchedEventHandler(CheezSite currentCheezSite, List<CheezItem> cheezItems);
         public event CheezFetchedEventHandler CheezFetched;
 
         public delegate void CheezFailedEventHandler(CheezFail _fail);
@@ -109,7 +109,7 @@ namespace CheezburgerAPI {
 
         protected virtual void NewCheezCollected(object sender, RunWorkerCompletedEventArgs e) {
             CheezProgress(100, String.Empty);
-            CheezFetched(_listCheezItems);
+            CheezFetched(_currentCheezSite, _listCheezItems);
         }
 
         private void CollectCheezProgress(object sender, ProgressChangedEventArgs e) {

@@ -40,6 +40,7 @@ namespace CheezburgerAPI {
 
         public static bool InitCheezManager(ICheezConsumer consumer, int fetchCount, string cheezRootFolder, bool createRootFolderStructure) {
             if(!_managerInitiated || consumer != _consumer || fetchCount != _fetchCount || cheezRootFolder != _cheezRootFolder) {
+               
                 _consumer = consumer;
                 try {
                     _fetchCount = fetchCount;
@@ -48,6 +49,7 @@ namespace CheezburgerAPI {
                     if(!Directory.Exists(_cheezRootFolder)) {
                         Directory.CreateDirectory(_cheezRootFolder);
                     }
+                    _cheezSites = CheezApiReader.ReadCheezSites();
                     if(createRootFolderStructure) {
                         CreateCheezFolderStructure(_cheezSites);
                     }
@@ -56,7 +58,7 @@ namespace CheezburgerAPI {
                     Global_CheezFailed(new CheezFail(e));
                 }
             }
-            _cheezSites = CheezApiReader.ReadCheezSites();
+            
             return _managerInitiated;
         }
 
@@ -154,13 +156,13 @@ namespace CheezburgerAPI {
         #endregion
 
         #region ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Events & Delegates ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        public delegate void CheezFetchedLocalEventHandler(List<CheezItem> cheezItems);
+        public delegate void CheezFetchedLocalEventHandler(CheezSite currentSite, List<CheezItem> cheezItems);
         public static event CheezFetchedLocalEventHandler EventLocalCheezFetched;
 
-        public delegate void CheezFetchedRandomEventHandler(List<CheezItem> cheezItems);
+        public delegate void CheezFetchedRandomEventHandler(CheezSite currentSite, List<CheezItem> cheezItems);
         public static event CheezFetchedRandomEventHandler EventRandomCheezFetched;
 
-        public delegate void CheezFetchedLatestEventHandler(List<CheezItem> cheezItems);
+        public delegate void CheezFetchedLatestEventHandler(CheezSite currentSite, List<CheezItem> cheezItems);
         public static event CheezFetchedLatestEventHandler EventLatestCheezFetched;
 
         public delegate void CheezFailedEventHandler(CheezFail _fail);
@@ -189,27 +191,27 @@ namespace CheezburgerAPI {
             }
         }
 
-        private static void Latest_CheezFetched(List<CheezItem> cheezItems) {
+        private static void Latest_CheezFetched(CheezSite currentSite, List<CheezItem> cheezItems) {
             if(cheezItems.Count > 0) {
                 _listLatestCheez.AddRange(cheezItems);
                 if(EventLatestCheezFetched != null) {
-                    EventLatestCheezFetched(cheezItems);
+                    EventLatestCheezFetched(currentSite, cheezItems);
                 }
-                _consumer.OnLatestCheezFetched(cheezItems);
+                _consumer.OnLatestCheezFetched(currentSite, cheezItems);
             } else {
                 Global_CheezFailed(new CheezFail("No Cheez available!", "please try again...", "CheezManager"));
             }
             _cheezBusyEvent.Set();
         }
 
-        private static void Random_CheezFetched(List<CheezItem> cheezItems) {
+        private static void Random_CheezFetched(CheezSite currentSite, List<CheezItem> cheezItems) {
             if(cheezItems.Count > 0) {
                 _listRandomCheez.AddRange(cheezItems);
                 if(EventRandomCheezFetched != null) {
-                    EventRandomCheezFetched(cheezItems);
+                    EventRandomCheezFetched(currentSite, cheezItems);
                 }
                 if(_consumer != null) {
-                    _consumer.OnRandomCheezFetched(cheezItems);
+                    _consumer.OnRandomCheezFetched(currentSite, cheezItems);
                 }
             } else {
                 Global_CheezFailed(new CheezFail("No Cheez available!", "please try again...", "CheezManager"));
@@ -217,14 +219,14 @@ namespace CheezburgerAPI {
             _cheezBusyEvent.Set();
         }
 
-        private static void Local_CheezFetched(List<CheezItem> cheezItems) {
+        private static void Local_CheezFetched(CheezSite currentSite, List<CheezItem> cheezItems) {
             if(cheezItems.Count > 0) {
                 _listLocalCheez.AddRange(cheezItems);
                 if(EventLocalCheezFetched != null) {
-                    EventLocalCheezFetched(cheezItems);
+                    EventLocalCheezFetched(currentSite, cheezItems);
                 }
                 if(_consumer != null) {
-                    _consumer.OnLocalCheezFetched(cheezItems);
+                    _consumer.OnLocalCheezFetched(currentSite, cheezItems);
                 }
             } else {
                 Global_CheezFailed(new CheezFail("No Cheez available!", "please try again...", "CheezManager"));

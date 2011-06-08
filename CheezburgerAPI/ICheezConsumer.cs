@@ -10,15 +10,15 @@ using System.Runtime.Serialization;
 
 namespace CheezburgerAPI {
     public interface ICheezConsumer {
-        
+
         void OnCheezOperationFailed(CheezFail fail);
 
         void OnCheezOperationProgress(int progressPercentage, string currentItem);
 
-        void OnLatestCheezFetched(List<CheezItem> cheezItems);
+        void OnLatestCheezFetched(CheezSite currentSite, List<CheezItem> cheezItems);
 
-        void OnRandomCheezFetched(List<CheezItem> cheezItems);
+        void OnRandomCheezFetched(CheezSite currentSite, List<CheezItem> cheezItems);
 
-        void OnLocalCheezFetched(List<CheezItem> cheezItems);       
+        void OnLocalCheezFetched(CheezSite currentSite, List<CheezItem> cheezItems);
     }
 }

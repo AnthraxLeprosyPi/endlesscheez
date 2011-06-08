@@ -29,7 +29,7 @@ namespace CheezburgerAPI {
                 Stream webStream = client.OpenRead(streamUri);
                 string webResponseString = string.Empty;
                 using (StreamReader reader = new StreamReader(webStream)) {
-                    webResponseString = reader.ReadToEnd().Replace("<?xml version=\"1.0\"?>\r\n", "<?xml version=\"1.0\"?>\r\n<CheezApiResponse>\r\n");
+                    webResponseString = reader.ReadToEnd().Replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n", "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<CheezApiResponse>\r\n");
                     webResponseString += "</CheezApiResponse>\r\n";
                 }
                 using (XmlSanitizingStream reader = new XmlSanitizingStream(new MemoryStream(UTF8Encoding.Default.GetBytes(webResponseString)))) {
@@ -57,19 +57,19 @@ namespace CheezburgerAPI {
                     itemCount = 1;
                 }
             }
-            Uri requestUri = new Uri(cheezSite.SiteId);
+            string requestUri = cheezSite.SiteId;
             switch (reqestType) {
                 case CheezApiRequestType.Featured:
-                    requestUri = new Uri(requestUri, String.Format("/featured/{0}/{1}", startIndex, itemCount));
+                    requestUri += String.Format("/featured/{0}/{1}", startIndex, itemCount);
                     break;
                 case CheezApiRequestType.Random:
-                    requestUri = new Uri(requestUri, String.Format("/featured/random/{0}", itemCount));
+                    requestUri += String.Format("featured/random/{0}", itemCount);
                     break;
-                case CheezApiRequestType.Hai:                   
+                case CheezApiRequestType.Hai:
                 default:
                     break;
-            }           
-            CheezApiResponse cheezApiResponse = ReadCheezAPI(requestUri.AbsoluteUri);
+            }
+            CheezApiResponse cheezApiResponse = ReadCheezAPI(requestUri);
             return new CheezAPI(reqestType, cheezApiResponse);
         }
 
@@ -104,7 +104,7 @@ namespace CheezburgerAPI {
                 }
                 foreach (CheezSite site in tmpList) {
                     site.SquareLogoPath = Path.Combine(tmpPath, Path.GetFileName(site.SquareLogoUrl));
-                    if (!File.Exists(site.SquareLogoPath)) {
+                    if (!File.Exists(site.SquareLogoPath) && !String.IsNullOrEmpty(site.SquareLogoUrl)) {
                         try {
                             client.DownloadFile(site.SquareLogoUrl, site.SquareLogoPath);
                         } catch {
