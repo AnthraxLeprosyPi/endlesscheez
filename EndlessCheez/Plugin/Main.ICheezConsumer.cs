@@ -33,16 +33,16 @@ namespace EndlessCheez.Plugin {
         }
 
 
-        public void OnLatestCheezFetched(List<CheezItem> cheezItems) {
-            ProcessAndDisplayNewCheez(cheezItems);
+        public void OnLatestCheezFetched(CheezSite currentSite, List<CheezItem> cheezItems) {
+            ProcessAndDisplayNewCheez(currentSite, cheezItems);
         }
 
-        public void OnRandomCheezFetched(List<CheezItem> cheezItems) {
-            ProcessAndDisplayNewCheez(cheezItems);
+        public void OnRandomCheezFetched(CheezSite currentSite, List<CheezItem> cheezItems) {
+            ProcessAndDisplayNewCheez(currentSite, cheezItems);
         }
 
-        public void OnLocalCheezFetched(List<CheezItem> cheezItems) {
-            ProcessAndDisplayNewCheez(cheezItems);
+        public void OnLocalCheezFetched(CheezSite currentSite, List<CheezItem> cheezItems) {
+            ProcessAndDisplayNewCheez(currentSite, cheezItems);
         }
 
         #endregion

@@ -26,8 +26,12 @@ namespace EndlessCheez.Plugin {
         /// </summary>
         public static void Load() {
             using (MediaPortal.Profile.Settings reader = new MediaPortal.Profile.Settings(MediaPortal.Configuration.Config.GetFile(MediaPortal.Configuration.Config.Dir.Config, "MediaPortal.xml"))) {
-                CheezRootFolder = reader.GetValue(PLUGIN_NAME, "CheezRootFolder");
-                FetchCount = reader.GetValueAsInt(PLUGIN_NAME, "FetchCount", FetchCount);
+                if (!String.IsNullOrEmpty(reader.GetValue(PLUGIN_NAME, "CheezRootFolder"))) {
+                    CheezRootFolder = reader.GetValue(PLUGIN_NAME, "CheezRootFolder");
+                }
+                if (reader.GetValueAsInt(PLUGIN_NAME, "FetchCount", FetchCount) > 0) {
+                    FetchCount = reader.GetValueAsInt(PLUGIN_NAME, "FetchCount", FetchCount);
+                }
             }
         }
 

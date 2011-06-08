@@ -11,9 +11,14 @@ using WindowPlugins;
 namespace EndlessCheez.Plugin {
     public partial class Main : WindowPluginBase {
 
+        public Main() {
+            GetID = Settings.PLUGIN_WINDOW_ID;
+        }
+
         #region Private Members
 
         private BackListItem BackItem { get; set; }
+        private Dictionary<CheezSite, List<CheezListItem>> CheezHistory { get; set; }
 
         #endregion
 
@@ -40,10 +45,15 @@ namespace EndlessCheez.Plugin {
             }
         }
 
+
         public override bool Init() {
             LoadSettings();
+            InitCheezManager(Settings.FetchCount, Settings.CheezRootFolder, true);
             BackItem = new BackListItem();
+            CheezHistory = new Dictionary<CheezSite, List<CheezListItem>>();
+            CheezManager.CheezSites.ForEach(site => CheezHistory.Add(site, new List<CheezListItem>()));
             CurrentLayout = GUIFacadeControl.Layout.CoverFlow;
+            SwitchLayout();
             GUIPropertyManager.SetProperty("#EndlessCheez.CurrentItem", " ");
             SlideShow = (GUISlideShow)GUIWindowManager.GetWindow((int)Window.WINDOW_SLIDESHOW);
             return Load(GUIGraphicsContext.Skin + @"\EndlessCheez.xml");
@@ -59,7 +69,6 @@ namespace EndlessCheez.Plugin {
         }
 
         protected override void OnPageLoad() {
-            InitCheezManager(Settings.FetchCount, Settings.CheezRootFolder, true);
             if (ctrlBackgroundImage != null) {
                 ctrlBackgroundImage.ImagePath = GUIGraphicsContext.Skin + @"\Media\EndlessCheez\Background.png";
             }
@@ -117,17 +126,20 @@ namespace EndlessCheez.Plugin {
                 case ContextMenu.ContextMenuButtons.BtnCheezSitesOverview:
                     DisplayCheezSitesOverview();
                     break;
+                case ContextMenu.ContextMenuButtons.BtnSwitchLayout:
+                    OnShowLayouts();
+                    break;
                 case ContextMenu.ContextMenuButtons.BtnBrowseLatestCheez:
-                    
+
                     break;
                 case ContextMenu.ContextMenuButtons.BtnBrowseLocalCheez:
-                    
+
                     break;
                 case ContextMenu.ContextMenuButtons.BtnBrowseRandomCheez:
-                    
+
                     break;
                 case ContextMenu.ContextMenuButtons.BtnBrowseMore:
-                    
+
                     break;
                 case ContextMenu.ContextMenuButtons.BtnSortAsc:
                     if (facadeLayout != null) {
@@ -256,12 +268,13 @@ namespace EndlessCheez.Plugin {
         private void DisplayCurrentCheezSite(CheezSite selectedCheezSite) {
             facadeLayout.Clear();
             facadeLayout.Add(BackItem);
+            CheezHistory[selectedCheezSite].ForEach(item => facadeLayout.Add(item));
             CollectLatestCheez(selectedCheezSite);
         }
 
 
-        private void ProcessAndDisplayNewCheez(List<CheezItem> cheezItems) {
-            HideProgressInfo();
+        private void ProcessAndDisplayNewCheez(CheezSite currentSite, List<CheezItem> cheezItems) {
+            HideProgressInfo();            
             foreach (CheezItem cheezItem in cheezItems) {
                 if (SlideShow != null && SlideShow.InSlideShow) {
                     SlideShow.Add(cheezItem.CheezImagePath);
@@ -269,7 +282,10 @@ namespace EndlessCheez.Plugin {
                 CheezListItem tmpItem = new CheezListItem(cheezItem);
                 tmpItem.OnItemSelected += new GUIListItem.ItemSelectedHandler(OnItemSelected);
                 facadeLayout.Add(tmpItem);
+                CheezHistory[currentSite].Add(tmpItem);
             }
+            facadeLayout.NeedRefresh();
+            facadeLayout.RefreshCoverArt();
             facadeLayout.DoUpdate();
         }
 
@@ -334,16 +350,16 @@ namespace EndlessCheez.Plugin {
         private void ShowProgressInfo() {
             GUIWaitCursor.Show();
             GUIPropertyManager.SetProperty("#EndlessCheez.CurrentItem", " ");
-            ctrlProgressBar.IsVisible = true;
-            lblProgressLabel.IsVisible = true;
-            ctrlProgressBar.Percentage = 0;
+            //ctrlProgressBar.IsVisible = true;
+            //lblProgressLabel.IsVisible = true;
+            //ctrlProgressBar.Percentage = 0;
         }
 
         private void HideProgressInfo() {
             GUIWaitCursor.Hide();
-            ctrlProgressBar.IsVisible = false;
-            lblProgressLabel.IsVisible = false;
-            ctrlProgressBar.Percentage = 100;
+            //ctrlProgressBar.IsVisible = false;
+            //lblProgressLabel.IsVisible = false;
+            //ctrlProgressBar.Percentage = 100;
         }
 
         #endregion

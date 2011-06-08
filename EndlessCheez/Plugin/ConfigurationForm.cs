@@ -49,6 +49,8 @@ namespace EndlessCheez.Plugin {
         }
 
         void ConfigurationForm_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e) {
+            Settings.CheezRootFolder = textBoxCheezRootFolder.Text;
+            Settings.FetchCount = (int)numericUpDownFetchCount.Value;
             Settings.Save();
         }
 
