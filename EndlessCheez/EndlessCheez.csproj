@@ -64,7 +64,7 @@
     <Compile Include="Plugin\ConfigurationForm.Designer.cs">
       <DependentUpon>ConfigurationForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Plugin\ContextMenu.cs" />
+    <Compile Include="Plugin\Dialogs.cs" />
     <Compile Include="Plugin\Main.ICheezConsumer.cs" />
     <Compile Include="Plugin\Main.ICheezCollector.cs" />
     <Compile Include="Plugin\Main.Window.cs" />

@@ -22,7 +22,7 @@ namespace EndlessCheez.Plugin {
         }
 
         public void CollectLatestCheez(CheezSite cheezSite) {
-            ShowProgressInfo();
+            Dialogs.ShowProgressDialog(cheezSite.Name);
             Thread collectLatestCheez = new Thread(delegate() {
                 CheezManager.CollectLatestCheez(cheezSite);
             });
@@ -30,7 +30,7 @@ namespace EndlessCheez.Plugin {
         }
 
         public void CollectRandomCheez(CheezSite cheezSite) {
-            ShowProgressInfo();
+            Dialogs.ShowProgressDialog(cheezSite.Name);
             Thread collectRandomCheez = new Thread(delegate() {
                 CheezManager.CollectRandomCheez(cheezSite);
             });
@@ -38,7 +38,7 @@ namespace EndlessCheez.Plugin {
         }
 
         public void CollectLocalCheez(CheezSite cheezSite) {
-            ShowProgressInfo();
+            Dialogs.ShowProgressDialog(cheezSite.Name);
             Thread collectLocalCheez = new Thread(delegate() {
                 CheezManager.CollectLocalCheez(cheezSite);
             });
@@ -46,31 +46,10 @@ namespace EndlessCheez.Plugin {
         }
 
         public void CancelCheezCollection() {
-            HideProgressInfo();
+            Dialogs.HideProgressDialog();
             CheezManager.CancelCheezCollection();
         }
 
-        #endregion
-
-        /// <summary>Implements ascending sort algorithm</summary>
-        class CheezComparerDateAsc : IComparer<GUIListItem> {
-            #region IComparer<GUIListItem> Member
-
-            public int Compare(GUIListItem x, GUIListItem y) {
-                return DateTime.Compare(x.FileInfo.CreationTime, y.FileInfo.CreationTime);
-            }
-
-            #endregion
-        }
-
-        class CheezComparerDateDesc : IComparer<GUIListItem> {
-            #region IComparer<GUIListItem> Member
-
-            public int Compare(GUIListItem x, GUIListItem y) {
-                return DateTime.Compare(y.FileInfo.CreationTime, x.FileInfo.CreationTime);
-            }
-
-            #endregion
-        }
+        #endregion       
     }
 }

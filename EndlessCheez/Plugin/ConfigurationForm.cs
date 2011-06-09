@@ -46,11 +46,13 @@ namespace EndlessCheez.Plugin {
             Settings.Load();
             textBoxCheezRootFolder.Text = Settings.CheezRootFolder;
             numericUpDownFetchCount.Value = Settings.FetchCount;
+            checkBoxDeleteOnExit.Checked = Settings.DeleteLocalCheezOnExit;
         }
 
         void ConfigurationForm_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e) {
             Settings.CheezRootFolder = textBoxCheezRootFolder.Text;
             Settings.FetchCount = (int)numericUpDownFetchCount.Value;
+            Settings.DeleteLocalCheezOnExit = checkBoxDeleteOnExit.Checked;
             Settings.Save();
         }
 

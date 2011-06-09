@@ -28,6 +28,7 @@ namespace EndlessCheez.Plugin {
             this.button1 = new System.Windows.Forms.Button();
             this.numericUpDownFetchCount = new System.Windows.Forms.NumericUpDown();
             this.labelFetchCount = new System.Windows.Forms.Label();
+            this.checkBoxDeleteOnExit = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFetchCount)).BeginInit();
             this.SuspendLayout();
             // 
@@ -73,11 +74,23 @@ namespace EndlessCheez.Plugin {
             this.labelFetchCount.TabIndex = 4;
             this.labelFetchCount.Text = "Fetch n items ahead:";
             // 
+            // checkBoxDeleteOnExit
+            // 
+            this.checkBoxDeleteOnExit.AutoSize = true;
+            this.checkBoxDeleteOnExit.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBoxDeleteOnExit.Location = new System.Drawing.Point(4, 58);
+            this.checkBoxDeleteOnExit.Name = "checkBoxDeleteOnExit";
+            this.checkBoxDeleteOnExit.Size = new System.Drawing.Size(189, 17);
+            this.checkBoxDeleteOnExit.TabIndex = 5;
+            this.checkBoxDeleteOnExit.Text = "Delete downloaded Images on exit";
+            this.checkBoxDeleteOnExit.UseVisualStyleBackColor = true;
+            // 
             // ConfigurationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(407, 318);
+            this.Controls.Add(this.checkBoxDeleteOnExit);
             this.Controls.Add(this.labelFetchCount);
             this.Controls.Add(this.numericUpDownFetchCount);
             this.Controls.Add(this.button1);
@@ -99,6 +112,7 @@ namespace EndlessCheez.Plugin {
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.NumericUpDown numericUpDownFetchCount;
         private System.Windows.Forms.Label labelFetchCount;
+        private System.Windows.Forms.CheckBox checkBoxDeleteOnExit;
 
     }
 }
