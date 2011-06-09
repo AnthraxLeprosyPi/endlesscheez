@@ -14,22 +14,13 @@ namespace EndlessCheez.Plugin {
         #region ICheezConsumer Member
 
         public void OnCheezOperationFailed(CheezFail fail) {
-            HideProgressInfo();
-            ShowNotifyDialog(10, fail.ToString());
-            DisplayCheezSitesOverview();
+            Dialogs.HideProgressDialog();
+            Dialogs.ShowNotifyDialog(10, fail.ToString());            
+            CollectLocalCheez(CheezManager.CurrentCheezSite);
         }
 
         public void OnCheezOperationProgress(int progressPercentage, string currentItem) {
-            if (ctrlProgressBar != null) {
-                if (progressPercentage >= 0 && progressPercentage <= 100) {
-                    ctrlProgressBar.Percentage = progressPercentage;
-                    if (String.IsNullOrEmpty(currentItem)) {
-                        currentItem = " ";
-                    }
-                    GUIPropertyManager.SetProperty("#EndlessCheez.CurrentItem", String.Format("{0} ({1}%)", currentItem, progressPercentage.ToString()));
-                }
-            }
-            this.Process();
+            Dialogs.UpdateProgressDialog(currentItem, progressPercentage);         
         }
 
 

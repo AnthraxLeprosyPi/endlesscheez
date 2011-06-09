@@ -18,6 +18,8 @@ namespace CheezburgerAPI {
         private static AutoResetEvent _cheezBusyEvent = new AutoResetEvent(true);
         private static ICheezConsumer _consumer;
 
+        public static CheezSite CurrentCheezSite { get; set; }
+
         public enum CheezCollectionTypes {
             Local,
             Random,
@@ -134,6 +136,7 @@ namespace CheezburgerAPI {
         }
 
         private static void CollectCheez(CheezCollectionTypes cheezType, CheezSite cheezSite) {
+            CurrentCheezSite = cheezSite;
             if(!_managerInitiated) {
                 Global_CheezFailed(new CheezFail("CheezManager not initiated!", "Call CheezManager.InitCheezManager() first!", "InitFailure"));
             }
@@ -315,6 +318,8 @@ namespace CheezburgerAPI {
             }
         }
         #endregion        
+    
+        
     }
     #region ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ BusinessObjects ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     public struct CheezItem {
