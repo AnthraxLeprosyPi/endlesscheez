@@ -28,7 +28,7 @@ namespace EndlessCheez.Plugin {
             base.FileInfo = new FileInformation();
             base.FileInfo.CreationTime = cheezItem.CheezCreationDateTime;
             base.IsFolder = false;
-            base.IsRemote = cheezItem.CheezAsset.AssetType.Contains("video");            
+            base.IsRemote = cheezItem.CheezAsset.AssetType.Contains("Video");
             base.RetrieveArt = false;
             SetIcons(cheezItem.CheezImagePath);
         }

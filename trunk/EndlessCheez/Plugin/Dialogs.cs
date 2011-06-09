@@ -86,7 +86,7 @@ namespace EndlessCheez.Plugin {
             contextMenu.DoModal(GUIWindowManager.ActiveWindow);
             return (ContextMenuButtons)contextMenu.SelectedId;
         }
-        
+
 
         private class ContextMenuItem : GUIListItem {
 
@@ -153,32 +153,29 @@ namespace EndlessCheez.Plugin {
                 }
             }
         }
-        
-        private static GUIDialogProgress DialogProgress = new GUIDialogProgress();
+
+        private static GUIDialogProgress DialogProgress = (GUIDialogProgress)GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_DIALOG_PROGRESS);
         public static void ShowProgressDialog(string headerTitle) {
             DialogProgress.Reset();
             DialogProgress.SetHeading(headerTitle);
             DialogProgress.DisableCancel(true);
             DialogProgress.SetLine(1, "Currently Downloading:");
             DialogProgress.Percentage = 0;
+            DialogProgress.DisplayProgressBar = true;
             DialogProgress.ShowWaitCursor = true;
-            DialogProgress.StartModal(GUIWindowManager.ActiveWindow);            
+            DialogProgress.StartModal(GUIWindowManager.ActiveWindow);
             DialogProgress.Progress();
         }
 
-        public static void UpdateProgressDialog(string currentItem, int progressPercentage) {
-            if (!DialogProgress.IsVisible) {
-                ShowProgressDialog(currentItem);
-            }
+        public static void UpdateProgressDialog(string currentItem, int progressPercentage) {           
             DialogProgress.SetPercentage(progressPercentage);
             DialogProgress.SetLine(2, currentItem);
             DialogProgress.Progress();
         }
 
         public static void HideProgressDialog() {
-            if (DialogProgress.IsVisible) {
-                DialogProgress.Close();
-            }
+            DialogProgress.ShowWaitCursor = false;
+            DialogProgress.Close();
         }
 
         #endregion

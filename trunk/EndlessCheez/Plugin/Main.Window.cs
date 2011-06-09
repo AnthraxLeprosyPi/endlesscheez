@@ -52,16 +52,10 @@ namespace EndlessCheez.Plugin {
 
 
         public override bool Init() {
-            LoadSettings();
-            InitCheezManager(Settings.FetchCount, Settings.CheezRootFolder, true);
-            BackItem = new BackListItem();
-            CheezHistory = new Dictionary<CheezSite, List<CheezListItem>>();
-            CheezManager.CheezSites.ForEach(site => CheezHistory.Add(site, new List<CheezListItem>()));
-            CurrentLayout = GUIFacadeControl.Layout.CoverFlow;
-            SwitchLayout();
+            LoadSettings();           
+            BackItem = new BackListItem();           
             GUIPropertyManager.SetProperty("#EndlessCheez.CurrentItem", " ");
-            SlideShow = (GUISlideShow)GUIWindowManager.GetWindow((int)Window.WINDOW_SLIDESHOW);
-            PluginState = PluginStates.CheezSiteOverview;
+            SlideShow = (GUISlideShow)GUIWindowManager.GetWindow((int)Window.WINDOW_SLIDESHOW);            
             return Load(GUIGraphicsContext.Skin + @"\EndlessCheez.xml");            
         }
 
@@ -78,12 +72,22 @@ namespace EndlessCheez.Plugin {
         }
 
         protected override void OnPageLoad() {
+            GUIWaitCursor.Init();
+            GUIWaitCursor.Show();
+            InitCheezManager(Settings.FetchCount, Settings.CheezRootFolder, true);
+            CheezHistory = new Dictionary<CheezSite, List<CheezListItem>>();
+            CheezManager.CheezSites.ForEach(site => CheezHistory.Add(site, new List<CheezListItem>()));
+            CurrentLayout = GUIFacadeControl.Layout.CoverFlow;
+            PluginState = PluginStates.CheezSiteOverview;
+            SwitchLayout();
+            GUIWaitCursor.Hide();
             if (ctrlBackgroundImage != null) {
                 ctrlBackgroundImage.ImagePath = GUIGraphicsContext.Skin + @"\Media\EndlessCheez\Background.png";
             }
             if (facadeLayout != null) {
                 DisplayCheezSitesOverview();
             }
+            
             base.OnPageLoad();
         }
 
@@ -93,7 +97,7 @@ namespace EndlessCheez.Plugin {
         }
 
         protected override void OnShowViews() {
-
+            
         }
 
         protected override bool AllowLayout(GUIFacadeControl.Layout layout) {
@@ -119,21 +123,26 @@ namespace EndlessCheez.Plugin {
                     GUIWindowManager.ActivateWindow(GetID);        
                     
                 } else {
-                    switch (PluginState) {
-                        case PluginStates.CheezSiteOverview:
-                            base.OnAction(action);
-                            break;
+                    switch (PluginState) {                        
                         case PluginStates.CheezSiteSelected:
                         case PluginStates.SlideShowRunning:                            
                         default:
                             DisplayCheezSitesOverview();
+                            return;
+                            break;
+                        case PluginStates.CheezSiteOverview:                            
                             break;
                     }                
                 }
-            }           
+            }
+            base.OnAction(action);
         }
 
         protected override void OnClick(int iItem) {
+            MediaPortal.Player.g_Player.FullScreen = true;
+            MediaPortal.Player.g_Player.PlayVideoStream(@"http://www.viddler.com/explore/cheezburger/videos/1682/?v=fda21215");
+            GUIGraphicsContext.IsFullScreenVideo = true;
+            GUIWindowManager.ActivateWindow((int)GUIWindow.Window.WINDOW_FULLSCREEN_VIDEO);
             if (facadeLayout[iItem] is BackListItem) {
                 DisplayCheezSitesOverview();
             } else if (facadeLayout[iItem] is CheezListItem) {
@@ -142,6 +151,7 @@ namespace EndlessCheez.Plugin {
                 } else {
                     if (facadeLayout[iItem].IsRemote) {
                         MediaPortal.Player.g_Player.PlayVideoStream(facadeLayout[iItem].DVDLabel, facadeLayout[iItem].ToString());
+                        
                     } else {
                         OnSlideShowCurrent(facadeLayout[iItem].IconImageBig);
                     }
@@ -206,10 +216,12 @@ namespace EndlessCheez.Plugin {
         #region Plugin Event Handlers
 
         private void OnItemSelected(GUIListItem item, GUIControl parent) {
-            if (parent.GetID == facadeLayout.GetID) {
-                if (!CheezManager.IsBusy) {
-                    if (facadeLayout.SelectedListItemIndex == facadeLayout.Count - 1) {
-                        CollectLatestCheez(null);
+            if (PluginState == PluginStates.CheezSiteSelected) {
+                if (parent.GetID == facadeLayout.GetID) {
+                    if (!CheezManager.IsBusy) {
+                        if (facadeLayout.SelectedListItemIndex == facadeLayout.Count - 1) {
+                            CollectLatestCheez(CheezManager.CurrentCheezSite);
+                        }
                     }
                 }
             }
@@ -300,7 +312,9 @@ namespace EndlessCheez.Plugin {
             facadeLayout.Clear();
             facadeLayout.Add(BackItem);
             CheezHistory[selectedCheezSite].ForEach(item => facadeLayout.Add(item));
-            CollectLatestCheez(selectedCheezSite);
+            if (facadeLayout.Count <= 1) {
+                CollectLatestCheez(selectedCheezSite);
+            }
         }
 
 
