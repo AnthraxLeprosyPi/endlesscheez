@@ -94,7 +94,7 @@ namespace CheezburgerAPI {
                     }
                     WebClient myWebClient = new WebClient();
                     string tmpFileName = string.Empty;
-                    tmpFileName = Path.Combine(Path.Combine(CheezManager.CheezRootFolder, _currentCheezSite.CheezSiteID), Path.GetFileName(currentCheez.ImageUrl));
+                    tmpFileName = Path.Combine(Path.Combine(CheezManager.CheezRootFolder, _currentCheezSite.CheezSiteID), GetSafeFilenameFromUrl(currentCheez.ImageUrl, '_'));
                     if (!File.Exists(tmpFileName)) {
                         myWebClient.DownloadFile(currentCheez.ImageUrl, tmpFileName);
                     }
@@ -114,6 +114,13 @@ namespace CheezburgerAPI {
 
         private void CollectCheezProgress(object sender, ProgressChangedEventArgs e) {
             CheezProgress(e.ProgressPercentage, ((string)e.UserState != null) ? (string)e.UserState : String.Empty);
+        }
+
+        public static string GetSafeFilenameFromUrl(string url, char replaceChar) {
+            foreach (char c in System.IO.Path.GetInvalidFileNameChars()) {
+                url = url.Replace(c, replaceChar);
+            }
+            return url;
         }
     }
 }
