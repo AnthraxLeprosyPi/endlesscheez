@@ -103,7 +103,7 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>REM xcopy "$(TargetPath)" "..\..\..\MpiRelease" /Y
-xcopy "$(TargetPath)" "C:\Program Files (x86)\Team MediaPortal\MediaPortal\plugins\Windows" /Y
+REM xcopy "$(TargetPath)" "C:\Program Files (x86)\Team MediaPortal\MediaPortal\plugins\Windows" /Y
 REM "C:\Programme\Team MediaPortal\MediaPortal\MediaPortal.exe"</PostBuildEvent>
   </PropertyGroup>
 </Project>

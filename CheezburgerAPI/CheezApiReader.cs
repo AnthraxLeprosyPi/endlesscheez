@@ -97,7 +97,7 @@ namespace CheezburgerAPI {
                     cheezSites = (CheezSites)xSerializer.Deserialize(reader);
                 }
                 List<CheezSite> tmpList = cheezSites.Items[0].Site.ToList();
-                tmpList.Sort();
+                tmpList.Sort();                
                 string tmpPath = Path.Combine(CheezManager.CheezRootFolder, "Logos");
                 if (!Directory.Exists(tmpPath)) {
                     Directory.CreateDirectory(tmpPath);
@@ -107,16 +107,24 @@ namespace CheezburgerAPI {
                     if (!File.Exists(site.SquareLogoPath) && !String.IsNullOrEmpty(site.SquareLogoUrl)) {
                         try {
                             client.DownloadFile(site.SquareLogoUrl, site.SquareLogoPath);
+                            if (site.SquareLogoPath.Contains("cheeznet")) {
+                                CheezLogo = site.SquareLogoPath;
+                            }
                         } catch {
                         }
                     }
                 }
+                tmpList.RemoveAll(x => x.SiteCategory.Equals("STORE & CO."));
                 return tmpList;
             } catch (Exception e) {
                 throw e;
             }
         }
+
+        public static string CheezLogo { get; private set; }
     }
+
+   
 
     internal class CheezAPI {
         private CheezApiRequestType _requestType;

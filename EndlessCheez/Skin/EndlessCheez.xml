@@ -1,194 +1,223 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <window>
- <import>common.window.xml</import>
-
   <id>300382</id>
   <defaultcontrol>50</defaultcontrol>
   <allowoverlay>yes</allowoverlay>
   <disabletopbar>yes</disabletopbar>
   <controls>
+    <import>common.window.xml</import>    
+    <import>common.time.xml</import>
     <control>
-      <description>action menu</description>
+      <description>Background</description>
+      <type>image</type>
+      <id>1</id>
+      <texture>Background.png</texture>
+      <width>1280</width>
+      <height>720</height>
+    </control>
+    <control>
       <type>actiongroup</type>
-      <visible>!Control.HasFocus(200)</visible>
-      <dimColor>00ffffff</dimColor>
-      <width>263</width>
-      <height>473</height>
+      <description>action menu</description>
+      <defaultcontrol>2</defaultcontrol>
+      <onexit>50</onexit>
       <buttonX>0</buttonX>
       <buttonY>0</buttonY>
-      <buttonwidth>60</buttonwidth>
-      <buttonheight>576</buttonheight>
-      <onexit>2</onexit>
-      <defaultcontrol>500</defaultcontrol>
-      <textureFocus>Action_focus.png</textureFocus>
+      <buttonwidth>106</buttonwidth>
+      <buttonheight>720</buttonheight>
+      <textureFocus>-</textureFocus>
       <textureNoFocus>Action_nofocus.png</textureNoFocus>
-      <animation effect="Slide" reversible="FALSE" start="-300,0" time="450">Visible</animation>
+      <width>568</width>
+      <height>900</height>
+      <dimColor>00ffffff</dimColor>
       <control>
         <type>image</type>
-        <posX>15</posX>
-        <posY>63</posY>
-        <width>263</width>
-        <height>473</height>
+        <posX>26</posX>
+        <posY>78</posY>
+        <width>367</width>
+        <height>591</height>
         <texture>Backslide.png</texture>
         <colorDiffuse>fffffffff</colorDiffuse>
+        <visible>!Control.HasFocus(50)</visible>
+        <animation effect="slide" time="70" start="-300,0" reversible="false">visible</animation>
+        <animation effect="slide" time="70" end="-300,0" reversible="false">hidden</animation>
       </control>
       <control>
         <description>group element</description>
         <type>group</type>
-        <visible>!Control.HasFocus(200)</visible>
-        <posX>40</posX>
-        <posY>97</posY>
-        <layout>StackLayout</layout>
-        <animation effect="Slide" reversible="FALSE" start="-300,0" time="450">Visible</animation>
-        <animation effect="Slide" end="-300,0" reversible="FALSE" time="450">Hidden</animation>
+        <animation effect="slide" time="70" start="-300,0" reversible="false">visible</animation>
+        <animation effect="slide" time="70" end="-300,0" reversible="false">hidden</animation>
+        <visible>!Control.HasFocus(50)</visible>
         <control>
-          <id>500</id>
-          <description>BrowseLatestCheez</description>
-          <type>button</type>
-          <onup>504</onup>
-          <ondown>501</ondown>
-          <label>Browse Latest Online Cheez..</label>
+          <description>caption of the selected item</description>
+          <type>label</type>
+          <overlay>yes</overlay>
+          <id>0</id>
+          <posX>71</posX>
+          <posY>596</posY>
+          <width>285</width>
+          <height>93</height>
+          <font>font11</font>
+          <label>#Play.Current.Title</label>
+          <visible>!Control.HasFocus(50)+player.hasmedia</visible>
         </control>
         <control>
-          <id>501</id>
-          <description>BrowseRandomCheez</description>
-          <type>button</type>
-          <onup>500</onup>
-          <ondown>502</ondown>
-          <label>Browse Random Online Cheez..</label>
+          <description>caption of the selected item</description>
+          <type>label</type>
+          <overlay>yes</overlay>
+          <id>0</id>
+          <posX>71</posX>
+          <posY>546</posY>
+          <width>285</width>
+          <height>93</height>
+          <font>font11</font>
+          <label>#Play.Current.Artist</label>
+          <visible>!Control.HasFocus(50)+player.hasmedia</visible>
         </control>
         <control>
-          <id>502</id>
-          <description>BrowseLocalCheez</description>
-          <type>button</type>
-          <onup>501</onup>
-          <ondown>503</ondown>
-          <label>Browse locally available Cheez..</label>
+          <description>caption of the selected item</description>
+          <type>label</type>
+          <overlay>yes</overlay>
+          <id>0</id>
+          <posX>71</posX>
+          <posY>571</posY>
+          <width>285</width>
+          <height>93</height>
+          <font>font11</font>
+          <label>#Play.Current.Album</label>
+          <visible>!Control.HasFocus(50)+player.hasmedia</visible>
         </control>
         <control>
-          <id>503</id>
-          <description>ShowSlideShowCurrent</description>
-          <type>button</type>
-          <onup>502</onup>
-          <ondown>504</ondown>
-          <label>Start Slideshow (current items)</label>
+          <description>caption of the selected item2</description>
+          <allowoverlay>yes</allowoverlay>
+          <type>label</type>
+          <overlay>yes</overlay>
+          <id>0</id>
+          <posX>217</posX>
+          <posY>473</posY>
+          <width>355</width>
+          <height>87</height>
+          <font>font16</font>
+          <align>left</align>
+          <textcolor>80ffffff</textcolor>
+          <label>#currentplaytime</label>
+          <visible>!Control.HasFocus(50)+player.hasmedia</visible>
         </control>
         <control>
-          <id>504</id>
-          <description>ShowSlideShowAllLocal</description>
-          <type>button</type>
-          <onup>503</onup>
-          <ondown>500</ondown>
-          <label>Start Slideshow (all local items)</label>
+          <description>music logo</description>
+          <type>image</type>
+          <overlay>yes</overlay>
+          <id>600</id>
+          <posX>71</posX>
+          <posY>426</posY>
+          <width>121</width>
+          <height>121</height>
+          <keepaspectratio>no</keepaspectratio>
+          <centered>yes</centered>
+          <texture flipY="true" diffuse="Thumb_Mask.png" mask="Picturethumbmask.png">#Play.Current.Thumb</texture>
+          <visible>!Control.HasFocus(50)+player.hasmedia</visible>
+        </control>
+        <control>
+          <description>music logo</description>
+          <type>image</type>
+          <overlay>yes</overlay>
+          <id>1</id>
+          <posX>71</posX>
+          <posY>426</posY>
+          <width>121</width>
+          <height>121</height>
+          <texture flipY="true" diffuse="Thumb_Mask.png" mask="Picturethumbmask.png">Picturethumbframe.png</texture>
+          <visible>!Control.HasFocus(50) + player.hasmedia + control.hasthumb(600)</visible>
+        </control>
+        <control>
+          <description>Progress background</description>
+          <type>image</type>
+          <id>1</id>
+          <posX>60</posX>
+          <posY>626</posY>
+          <width>250</width>
+          <height>27</height>
+          <texture>osd_progress_background.png</texture>
+          <visible>!Control.HasFocus(50)+player.hasmedia</visible>
+        </control>
+        <control>
+          <description>progress bar</description>
+          <type>progress</type>
+          <id>0</id>
+          <posX>62</posX>
+          <posY>631</posY>
+          <width>250</width>
+          <height>20</height>
+          <offset>0</offset>
+          <height>20</height>
+          <innerheight>20</innerheight>
+          <texturebg>-</texturebg>
+          <lefttexture>-</lefttexture>
+          <midtexture>osd_progress_mid.png</midtexture>
+          <righttexture>-</righttexture>
+          <label>#percentage</label>
+          <visible>!Control.HasFocus(50)+player.hasmedia</visible>
+        </control>
+        <control>
+          <description>group element</description>
+          <type>group</type>
+          <animation effect="slide" time="70" start="-300,0" reversible="false">visible</animation>
+          <animation effect="slide" time="70" end="-300,0" reversible="false">hidden</animation>
+          <posX>71</posX>
+          <posY>121</posY>
+          <layout>StackLayout</layout>
+          <visible>!Control.HasFocus(50)</visible>
+          <control>
+            <description>View-As</description>
+            <type>button</type>
+            <id>2</id>
+            <label>100</label>
+            <onright>50</onright>
+            <onup>17</onup>
+            <ondown>3</ondown>
+          </control>         
+          <!--<control>
+            <id>500</id>
+            <description>BrowseLatestCheez</description>
+            <type>button</type>
+            <onup>504</onup>
+            <ondown>501</ondown>
+            <label>Browse Latest Online Cheez..</label>
+          </control>
+          <control>
+            <id>501</id>
+            <description>BrowseRandomCheez</description>
+            <type>button</type>
+            <onup>500</onup>
+            <ondown>502</ondown>
+            <label>Browse Random Online Cheez..</label>
+          </control>
+          <control>
+            <id>502</id>
+            <description>BrowseLocalCheez</description>
+            <type>button</type>
+            <onup>501</onup>
+            <ondown>503</ondown>
+            <label>Browse locally available Cheez..</label>
+          </control>-->
+          <control>
+            <id>503</id>
+            <description>ShowSlideShowCurrent</description>
+            <type>button</type>
+            <onup>502</onup>
+            <ondown>504</ondown>
+            <label>Start Slideshow (for selected Site)</label>
+          </control>
+          <control>
+            <id>504</id>
+            <description>ShowSlideShowAllLocal</description>
+            <type>button</type>
+            <onup>503</onup>
+            <ondown>500</ondown>
+            <label>Start Slideshow (all local Lolz)</label>
+          </control>
         </control>
       </control>
     </control>
-    <control>
-      <id>600</id>
-      <description>BackGround</description>
-      <type>image</type>
-      <posX>0</posX>
-      <posY>0</posY>
-      <width>720</width>
-      <height>576</height>
-      <texture>Background.png</texture>
-    </control>
-    <control>
-      <id>403</id>
-      <description>text label</description>
-      <type>label</type>
-      <posX>498</posX>
-      <posY>7</posY>
-      <font>font16</font>
-      <textcolor>ffffffff</textcolor>
-      <align>RIGHT</align>
-      <label>GUIProgressControl (progress)</label>
-    </control>
-    <control>
-      <id>402</id>
-      <type>progress</type>
-      <visible>no</visible>
-      <posX>308</posX>
-      <posY>48</posY>
-      <width>278</width>
-    </control>
-    <control>
-      <description>composite control consisting of a list control and a thumbnail panel</description>
-      <type>facadeview</type>
-      <id>50</id>
-      <control>
-        <id>50</id>
-        <description>listcontrol</description>
-        <type>listcontrol</type>
-        <ondown>403</ondown>
-        <onup>401</onup>
-        <posX>100</posX>
-        <posY>100</posY>
-        <width>500</width>
-        <height>350</height>
-        <scrollOffset>2</scrollOffset>
-      </control>
-      <control>
-        <id>50</id>
-        <description>Thumbnail Panel</description>
-        <type>thumbnailpanel</type>
-        <onup>401</onup>
-        <ondown>403</ondown>
-        <posX>100</posX>
-        <posY>100</posY>
-        <width>500</width>
-        <height>350</height>
-        <scrollOffset>0</scrollOffset>
-        <textureWidthBig>96</textureWidthBig>
-        <textureHeightBig>96</textureHeightBig>
-        <itemWidthBig>130</itemWidthBig>
-        <thumbWidthBig>100</thumbWidthBig>
-        <thumbWidthBig>82</thumbWidthBig>
-        <thumbHeightBig>82</thumbHeightBig>
-        <thumbPosXBig>6</thumbPosXBig>
-        <thumbPosYBig>6</thumbPosYBig>
-        <thumbZoom>no</thumbZoom>
-        <enableFocusZoom>no</enableFocusZoom>
-        <zoomXPixels>30</zoomXPixels>
-        <zoomYPixels>30</zoomYPixels>
-        <hideUnfocusTexture>no</hideUnfocusTexture>
-        <renderFocusText>no</renderFocusText>
-        <renderUnfocusText>yes</renderUnfocusText>
-      </control>
-      <control>
-        <id>50</id>
-        <description>Filmstrip view</description>
-        <type>filmstrip</type>
-        <onup>401</onup>
-        <ondown>403</ondown>
-        <onright>403</onright>
-        <dimColor>90ffffff</dimColor>
-        <posX>100</posX>
-        <posY>100</posY>
-        <width>500</width>
-        <height>350</height>
-        <scrollOffset>1</scrollOffset>
-        <thumbWidth>142</thumbWidth>
-        <thumbHeight>192</thumbHeight>
-        <thumbPosX>4</thumbPosX>
-        <thumbPosY>4</thumbPosY>
-        <itemWidth>150</itemWidth>
-        <itemHeight>200</itemHeight>
-        <textureWidth>150</textureWidth>
-        <textureHeight>200</textureHeight>
-        <imageFolderFocus>Picture_cover.png</imageFolderFocus>
-        <frame>Picture_cover.png</frame>
-        <frameFocus>Picture_cover.png</frameFocus>
-        <background>emtpy.png</background>
-        <thumbs/>
-        <InfoImage/>
-        <showFrame>yes</showFrame>
-        <showFolder>yes</showFolder>
-        <showBackGround>no</showBackGround>
-        <showInfoImage>no</showInfoImage>
-        <thumbAnimation>focus</thumbAnimation>
-        <thumbAnimation>unfocus</thumbAnimation>
-      </control>
-    </control>
+    <import>common.facade.music.xml</import>
   </controls>
 </window>

@@ -84,7 +84,9 @@
     <Content Include="Resources\dll\dialogs.dll" />
     <Content Include="Resources\dll\utils.dll" />
     <Content Include="Resources\dll\WindowPlugins.dll" />
-    <Content Include="Skin\EndlessCheez.xml" />
+    <Content Include="Skin\EndlessCheez.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Skin\Media\EndlessCheez\1.png" />
     <Content Include="Skin\Media\EndlessCheez\10.png" />
     <Content Include="Skin\Media\EndlessCheez\2.png" />
@@ -118,7 +120,7 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>REM xcopy "$(TargetPath)" "..\..\..\MpiRelease" /Y
-xcopy "$(TargetPath)" "C:\Program Files (x86)\Team MediaPortal\MediaPortal\plugins\Windows" /Y
+REM xcopy "$(TargetPath)" "C:\Program Files (x86)\Team MediaPortal\MediaPortal\plugins\Windows" /Y
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

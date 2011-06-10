@@ -30,8 +30,8 @@ namespace EndlessCheez.Plugin {
             BtnBrowseMore,
             BtnSortAsc,
             BtnSortDesc,
-            BtnShowSlideShowCurrent,
-            BtnShowSlideShowAllLocal,
+            BtnShowSlideShowCurrent = 503,
+            BtnShowSlideShowAllLocal = 504,
             BtnCancelAllDownloads,
             BtnDeleteLocalCheez,
             NothingSelected
