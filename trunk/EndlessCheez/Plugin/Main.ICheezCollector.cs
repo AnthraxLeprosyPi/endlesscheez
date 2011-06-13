@@ -38,7 +38,13 @@ namespace EndlessCheez.Plugin {
         }
 
         public void CollectLocalCheez(CheezSite cheezSite) {
-            Dialogs.ShowProgressDialog(cheezSite.Name);
+            string header = string.Empty;
+            if (cheezSite == null) {
+                header = "All Cheezburger sites...";
+            } else {
+                header = cheezSite.Name;
+            }
+            Dialogs.ShowProgressDialog(header);
             Thread collectLocalCheez = new Thread(delegate() {
                 CheezManager.CollectLocalCheez(cheezSite);
             });

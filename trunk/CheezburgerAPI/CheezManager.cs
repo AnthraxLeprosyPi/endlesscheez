@@ -101,7 +101,8 @@ namespace CheezburgerAPI {
             }
             bool allOk = true;
             try {
-                Directory.Delete(_cheezRootFolder, true);
+                Directory.Delete(_cheezRootFolder +@"\Cache", true);
+                CreateCheezFolderStructure(CheezSites);
             } catch(Exception e) {
                 Global_CheezFailed(new CheezFail(e));
                 allOk = false;
@@ -117,6 +118,9 @@ namespace CheezburgerAPI {
             }
         }
 
+        public static void ResetCurrentStartIndex() {
+            CheezCollectorLatest.Instance.CurrentStartIndex = 1;
+        }
 
         #endregion
 
@@ -124,8 +128,9 @@ namespace CheezburgerAPI {
         private static bool CreateCheezFolderStructure(List<CheezSite> cheezSites) {
             try {
                 foreach(CheezSite cheezSite in cheezSites) {
-                    if(!Directory.Exists(Path.Combine(_cheezRootFolder, cheezSite.CheezSiteID))) {
-                        Directory.CreateDirectory(Path.Combine(_cheezRootFolder, cheezSite.CheezSiteID));
+                    if(!Directory.Exists(Path.Combine(_cheezRootFolder, "Cache/" + cheezSite.CheezSiteID))) {
+                        Directory.CreateDirectory(Path.Combine(_cheezRootFolder, "Cache"));
+                        Directory.CreateDirectory(Path.Combine(_cheezRootFolder, "Cache/" + cheezSite.CheezSiteID));
                     }
                 }
                 return true;
@@ -318,8 +323,7 @@ namespace CheezburgerAPI {
             }
         }
         #endregion        
-    
-        
+   
     }
     #region ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ BusinessObjects ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     public struct CheezItem {

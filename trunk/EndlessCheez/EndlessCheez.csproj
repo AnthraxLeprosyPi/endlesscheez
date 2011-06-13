@@ -39,6 +39,14 @@
     <Reference Include="Common.Utils, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86" />
     <Reference Include="core, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86" />
     <Reference Include="dialogs, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86" />
+    <Reference Include="OnlineVideos, Version=0.31.0.1409, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Team MediaPortal\MediaPortal\plugins\Windows\OnlineVideos\OnlineVideos.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="OnlineVideos.MediaPortal1">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Team MediaPortal\MediaPortal\plugins\Windows\OnlineVideos.MediaPortal1.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -71,6 +79,11 @@
     <Compile Include="Plugin\Configuration.cs" />
     <Compile Include="Plugin\Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Plugin\ConfigurationForm.resx">
@@ -97,11 +110,12 @@
     <Content Include="Skin\Media\EndlessCheez\9.png" />
     <Content Include="Skin\Media\EndlessCheez\Background.png" />
     <Content Include="Skin\Media\EndlessCheez\EndlessCheez_logo.png" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\img\EndlessCheez_enabled.png" />
     <EmbeddedResource Include="Resources\img\EndlessCheez_disabled.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Skin\Thumbs.db" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CheezburgerAPI\CheezburgerAPI.csproj">
@@ -120,7 +134,7 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>REM xcopy "$(TargetPath)" "..\..\..\MpiRelease" /Y
-REM xcopy "$(TargetPath)" "C:\Program Files (x86)\Team MediaPortal\MediaPortal\plugins\Windows" /Y
+xcopy "$(TargetPath)" "C:\Program Files (x86)\Team MediaPortal\MediaPortal\plugins\Windows" /Y
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

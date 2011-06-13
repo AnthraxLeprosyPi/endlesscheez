@@ -67,6 +67,14 @@ namespace EndlessCheez.Plugin {
             }
         }
 
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            System.Diagnostics.Process.Start(@"http://developer.cheezburger.com/api");
+        }
+
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            System.Diagnostics.Process.Start(@"mailto:anthrax.leprosy.pi@googlemail.com");
+        }
+
      
     }
 }

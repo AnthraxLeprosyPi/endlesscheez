@@ -23,15 +23,17 @@ namespace EndlessCheez.Plugin {
 
         internal CheezListItem(CheezItem cheezItem): base(cheezItem.CheezTitle) {            
             base.Label2 = String.Format("[{0}]", cheezItem.CheezCreationDateTime.ToShortDateString());
-            base.Label3 = cheezItem.CheezAsset.FullText; 
-            base.Path = cheezItem.CheezAsset.AssetId;
-            base.DVDLabel = cheezItem.CheezAsset.ContentUrl;
+            if (cheezItem.CheezAsset != null) {
+                base.Label3 = cheezItem.CheezAsset.FullText;
+                base.Path = cheezItem.CheezAsset.AssetId;
+                base.DVDLabel = cheezItem.CheezAsset.ContentUrl;
+                base.IsRemote = cheezItem.CheezAsset.AssetType.Contains("Video");
+            }
+            LastSelectedIndex = 1;
             base.FileInfo = new FileInformation();
             base.FileInfo.CreationTime = cheezItem.CheezCreationDateTime;
-            base.IsFolder = false;
-            base.IsRemote = cheezItem.CheezAsset.AssetType.Contains("Video");
-            LastSelectedIndex = 1;
             base.RetrieveArt = false;
+                base.IsFolder = false;
             SetIcons(cheezItem.CheezImagePath);
         }
 

@@ -102,16 +102,22 @@ namespace CheezburgerAPI {
                 if (!Directory.Exists(tmpPath)) {
                     Directory.CreateDirectory(tmpPath);
                 }
+                CheezLogo = Path.Combine(tmpPath, "cheeznet80.png");
                 foreach (CheezSite site in tmpList) {
-                    site.SquareLogoPath = Path.Combine(tmpPath, Path.GetFileName(site.SquareLogoUrl));
-                    if (!File.Exists(site.SquareLogoPath) && !String.IsNullOrEmpty(site.SquareLogoUrl)) {
+                    string localFile = Path.Combine(tmpPath, Path.GetFileName(site.SquareLogoUrl));
+                    if(File.Exists(localFile)){
+                        site.SquareLogoPath = localFile;
+                    }else if (!String.IsNullOrEmpty(site.SquareLogoUrl)) {
                         try {
-                            client.DownloadFile(site.SquareLogoUrl, site.SquareLogoPath);
-                            if (site.SquareLogoPath.Contains("cheeznet")) {
-                                CheezLogo = site.SquareLogoPath;
-                            }
+                            client.DownloadFile(site.SquareLogoUrl, localFile);
+                            site.SquareLogoPath = localFile;
                         } catch {
+
                         }
+                    } else if (File.Exists(CheezLogo)) {
+                        site.SquareLogoPath = CheezLogo;
+                    } else {
+                        site.SquareLogoPath = string.Empty;
                     }
                 }
                 tmpList.RemoveAll(x => x.SiteCategory.Equals("STORE & CO."));

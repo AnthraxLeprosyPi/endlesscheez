@@ -94,7 +94,7 @@ namespace CheezburgerAPI {
                     }
                     WebClient myWebClient = new WebClient();
                     string tmpFileName = string.Empty;
-                    tmpFileName = Path.Combine(Path.Combine(CheezManager.CheezRootFolder, _currentCheezSite.CheezSiteID), GetSafeFilenameFromUrl(currentCheez.ImageUrl, '_'));
+                    tmpFileName = Path.Combine(Path.Combine(CheezManager.CheezRootFolder, @"Cache\" + _currentCheezSite.CheezSiteID), GetSafeFilenameFromUrl(currentCheez.ImageUrl, '_'));
                     if (!File.Exists(tmpFileName)) {
                         myWebClient.DownloadFile(currentCheez.ImageUrl, tmpFileName);
                     }

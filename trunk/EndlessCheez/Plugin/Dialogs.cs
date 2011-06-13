@@ -23,17 +23,17 @@ namespace EndlessCheez.Plugin {
 
         internal enum ContextMenuButtons {
             BtnSwitchLayout,
-            BtnCheezSitesOverview,
-            BtnBrowseLatestCheez,
-            BtnBrowseRandomCheez,
-            BtnBrowseLocalCheez,
+            BtnCheezSitesOverview,  
             BtnBrowseMore,
             BtnSortAsc,
             BtnSortDesc,
             BtnShowSlideShowCurrent = 503,
             BtnShowSlideShowAllLocal = 504,
+            BtnDeleteLocalCheez = 505,
+            BtnBrowseLatestCheez = 506,
+            BtnBrowseLocalCheez = 507,
+            BtnBrowseRandomCheez,
             BtnCancelAllDownloads,
-            BtnDeleteLocalCheez,
             NothingSelected
         }
 
@@ -45,14 +45,14 @@ namespace EndlessCheez.Plugin {
             tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnCheezSitesOverview,
                                             "show Cheezsites Overview"));
 
-            tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnBrowseLatestCheez,
-                                            "Browse Latest Online Cheez.."));
+            //tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnBrowseLatestCheez,
+            //                                "Browse Latest Online Cheez.."));
 
-            tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnBrowseRandomCheez,
-                                            "Browse Random Online Cheez.."));
+            //tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnBrowseRandomCheez,
+            //                                "Browse Random Online Cheez.."));
 
-            tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnBrowseLocalCheez,
-                                            "Browse locally available Cheez.."));
+            //tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnBrowseLocalCheez,
+            //                                "Browse locally available Cheez.."));
 
             tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnBrowseMore,
                                             "Gimme more of this Cheez.."));
@@ -62,14 +62,14 @@ namespace EndlessCheez.Plugin {
 
             tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnShowSlideShowAllLocal,
                                            "Start Slideshow (all local items)"));
-            tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnCancelAllDownloads,
-                                           "Cancel Cheez Download(s)!"));
+            //tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnCancelAllDownloads,
+            //                               "Cancel Cheez Download(s)!"));
             tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnDeleteLocalCheez,
                                           "Delete all local Cheez!"));
-            tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnSortAsc,
-                                         "Sort by Cheez creation date/time (Asc)"));
-            tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnSortDesc,
-                                         "Sort by Cheez creation date/time (Desc)"));
+            //tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnSortAsc,
+            //                             "Sort by Cheez creation date/time (Asc)"));
+            //tmpList.Add(new ContextMenuItem(ContextMenuButtons.BtnSortDesc,
+            //                             "Sort by Cheez creation date/time (Desc)"));
             return tmpList;
         }
 
@@ -100,11 +100,12 @@ namespace EndlessCheez.Plugin {
 
         #region GUI Helper Methods
 
+        private static GUIDialogNotify dialogMailNotify = (GUIDialogNotify)GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_DIALOG_NOTIFY);
         public static void ShowNotifyDialog(int timeOut, string notifyMessage) {
             try {
-                GUIDialogNotify dialogMailNotify = (GUIDialogNotify)GUIWindowManager.GetWindow((int)GUIWindow.Window.WINDOW_DIALOG_NOTIFY);
+                dialogMailNotify.Reset();
                 dialogMailNotify.TimeOut = timeOut;
-                dialogMailNotify.SetImage(GUIGraphicsContext.Skin + @"\Media\EndlessCheez_logo.png");
+                dialogMailNotify.SetImage(GUIGraphicsContext.Skin + @"\Media\hover_EndlessCheez.png");
                 dialogMailNotify.SetHeading("EndlessCheez");
                 dialogMailNotify.SetText(notifyMessage);
                 dialogMailNotify.DoModal(GUIWindowManager.ActiveWindow);
