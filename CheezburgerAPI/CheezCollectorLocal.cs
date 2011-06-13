@@ -8,7 +8,7 @@ namespace CheezburgerAPI {
     internal class CheezCollectorLocal : CheezCollectorBase<CheezCollectorLocal> {
         protected override void CollectCheez(object sender, System.ComponentModel.DoWorkEventArgs e) {
             _listCheezItems = new List<CheezItem>();
-            string searchPatch = CheezManager.CheezRootFolder;
+            string searchPatch = CheezManager.CheezRootFolder + @"\Cache";
             if (_currentCheezSite != null) {
                 searchPatch = Path.Combine(searchPatch, _currentCheezSite.CheezSiteID);
             }

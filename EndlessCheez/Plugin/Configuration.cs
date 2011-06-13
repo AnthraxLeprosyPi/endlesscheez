@@ -87,7 +87,7 @@ namespace EndlessCheez.Plugin {
             strButtonText = PluginName();
             strButtonImage = String.Empty;
             strButtonImageFocus = String.Empty;
-            strPictureImage = String.Empty;
+            strPictureImage = Settings.PLUGIN_MEDIA_HOVER;
             return true;
         }
 

@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using MediaPortal.GUI.Library;
 
 namespace EndlessCheez.Plugin {
     public static class Settings {
 
         public const string PLUGIN_NAME = "EndlessCheez";
         public const string PLUGIN_AUTHOR = "Anthrax";
-        public const string PLUGIN_DESCRIPTION = "TODO";
+        public const string PLUGIN_DESCRIPTION = "A MediaPortal plugin that allows you to view Cheezburger™ content.\nNeither MediaPortal nor the author of this plugin is affiliated with the Cheezburger Network.";
         public const int PLUGIN_WINDOW_ID = 300382;
+        public static string PLUGIN_MEDIA_HOVER = @"hover_EndlessCheez.png";
 
         static Settings() {
             //Set defaults
@@ -46,7 +48,5 @@ namespace EndlessCheez.Plugin {
                 xmlwriter.SetValueAsBool(PLUGIN_NAME, "DeleteLocalCheezOnExit", DeleteLocalCheezOnExit);
             }
         }
-
-
     }
 }

@@ -15,12 +15,15 @@ namespace EndlessCheez.Plugin {
 
         public void OnCheezOperationFailed(CheezFail fail) {
             Dialogs.HideProgressDialog();
-            Dialogs.ShowNotifyDialog(10, fail.ToString());            
-            CollectLocalCheez(CheezManager.CurrentCheezSite);
+            Dialogs.ShowNotifyDialog(10, fail.ToString());
+            if (IsOnlineMode) {
+                CollectLocalCheez(CheezManager.CurrentCheezSite);
+            }
+            DisplayCheezSitesOverview();
         }
 
         public void OnCheezOperationProgress(int progressPercentage, string currentItem) {
-            Dialogs.UpdateProgressDialog(currentItem, progressPercentage);         
+            Dialogs.UpdateProgressDialog(currentItem, progressPercentage);
         }
 
 

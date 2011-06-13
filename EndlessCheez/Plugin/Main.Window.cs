@@ -9,6 +9,11 @@ using MediaPortal.GUI.Pictures;
 using WindowPlugins;
 using System.Linq;
 using MediaPortal.Util;
+using OnlineVideos.Sites;
+using OnlineVideos.Hoster;
+using System.Text.RegularExpressions;
+using System.Net;
+using OnlineVideos;
 
 namespace EndlessCheez.Plugin {
     public partial class Main : WindowPluginBase {
@@ -22,6 +27,8 @@ namespace EndlessCheez.Plugin {
         private Dictionary<CheezSite, List<CheezListItem>> CheezHistory { get; set; }
         private List<CheezListItem> CheezSites { get; set; }
         private PluginStates PluginState { get; set; }
+        private bool IsOnlineMode { get; set; }
+        private bool IsOnlineVideosInstalled { get; set; }
 
         #endregion
 
@@ -55,9 +62,25 @@ namespace EndlessCheez.Plugin {
 
         public override bool Init() {
             LoadSettings();
-            GUIPropertyManager.SetProperty("#EndlessCheez.CurrentItem", " ");
+            IsOnlineVideosInstalled = File.Exists(Path.Combine(MediaPortal.Configuration.Config.GetFolder(MediaPortal.Configuration.Config.Dir.Plugins), @"Windows\OnlineVideos\OnlineVideos.dll"));
+            InitCheezManager(Settings.FetchCount, Settings.CheezRootFolder, true);
+            InitSiteHistory();
+            PluginState = PluginStates.CheezSiteOverview;
             SlideShow = (GUISlideShow)GUIWindowManager.GetWindow((int)Window.WINDOW_SLIDESHOW);
             return Load(GUIGraphicsContext.Skin + @"\EndlessCheez.xml");
+        }
+
+        private void InitSiteHistory() {
+            CheezHistory = new Dictionary<CheezSite, List<CheezListItem>>();
+            CheezSites = new List<CheezListItem>();
+            foreach (CheezSite site in CheezManager.CheezSites) {
+                CheezListItem tmpItem = new CheezListItem(site);
+                if (String.IsNullOrEmpty(tmpItem.IconImageBig)) {
+                    MediaPortal.Util.Utils.SetDefaultIcons(tmpItem);
+                }
+                CheezSites.Add(tmpItem);
+                CheezHistory.Add(site, new List<CheezListItem>());
+            }
         }
 
         public override void DeInit() {
@@ -73,30 +96,30 @@ namespace EndlessCheez.Plugin {
         }
 
         protected override void OnPageLoad() {
-            GUIWaitCursor.Init();
-            GUIWaitCursor.Show();
-            InitCheezManager(Settings.FetchCount, Settings.CheezRootFolder, true);
-            CheezHistory = new Dictionary<CheezSite, List<CheezListItem>>();
-            CheezSites = new List<CheezListItem>();
-            foreach (CheezSite site in CheezManager.CheezSites) {
-                CheezListItem tmpItem = new CheezListItem(site);
-                if (String.IsNullOrEmpty(tmpItem.IconImageBig)) {
-                    Utils.SetDefaultIcons(tmpItem);
-                }
-                CheezSites.Add(tmpItem);
-                CheezHistory.Add(site, new List<CheezListItem>());
-            }
-            CurrentLayout = GUIFacadeControl.Layout.CoverFlow;
-            PluginState = PluginStates.CheezSiteOverview;
-            SwitchLayout();
-            GUIWaitCursor.Hide();
+            base.OnPageLoad();
             if (ctrlBackgroundImage != null) {
                 ctrlBackgroundImage.ImagePath = GUIGraphicsContext.Skin + @"\Media\EndlessCheez\Background.png";
             }
-            if (facadeLayout != null) {
-                DisplayCheezSitesOverview();
+            switch (PluginState) {
+                case PluginStates.CheezSiteOverview:
+                default:
+                    DisplayCheezSitesOverview();
+                    break;
+                case PluginStates.CheezSiteSelected:
+                case PluginStates.SlideShowRunning:
+                    DisplayCurrentCheezSite(CheezManager.CurrentCheezSite);
+                    break;
             }
-            base.OnPageLoad();
+
+            if (CheezManager.CheckCheezConnection()) {
+                GUIPropertyManager.SetProperty("#currentmodule", Settings.PLUGIN_NAME + " (online mode)");
+                IsOnlineMode = true;
+            } else {
+                GUIPropertyManager.SetProperty("#currentmodule", Settings.PLUGIN_NAME + " (local mode)");
+                IsOnlineMode = false;
+            }
+            CurrentLayout = GUIFacadeControl.Layout.CoverFlow;
+            SwitchLayout();           
         }
 
         protected override void OnPageDestroy(int new_windowId) {
@@ -127,21 +150,19 @@ namespace EndlessCheez.Plugin {
 
         public override void OnAction(MediaPortal.GUI.Library.Action action) {
             if (action.wID == MediaPortal.GUI.Library.Action.ActionType.ACTION_PREVIOUS_MENU) {
-                if (SlideShow.InSlideShow) {
-                    GUIWindowManager.ActivateWindow(GetID);
-                } else {
-                    switch (PluginState) {
-                        case PluginStates.CheezSiteSelected:
-                        case PluginStates.SlideShowRunning:
-                        default:
-                            DisplayCheezSitesOverview();
-                            return;
-                        case PluginStates.CheezSiteOverview:
-                            break;
-                    }
+                switch (PluginState) {
+                    case PluginStates.CheezSiteSelected:
+                    case PluginStates.SlideShowRunning:
+                    default:
+                        DisplayCheezSitesOverview();
+                        return;
+                    case PluginStates.CheezSiteOverview:
+                        base.OnAction(action);
+                        break;
                 }
+            } else {
+                base.OnAction(action);
             }
-            base.OnAction(action);
         }
 
         protected override void OnClicked(int controlId, GUIControl control, MediaPortal.GUI.Library.Action.ActionType actionType) {
@@ -149,25 +170,39 @@ namespace EndlessCheez.Plugin {
                 case (int)Dialogs.ContextMenuButtons.BtnShowSlideShowAllLocal:
                     OnSlideShowAllLocal();
                     break;
-                case (int)Dialogs.ContextMenuButtons.BtnShowSlideShowCurrent:                  
+                case (int)Dialogs.ContextMenuButtons.BtnShowSlideShowCurrent:
                     OnSlideShowCurrent();
                     break;
-                default:
-                    base.OnClicked(controlId, control, actionType);
+                case (int)Dialogs.ContextMenuButtons.BtnDeleteLocalCheez:
+                    OnDeleteLocalCheez();
                     break;
-            }           
+                case (int)Dialogs.ContextMenuButtons.BtnBrowseLatestCheez:
+                    GUIPropertyManager.SetProperty("#currentmodule", Settings.PLUGIN_NAME + " (online mode)");
+                    IsOnlineMode = true;
+                    break;
+                case (int)Dialogs.ContextMenuButtons.BtnBrowseLocalCheez:
+                    GUIPropertyManager.SetProperty("#currentmodule", Settings.PLUGIN_NAME + " (local mode)");
+                    IsOnlineMode = false;
+                    break;
+                default:
+                    break;
+            }
+            base.OnClicked(controlId, control, actionType);
         }
 
         protected override void OnClick(int iItem) {
-            GUIGraphicsContext.IsFullScreenVideo = true;
-            GUIWindowManager.ActivateWindow((int)GUIWindow.Window.WINDOW_FULLSCREEN_VIDEO);
             if (facadeLayout[iItem] is CheezListItem) {
                 if (facadeLayout[iItem].IsFolder) {
                     DisplayCurrentCheezSite(CheezManager.GetCheezSiteByPath(facadeLayout[iItem].Path));
                 } else {
-                    if (facadeLayout[iItem].IsRemote) {
-                        Dialogs.ShowNotifyDialog(10, "I'd love to have this feature myself!\nBut sadly this requires grabbing the direct video links from \n" + facadeLayout[iItem].DVDLabel + "\nI'll promise to look into this issue asap! ;-)");
-                        MediaPortal.Player.g_Player.PlayVideoStream(facadeLayout[iItem].DVDLabel, facadeLayout[iItem].ToString());
+                    if (facadeLayout[iItem].IsRemote) {                      
+                        if (!TryPlayVideo((CheezListItem)facadeLayout[iItem])) {
+                            if (IsOnlineVideosInstalled) {
+                                PlayOnlineVideo((CheezListItem)facadeLayout[iItem]);
+                            } else {
+                                Dialogs.ShowNotifyDialog(10, "To view this video please\n install OnlineVideos plugin...");
+                            }
+                        }
                     } else {
                         OnSlideShowCurrent(facadeLayout[iItem].IconImageBig);
                     }
@@ -175,6 +210,50 @@ namespace EndlessCheez.Plugin {
             }
 
             base.OnClick(iItem);
+        }
+
+        private void PlayOnlineVideo(CheezListItem item) {
+            if (IsOnlineVideosInstalled) {
+                if (string.IsNullOrEmpty(OnlineVideoSettings.Instance.DllsDir)) {
+                    OnlineVideoSettings.Instance.DllsDir = Path.Combine(MediaPortal.Configuration.Config.GetFolder(MediaPortal.Configuration.Config.Dir.Plugins), @"Windows\OnlineVideos");
+                }
+                SiteUtilFactory.GetAllNames();
+                string url = OnlineVideos.Sites.GenericSiteUtil.GetVideoUrl(item.DVDLabel);               
+                MediaPortal.Player.g_Player.PlayVideoStream(url, item.Label);
+                MediaPortal.Player.g_Player.ShowFullScreenWindow();
+            }
+        }
+
+        private bool CheckViddlerVideo(CheezListItem item) {
+            return item.DVDLabel.Contains("viddler");
+        }
+
+        private bool TryPlayVideo(CheezListItem item) {
+            try {
+               if(CheckViddlerVideo(item)){
+                    string page = new WebClient().DownloadString(item.DVDLabel);
+                    if (!string.IsNullOrEmpty(page)) {
+                        string regex = @"href=\""(.|\n)*?(.flv)(.|\n)*?";
+                        MatchCollection matches = Regex.Matches(page, regex, RegexOptions.IgnoreCase);
+                        for (int i = 1; i < matches.Count; i++) {
+                            if (matches[i].ToString().Contains(".flv")) {                                
+                                MediaPortal.Player.g_Player.PlayVideoStream("http://www.viddler.com" + matches[i].ToString().Replace("href=\"", ""), item.Label);
+                                MediaPortal.Player.g_Player.ShowFullScreenWindow();
+                            }
+                        }
+                    }
+                    return true;
+                }  
+             
+            } catch {
+                Dialogs.ShowNotifyDialog(10, "Unable to play video:\n" + item.DVDLabel);                
+            }
+            return false;
+        }
+
+        private bool CheckOnlineVideosPLugin() {
+            System.Reflection.Assembly[] ass = AppDomain.CurrentDomain.GetAssemblies();
+            return AppDomain.CurrentDomain.GetAssemblies().Count(a => a.FullName.Contains("OnlineVideos.MediaPortal1")) > 0;
         }
 
         protected override void OnShowContextMenu() {
@@ -213,13 +292,14 @@ namespace EndlessCheez.Plugin {
                     OnSlideShowAllLocal();
                     break;
                 case Dialogs.ContextMenuButtons.BtnShowSlideShowCurrent:
+                    SlideShow.Reset();
                     OnSlideShowCurrent();
                     break;
                 case Dialogs.ContextMenuButtons.BtnCancelAllDownloads:
                     CancelCheezCollection();
                     break;
                 case Dialogs.ContextMenuButtons.BtnDeleteLocalCheez:
-                    DeleteLocalCheez();
+                    OnDeleteLocalCheez();
                     break;
                 case Dialogs.ContextMenuButtons.NothingSelected:
                 default:
@@ -247,12 +327,18 @@ namespace EndlessCheez.Plugin {
 
         private void DisplayCurrentCheezSite(CheezSite selectedCheezSite) {
             PluginState = PluginStates.CheezSiteSelected;
+            CheezManager.CurrentCheezSite = selectedCheezSite;
+
             facadeLayout.Clear();
             CheezHistory[selectedCheezSite].ForEach(item => facadeLayout.Add(item));
-            if (facadeLayout.Count < 1) {
-                CollectLatestCheez(selectedCheezSite);
+            if (IsOnlineMode) {
+                if (facadeLayout.Count < 1) {
+                    CollectLatestCheez(selectedCheezSite);
+                } else {
+                    facadeLayout.SelectedListItemIndex = CheezSites.First(x => x.Path == selectedCheezSite.SiteId).LastSelectedIndex;
+                }
             } else {
-                facadeLayout.SelectedItem = CheezSites.First(x => x.Path == selectedCheezSite.SiteId).LastSelectedIndex;
+                CollectLocalCheez(selectedCheezSite);
             }
             facadeLayout.DoUpdate();
         }
@@ -261,15 +347,17 @@ namespace EndlessCheez.Plugin {
             Dialogs.HideProgressDialog();
             foreach (CheezItem cheezItem in cheezItems) {
                 CheezListItem tmpItem = new CheezListItem(cheezItem);
-                Utils.SetDefaultIcons(tmpItem);
+                MediaPortal.Util.Utils.SetDefaultIcons(tmpItem);
                 tmpItem.OnItemSelected += new GUIListItem.ItemSelectedHandler(OnItemSelected);
-                if (SlideShow != null && SlideShow.InSlideShow) {
+                if (SlideShow != null) {
                     SlideShow.Add(cheezItem.CheezImagePath);
                 }
                 if (PluginState == PluginStates.CheezSiteSelected) {
                     facadeLayout.Add(tmpItem);
                 }
-                CheezHistory[sourceSite].Add(tmpItem);
+                if (sourceSite != null) {
+                    CheezHistory[sourceSite].Add(tmpItem);
+                }
             }
             facadeLayout.DoUpdate();
         }
@@ -284,7 +372,9 @@ namespace EndlessCheez.Plugin {
                     CheezSites.First(x => x.Path == CheezManager.CurrentCheezSite.SiteId).LastSelectedIndex = facadeLayout.SelectedListItemIndex;
                     if (!CheezManager.IsBusy) {
                         if (facadeLayout.SelectedListItemIndex == facadeLayout.Count - 1) {
-                            CollectLatestCheez(CheezManager.CurrentCheezSite);
+                            if (IsOnlineMode) {
+                                CollectLatestCheez(CheezManager.CurrentCheezSite);
+                            }
                         }
                     }
                 }
@@ -292,12 +382,14 @@ namespace EndlessCheez.Plugin {
         }
 
         private void OnDeleteLocalCheez() {
-            if (Dialogs.ShowCustomYesNo("Delete all local Cheez?", "Are you sure to delete all of the " + CheezManager.LocalCheezCount + " local files?", "Yes!", "Cancel", false)) {
+            if (Dialogs.ShowCustomYesNo("Delete all local Cheez?", "Are you sure to delete all of the \n" + CheezManager.LocalCheezCount + " local files?", "Yes!", "Cancel", false)) {
                 if (DeleteLocalCheez()) {
                     Dialogs.ShowNotifyDialog(10, "Local Cheez successfully deleted!");
                 } else {
                     Dialogs.ShowNotifyDialog(10, "Unable to delete all local files! (" + CheezManager.LocalCheezCount + " left)");
                 }
+                InitSiteHistory();
+                CheezManager.ResetCurrentStartIndex();
                 DisplayCheezSitesOverview();
             }
         }
@@ -320,18 +412,17 @@ namespace EndlessCheez.Plugin {
                 OnSlideShowAllLocal();
                 return;
             }
-            SlideShow.Reset();
             if (SlideShow != null) {
                 for (int i = 0; i <= facadeLayout.Count; i++) {
                     if (facadeLayout[i] is CheezListItem && facadeLayout[i].HasIconBig && !facadeLayout[i].IsFolder) {
                         SlideShow.Add(facadeLayout[i].IconImageBig);
                     }
                 }
-                GUIWindowManager.ActivateWindow((int)Window.WINDOW_SLIDESHOW);
-                SlideShow.StartSlideShow();
                 if (shuffle) {
                     SlideShow.Shuffle();
                 }
+                GUIWindowManager.ActivateWindow((int)Window.WINDOW_SLIDESHOW);
+                SlideShow.StartSlideShow();
                 if (!String.IsNullOrEmpty(startImage)) {
                     SlideShow.Select(startImage);
                 }
