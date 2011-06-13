@@ -27,7 +27,7 @@
         <Author>Anthrax</Author>
         <HomePage>http://endlesscheez.googlecode.com</HomePage>
         <ForumPage>http://forum.team-mediaportal.com/mediaportal-plugins-47/release-endlesscheez-browse-cheezburger-lolz-97591/#post756446</ForumPage>
-        <UpdateUrl />
+        <UpdateUrl>http://endlesscheez.googlecode.com/svn/trunk/EndlessCheez/Extension/Installer/EndlessCheez.xml</UpdateUrl>
         <Version>
           <Major>1</Major>
           <Minor>0</Minor>
@@ -42,9 +42,10 @@ Neither MediaPortal nor the author (Anthrax) of this plugin is affiliated with t
 “All Content provided by license from the Cheezburger Network—this application is not offered nor endorsed by Cheezburger, Inc.”</ExtensionDescription>
         <VersionDescription>First initial release of the EndlessCheez plugin</VersionDescription>
         <DevelopmentStatus>Stable</DevelopmentStatus>
-        <OnlineLocation />
+        <OnlineLocation>http://endlesscheez.googlecode.com/svn/trunk/EndlessCheez/Extension/Installer/EndlessCheez_v1.0.0.mpe1</OnlineLocation>
         <ReleaseDate>2011-06-13T12:49:07.8623538+02:00</ReleaseDate>
         <Tags>mediaportal, cheezburger, lolcats, ichc</Tags>
+        <Location>C:\Users\Anthrax-Leprosy-Pi\Documents\Development\Projekte\EndlessCheez\EndlessCheez\Extension\Installer\EndlessCheez_v1.0.0.mpe1</Location>
         <Params>
           <Items>
             <SectionParam Name="Icon">
