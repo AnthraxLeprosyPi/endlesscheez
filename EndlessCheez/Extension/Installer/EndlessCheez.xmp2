@@ -4,11 +4,41 @@
   <Groups>
     <Items>
       <GroupItem Name="Default">
+        <ParentGroup />
         <DisplayName>Default</DisplayName>
         <DefaulChecked>true</DefaulChecked>
         <Description>Default</Description>
         <Files>
-          <Items />
+          <Items>
+            <FileItem InstallType="CopyFile" SystemFile="false" Modified="true">
+              <Param1 />
+              <UpdateOption>AlwaysOverwrite</UpdateOption>
+              <LocalFileName>..\..\bin\Release\CheezburgerAPI.dll</LocalFileName>
+              <ZipFileName>Installer{CopyFile}\{0a13ca34-5c55-4267-b0b7-4f71187425b6}-CheezburgerAPI.dll</ZipFileName>
+              <DestinationFilename>%Base%\plugins\Windows\CheezburgerAPI.dll</DestinationFilename>
+            </FileItem>
+            <FileItem InstallType="CopyFile" SystemFile="false" Modified="true">
+              <Param1 />
+              <UpdateOption>AlwaysOverwrite</UpdateOption>
+              <LocalFileName>..\..\bin\Release\EndlessCheez.dll</LocalFileName>
+              <ZipFileName>Installer{CopyFile}\{94d7bc6a-1798-40de-ab2a-79c0c6ec13ff}-EndlessCheez.dll</ZipFileName>
+              <DestinationFilename>%Base%\plugins\Windows\EndlessCheez.dll</DestinationFilename>
+            </FileItem>
+            <FileItem InstallType="GenericSkinFile" SystemFile="false" Modified="true">
+              <Param1 />
+              <UpdateOption>AlwaysOverwrite</UpdateOption>
+              <LocalFileName>..\..\Skin\EndlessCheez.xml</LocalFileName>
+              <ZipFileName>Installer{GenericSkinFile}\{42739f37-0b11-4c1d-a655-91658c8478df}-EndlessCheez.xml</ZipFileName>
+              <DestinationFilename>%Skin%\[DEFAULT]\EndlessCheez.xml</DestinationFilename>
+            </FileItem>
+            <FileItem InstallType="GenericSkinFile" SystemFile="false" Modified="false">
+              <Param1 />
+              <UpdateOption>AlwaysOverwrite</UpdateOption>
+              <LocalFileName>..\..\Skin\Media\hover_EndlessCheez.png</LocalFileName>
+              <ZipFileName>Installer{GenericSkinFile}\{bd4ab0d3-1182-4f24-9e74-26b36c775139}-hover_EndlessCheez.png</ZipFileName>
+              <DestinationFilename>%Skin%\[DEFAULT]\Media\hover_EndlessCheez.png</DestinationFilename>
+            </FileItem>
+          </Items>
         </Files>
       </GroupItem>
     </Items>
@@ -141,9 +171,10 @@ Neither MediaPortal nor the author (Anthrax) of this plugin is affiliated with t
 “All Content provided by license from the Cheezburger Network—this application is not offered nor endorsed by Cheezburger, Inc.”</ExtensionDescription>
     <VersionDescription>First initial release of the EndlessCheez plugin</VersionDescription>
     <DevelopmentStatus>Stable</DevelopmentStatus>
-    <OnlineLocation>http://endlesscheez.googlecode.com/svn/trunk/EndlessCheez/Extension/Installer/EndlessCheez.mpe1</OnlineLocation>
+    <OnlineLocation>http://endlesscheez.googlecode.com/svn/trunk/EndlessCheez/Extension/Installer/EndlessCheez_v1.0.0.mpe1</OnlineLocation>
     <ReleaseDate>2011-06-13T12:49:07.8623538+02:00</ReleaseDate>
     <Tags>mediaportal, cheezburger, lolcats, ichc</Tags>
+    <Location>C:\Users\Anthrax-Leprosy-Pi\Documents\Development\Projekte\EndlessCheez\EndlessCheez\Extension\Installer\EndlessCheez_v1.0.0.mpe1</Location>
     <Params>
       <Items>
         <SectionParam Name="Icon">
@@ -177,10 +208,50 @@ Neither MediaPortal nor the author (Anthrax) of this plugin is affiliated with t
     </Params>
   </GeneralInfo>
   <UniqueFileList>
-    <Items />
+    <Items>
+      <FileItem InstallType="CopyFile" SystemFile="false" Modified="true">
+        <Param1 />
+        <UpdateOption>AlwaysOverwrite</UpdateOption>
+        <LocalFileName>..\..\bin\Release\CheezburgerAPI.dll</LocalFileName>
+        <ZipFileName>Installer{CopyFile}\{0a13ca34-5c55-4267-b0b7-4f71187425b6}-CheezburgerAPI.dll</ZipFileName>
+        <DestinationFilename>%Base%\plugins\Windows\CheezburgerAPI.dll</DestinationFilename>
+      </FileItem>
+      <FileItem InstallType="CopyFile" SystemFile="false" Modified="true">
+        <Param1 />
+        <UpdateOption>AlwaysOverwrite</UpdateOption>
+        <LocalFileName>..\..\bin\Release\EndlessCheez.dll</LocalFileName>
+        <ZipFileName>Installer{CopyFile}\{94d7bc6a-1798-40de-ab2a-79c0c6ec13ff}-EndlessCheez.dll</ZipFileName>
+        <DestinationFilename>%Base%\plugins\Windows\EndlessCheez.dll</DestinationFilename>
+      </FileItem>
+      <FileItem InstallType="GenericSkinFile" SystemFile="false" Modified="true">
+        <Param1 />
+        <UpdateOption>AlwaysOverwrite</UpdateOption>
+        <LocalFileName>..\..\Skin\EndlessCheez.xml</LocalFileName>
+        <ZipFileName>Installer{GenericSkinFile}\{42739f37-0b11-4c1d-a655-91658c8478df}-EndlessCheez.xml</ZipFileName>
+        <DestinationFilename>%Skin%\[DEFAULT]\EndlessCheez.xml</DestinationFilename>
+      </FileItem>
+      <FileItem InstallType="GenericSkinFile" SystemFile="false" Modified="false">
+        <Param1 />
+        <UpdateOption>AlwaysOverwrite</UpdateOption>
+        <LocalFileName>..\..\Skin\Media\hover_EndlessCheez.png</LocalFileName>
+        <ZipFileName>Installer{GenericSkinFile}\{bd4ab0d3-1182-4f24-9e74-26b36c775139}-hover_EndlessCheez.png</ZipFileName>
+        <DestinationFilename>%Skin%\[DEFAULT]\Media\hover_EndlessCheez.png</DestinationFilename>
+      </FileItem>
+    </Items>
   </UniqueFileList>
   <ProjectSettings>
-    <FolderGroups />
+    <FolderGroups>
+      <FolderGroup InstallType="GenericSkinFile" SystemFile="false" Modified="true">
+        <Param1 />
+        <UpdateOption>AlwaysOverwrite</UpdateOption>
+        <LocalFileName />
+        <ZipFileName>Installer{GenericSkinFile}\{9a6ccc4f-764d-45fb-b314-ab5964df5904}-</ZipFileName>
+        <DestinationFilename>%Skin%\[DEFAULT]\Media\</DestinationFilename>
+        <Folder>..\..\Skin\Media</Folder>
+        <Group>Default</Group>
+        <Recursive>true</Recursive>
+      </FolderGroup>
+    </FolderGroups>
     <ProjectFilename>C:\Users\Anthrax-Leprosy-Pi\Documents\Development\Projekte\EndlessCheez\EndlessCheez\Extension\Installer\EndlessCheez.xmp2</ProjectFilename>
     <UpdatePath1>C:\Users\Anthrax-Leprosy-Pi\Documents\Development\Projekte\EndlessCheez\EndlessCheez\Extension\Installer\EndlessCheez.xml</UpdatePath1>
     <UpdatePath2 />

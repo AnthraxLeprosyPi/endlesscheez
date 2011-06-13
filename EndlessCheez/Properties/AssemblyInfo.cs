@@ -7,12 +7,12 @@ using MediaPortal.Common.Utils;
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
 [assembly: CompatibleVersion("1.1.7.0")]
-[assembly: AssemblyTitle("ClassLibrary1")]
+[assembly: AssemblyTitle("EndlessCheez")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("VOLKSWAGEN GROUP")]
-[assembly: AssemblyProduct("ClassLibrary1")]
-[assembly: AssemblyCopyright("Copyright © VOLKSWAGEN GROUP 2010")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
