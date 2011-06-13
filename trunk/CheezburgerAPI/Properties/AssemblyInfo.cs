@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // Allgemeine Informationen über eine Assembly werden über die folgenden 
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
-[assembly: AssemblyTitle("EndlessCheez")]
+[assembly: AssemblyTitle("CheezburgerAPI")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Die folgende GUID bestimmt die ID der Typbibliothek, wenn dieses Projekt für COM verfügbar gemacht wird
-[assembly: Guid("8d8bb979-b4cb-4843-8c41-6c63f31af33d")]
+[assembly: Guid("f4b61387-acb8-42cc-ac03-1bf22ef40c99")]
 
 // Versionsinformationen für eine Assembly bestehen aus den folgenden vier Werten:
 //
