@@ -160,7 +160,7 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <Version>
       <Major>1</Major>
       <Minor>0</Minor>
-      <Build>0</Build>
+      <Build>1</Build>
       <Revision>0</Revision>
     </Version>
     <ExtensionDescription>A MediaPortal plugin that allows you to view Cheezburger™ content.
@@ -174,7 +174,7 @@ Neither MediaPortal nor the author (Anthrax) of this plugin is affiliated with t
     <OnlineLocation>http://endlesscheez.googlecode.com/svn/trunk/EndlessCheez/Extension/Installer/EndlessCheez_v1.0.0.mpe1</OnlineLocation>
     <ReleaseDate>2011-06-13T12:49:07.8623538+02:00</ReleaseDate>
     <Tags>mediaportal, cheezburger, lolcats, ichc</Tags>
-    <Location>C:\Users\Anthrax-Leprosy-Pi\Documents\Development\Projekte\EndlessCheez\EndlessCheez\Extension\Installer\EndlessCheez_v1.0.0.mpe1</Location>
+    <Location>C:\Users\Anthrax-Leprosy-Pi\Documents\Development\Projekte\EndlessCheez\EndlessCheez\Extension\Installer\EndlessCheez_v1.0.1.mpe1</Location>
     <Params>
       <Items>
         <SectionParam Name="Icon">
