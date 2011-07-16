@@ -26,6 +26,9 @@ namespace CheezburgerAPI {
         private static CheezApiResponse ReadCheezAPI(string streamUri) {
             try {
                 WebClient client = new WebClient();
+                client.Headers.Add("DeveloperKey", "78b2c670-48ee-410b-a882-c546278c99a3");
+                client.Headers.Add("ClientID", "2055");
+               
                 Stream webStream = client.OpenRead(streamUri);
                 string webResponseString = string.Empty;
                 using (StreamReader reader = new StreamReader(webStream)) {
@@ -84,6 +87,8 @@ namespace CheezburgerAPI {
         public static List<CheezSite> ReadCheezSites() {
             try {
                 WebClient client = new WebClient();
+                client.Headers.Add("DeveloperKey", "78b2c670-48ee-410b-a882-c546278c99a3");
+                client.Headers.Add("ClientID", "2055");
                 Stream sitesStream;
                 try {
                     sitesStream = client.OpenRead(_cheezburgerSitesUri);
